@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENJOYHERE PARCEL — Gemini AI Parcel Scan & Management System</title>
+    <title>ENJOYHERE — Gemini AI Scan & Management System</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -123,15 +123,14 @@
         <div class="flex items-center space-x-6">
             <span class="font-semibold tracking-tight text-white flex items-center gap-2">
                 <i class="fa-solid fa-box-archive text-[#2997ff]"></i>
-                <span>ENJOYHERE PARCEL</span>
+                <span>ENJOYHERE</span>
             </span>
-            <span class="text-[#cccccc] hidden sm:inline">AI Flow Workspaces</span>
         </div>
 
         <!-- Central Workspace View Switcher Tabs (Stats View Removed) -->
         <div class="flex items-center space-x-1 bg-[#1d1d1f] p-1 rounded-full border border-[#333333]">
             <button id="tab-btn-scan" onclick="switchView('scan')" class="px-3.5 py-1 rounded-full text-[12px] font-medium transition-all bg-[#0066cc] text-white">
-                <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> สแกน AI & กล้อง
+                <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> สร้างพัสดุ
             </button>
             <button id="tab-btn-list" onclick="switchView('list')" class="px-3.5 py-1 rounded-full text-[12px] font-medium transition-all text-[#cccccc] hover:text-white flex items-center gap-1.5">
                 <i class="fa-solid fa-boxes-stacked"></i> คลังพัสดุ
@@ -142,7 +141,7 @@
         <div class="flex items-center space-x-4">
             <button onclick="toggleSettingsModal()" class="apple-active-scale text-[#cccccc] hover:text-white transition-colors flex items-center gap-1.5 py-1 px-3 rounded-[8px] bg-[#1d1d1f]">
                 <i class="fa-solid fa-sliders text-[#2997ff]"></i>
-                <span class="hidden md:inline">ตั้งค่า API & Database</span>
+                <span class="hidden md:inline">ตั้งค่า API KEY</span>
             </button>
         </div>
     </nav>
@@ -150,8 +149,7 @@
     <!-- 2. Sub-Nav Frosted Glass Bar (52px Height) -->
     <header class="bg-[#f5f5f7]/80 backdrop-blur-md border-b border-[#e0e0e0] h-[52px] sticky top-[44px] z-30 px-6 flex items-center justify-between">
         <div class="flex items-center space-x-3">
-            <h1 id="subnav-title" class="apple-tagline text-[#1d1d1f] font-semibold">Gemini Parcel Extractor</h1>
-            <span id="subnav-badge" class="text-[12px] bg-[#e0e0e0] text-[#1d1d1f] px-2.5 py-0.5 rounded-full font-medium">AI Agent</span>
+            <h1 id="subnav-title" class="apple-tagline text-[#1d1d1f] font-semibold">AI Flow Workspace</h1>
         </div>
         <div class="flex items-center space-x-3 text-[14px]">
             <span id="nav-status-indicator" class="text-[#7a7a7a] hidden md:inline">พร้อมประมวลผล</span>
@@ -189,13 +187,13 @@
                     <div class="space-y-5">
                         <div class="flex items-center space-x-3 pb-3 border-b border-[#f0f0f2]">
                             <span class="w-7 h-7 rounded-full bg-[#0066cc]/10 text-[#0066cc] font-bold text-[13px] flex items-center justify-center">1</span>
-                            <h2 class="apple-body-strong text-[#1d1d1f] text-[17px]">รายละเอียดเบื้องต้น (ข้อความ & ภาพข้อมูล)</h2>
+                            <h2 class="apple-body-strong text-[#1d1d1f] text-[17px]">รายละเอียดเบื้องต้น (ข้อความ & รูปภาพ)</h2>
                         </div>
 
                         <!-- Integrated Input Card -->
                         <div class="bg-[#fafafc] border border-[#e5e5ea] rounded-[18px] p-5 space-y-3 shadow-inner relative">
                             <label class="apple-caption text-[#1d1d1f] font-semibold block text-[14px]">
-                                รายละเอียดรายการพัสดุ <span class="text-[#8e8e93] font-normal">(หรือพิมพ์สั้นๆ ให้ AI สรุปต่อ)</span>
+                                รายละเอียดข้อมูลพัสดุ <span class="text-[#8e8e93] font-normal">(หรือพิมพ์สั้นๆ ให้ AI สรุปต่อ)</span>
                             </label>
                             
                             <textarea id="input-text" rows="6" class="w-full bg-transparent text-[14px] text-[#1d1d1f] focus:outline-none resize-none placeholder-[#a1a1a6] apple-scrollbar border-none p-0 leading-relaxed" placeholder="พิมพ์รายละเอียด เช่น เลขพัสดุ ชื่อผู้รับ รหัสไปรษณีย์ หรือวางข้อความสั้นๆ ลงที่นี่..."></textarea>
@@ -208,28 +206,26 @@
 
                             <!-- Bottom Row Toolbar Inside Card -->
                             <div class="pt-3 border-t border-[#f0f0f0] flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleFileSelect(event)">
-                                    
-                                    <button onclick="document.getElementById('file-input').click()" class="w-9 h-9 rounded-full bg-[#f0f0f4] hover:bg-[#0066cc] hover:text-white text-[#0066cc] flex items-center justify-center transition apple-active-scale" title="แนบไฟล์รูปภาพ">
-                                        <i class="fa-solid fa-paperclip text-[14px]"></i>
-                                    </button>
+                                <div class="flex items-center space-x-2"> 
+  <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleFileSelect(event)"> 
+  <button onclick="document.getElementById('file-input').click()" class="w-9 h-9 rounded-full bg-[#f0f0f4] hover:bg-[#0066cc] hover:text-white text-[#0066cc] flex items-center justify-center transition apple-active-scale" title="แนบไฟล์รูปภาพ"> 
+    <i class="fa-solid fa-paperclip text-[14px]"></i> 
+  </button> 
+  <!-- ซ่อนไอคอนย้อนกลับ (โหลดข้อมูลตัวอย่าง) โดยการเพิ่มคลาส hidden -->
+  <button onclick="loadSampleText()" class="hidden w-9 h-9 rounded-full bg-[#f0f0f4] hover:bg-[#e4e4eb] text-[#555] flex items-center justify-center transition apple-active-scale" title="โหลดข้อมูลตัวอย่าง"> 
+    <i class="fa-solid fa-rotate-left text-[13px]"></i> 
+  </button> 
+  <button onclick="clearInputArea()" class="w-9 h-9 rounded-full bg-[#f0f0f4] hover:bg-red-100 hover:text-red-600 text-[#555] flex items-center justify-center transition apple-active-scale" title="ล้างข้อมูล"> 
+    <i class="fa-solid fa-trash-can text-[13px]"></i> 
+  </button> 
+  <button onclick="openCameraModal()" class="w-9 h-9 rounded-full bg-[#f0f0f4] hover:bg-[#e4e4eb] text-[#555] flex items-center justify-center transition apple-active-scale sm:hidden" title="เปิดกล้อง"> 
+    <i class="fa-solid fa-camera text-[13px]"></i> 
+  </button> 
+</div>
 
-                                    <button onclick="loadSampleText()" class="w-9 h-9 rounded-full bg-[#f0f0f4] hover:bg-[#e4e4eb] text-[#555] flex items-center justify-center transition apple-active-scale" title="โหลดข้อมูลตัวอย่าง">
-                                        <i class="fa-solid fa-rotate-left text-[13px]"></i>
-                                    </button>
-
-                                    <button onclick="clearInputArea()" class="w-9 h-9 rounded-full bg-[#f0f0f4] hover:bg-red-100 hover:text-red-600 text-[#555] flex items-center justify-center transition apple-active-scale" title="ล้างข้อมูล">
-                                        <i class="fa-solid fa-trash-can text-[13px]"></i>
-                                    </button>
-
-                                    <button onclick="openCameraModal()" class="w-9 h-9 rounded-full bg-[#f0f0f4] hover:bg-[#e4e4eb] text-[#555] flex items-center justify-center transition apple-active-scale sm:hidden" title="เปิดกล้อง">
-                                        <i class="fa-solid fa-camera text-[13px]"></i>
-                                    </button>
-                                </div>
 
                                 <span class="apple-caption text-[#8e8e93] text-[12px] hidden sm:inline select-none">
-                                    แนบรูปถ่ายเอกสาร/ใบสลากเพื่อ AI สแกน
+                                    แนบรูปถ่ายเอกสาร
                                 </span>
                             </div>
                         </div>
