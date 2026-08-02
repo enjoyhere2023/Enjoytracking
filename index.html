@@ -408,12 +408,11 @@
                     <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Gemini API Key</label>
                     <input type="password" id="input-gemini-key" oncopy="return false;" oncut="return false;" oncontextmenu="return false;" autocomplete="off" placeholder="ป้อน Key หรือเว้นว่างเพื่อใช้ Demo Mode" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
                 </div>
-                <!-- Hidden fields for automated Supabase setup -->
-                <div class="hidden">
+                <div>
                     <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Supabase Project URL</label>
-                    <input type="text" id="input-supabase-url" value="https://ohlmrevzsgtnaglrhwwj.supabase.co" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
+                    <input type="text" id="input-supabase-url" value="https://ohlmrevzsgtnaglrhwwj.supabase.co" placeholder="https://your-project.supabase.co" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
                 </div>
-                <div class="hidden">
+                <div>
                     <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Supabase Anon Key</label>
                     <input type="password" id="input-supabase-key" oncopy="return false;" oncut="return false;" oncontextmenu="return false;" autocomplete="off" placeholder="eyJhbGci..." class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
                 </div>
@@ -519,23 +518,22 @@
         let SUPABASE_ANON_KEY = localStorage.getItem('cfg_supabase_key') || ""; 
         let TABLE_NAME = localStorage.getItem('cfg_table_name') || "shippings";
         let supabaseClient = null;
-
-        let selectedBase64Image = null;
-        let scannedResults = [];
-        let dbShippings = [];
-        let cameraStream = null;
-        let currentFacingMode = 'environment';
+        let activeGeminiKey = localStorage.getItem('cfg_gemini_key') || "";
 
         window.addEventListener('DOMContentLoaded', async () => {
             await loadSupabaseKeyFromFile();
             
             document.getElementById('input-supabase-url').value = SUPABASE_URL;
             document.getElementById('input-supabase-key').value = SUPABASE_ANON_KEY;
-            document.getElementById('input-gemini-key').value = localStorage.getItem('cfg_gemini_key') || "";
+            document.getElementById('input-gemini-key').value = activeGeminiKey;
             document.getElementById('input-table-name').value = TABLE_NAME;
 
             // Auto-connect to Supabase for all visitors
             initSupabaseClient();
+
+            // Auto-sync configuration from Supabase table 'api_key' (gemini_key, supabase_url, supabase_key)
+            await loadApiKeysFromSupabase();
+
             await loadShippingData();
             updateStatsUI();
         });
@@ -552,6 +550,42 @@
                 }
             } catch (err) {
                 console.warn('Auto-fetch api_key.supabase_key notice:', err);
+            }
+        }
+
+        async function loadApiKeysFromSupabase() {
+            if (!supabaseClient) return;
+            try {
+                const { data, error } = await supabaseClient
+                    .from('api_key')
+                    .select('gemini_key, supabase_url, supabase_key')
+                    .limit(1)
+                    .maybeSingle();
+
+                if (!error && data) {
+                    if (data.gemini_key) {
+                        activeGeminiKey = data.gemini_key.trim();
+                        localStorage.setItem('cfg_gemini_key', activeGeminiKey);
+                        const inputGemini = document.getElementById('input-gemini-key');
+                        if (inputGemini) inputGemini.value = activeGeminiKey;
+                    }
+                    if (data.supabase_url) {
+                        SUPABASE_URL = data.supabase_url.trim();
+                        localStorage.setItem('cfg_supabase_url', SUPABASE_URL);
+                        const inputUrl = document.getElementById('input-supabase-url');
+                        if (inputUrl) inputUrl.value = SUPABASE_URL;
+                    }
+                    if (data.supabase_key) {
+                        SUPABASE_ANON_KEY = data.supabase_key.trim();
+                        localStorage.setItem('cfg_supabase_key', SUPABASE_ANON_KEY);
+                        const inputKey = document.getElementById('input-supabase-key');
+                        if (inputKey) inputKey.value = SUPABASE_ANON_KEY;
+                        // Re-initialize client with fetched key
+                        initSupabaseClient();
+                    }
+                }
+            } catch (err) {
+                console.warn('Auto-fetch from api_key table error:', err);
             }
         }
 
@@ -637,7 +671,7 @@
         }
 
         async function processWithGemini() {
-            const apiKey = document.getElementById('input-gemini-key').value.trim();
+            const apiKey = document.getElementById('input-gemini-key').value.trim() || activeGeminiKey || localStorage.getItem('cfg_gemini_key') || "";
             const textInput = document.getElementById('input-text').value.trim();
 
             if (!textInput && !selectedBase64Image) {
