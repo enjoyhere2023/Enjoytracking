@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENJOYHERE — Gemini AI Scan & Management System</title>
+    <title>ENJOYHERE — AI Scan & Management</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -299,176 +299,91 @@
                     </span>
                 </div>
 
-                <!-- Slideable Cards Container -->
-                <div class="flex space-x-4 overflow-x-auto pb-3 pt-1 no-scrollbar sm:apple-scrollbar snap-x snap-mandatory"> 
-  <!-- KPI Card 1: Total Parcels --> 
-  <div class="min-w-[240px] sm:min-w-[260px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition"> 
-    <div class="flex items-center justify-between text-[#7a7a7a]"> 
-      <span class="apple-caption font-medium">พัสดุทั้งหมดในระบบ</span> 
-      <div class="w-8 h-8 rounded-full bg-blue-50 text-[#0066cc] flex items-center justify-center text-[13px]"> 
-        <i class="fa-solid fa-boxes-stacked"></i> 
-      </div> 
-    </div> 
-    <p id="stat-total" class="apple-hero-title text-[32px] text-[#1d1d1f] font-semibold">571</p> 
-    <span class="text-[11px] text-[#0066cc] bg-blue-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">รายการสะสม</span> 
-  </div> 
+                <!-- 3 Executive Stats Cards Container (Apple Human Interface Style) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pb-3 pt-1"> 
+                  <!-- KPI Card 1: Total Parcels (Calculated by selected date) --> 
+                  <div class="bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm hover:shadow-md transition"> 
+                    <div class="flex items-center justify-between text-[#7a7a7a]"> 
+                      <span class="apple-caption font-medium">พัสดุทั้งหมดในระบบ</span> 
+                      <div class="w-8 h-8 rounded-full bg-blue-50 text-[#0066cc] flex items-center justify-center text-[13px]"> 
+                        <i class="fa-solid fa-boxes-stacked"></i> 
+                      </div> 
+                    </div> 
+                    <p id="stat-total" class="apple-hero-title text-[32px] text-[#1d1d1f] font-semibold">0</p> 
+                    <span class="text-[11px] text-[#0066cc] bg-blue-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">ตามเงื่อนไขวันที่เลือก</span> 
+                  </div> 
 
-  <!-- KPI Card 2: Saved Today --> 
-  <div class="min-w-[240px] sm:min-w-[260px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition"> 
-    <div class="flex items-center justify-between text-[#7a7a7a]"> 
-      <span class="apple-caption font-medium">บันทึกวันนี้</span> 
-      <div class="w-8 h-8 rounded-full bg-emerald-50 text-[#34c759] flex items-center justify-center text-[13px]"> 
-        <i class="fa-solid fa-calendar-check"></i> 
-      </div> 
-    </div> 
-    <p id="stat-today" class="apple-hero-title text-[32px] text-[#34c759] font-semibold">2</p> 
-    <span class="text-[11px] text-[#34c759] bg-emerald-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">รายการใหม่วันนี้</span> 
-  </div> 
+                  <!-- KPI Card 2: Duplicate Parcels (Daily) --> 
+                  <div class="bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm hover:shadow-md transition"> 
+                    <div class="flex items-center justify-between text-[#7a7a7a]"> 
+                      <span class="apple-caption font-medium">เลขพัสดุซ้ำ (รายวัน)</span> 
+                      <div class="w-8 h-8 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center text-[13px]"> 
+                        <i class="fa-solid fa-copy"></i> 
+                      </div> 
+                    </div> 
+                    <p id="stat-duplicate" class="apple-hero-title text-[32px] text-amber-600 font-semibold">0</p> 
+                    <span class="text-[11px] text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">รายการ Tracking ซ้ำ</span> 
+                  </div> 
 
-  <!-- KPI Card 3: Unique Zipcodes --> 
-  <div class="min-w-[240px] sm:min-w-[260px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition"> 
-    <div class="flex items-center justify-between text-[#7a7a7a]"> 
-      <span class="apple-caption font-medium">รหัสไปรษณีย์ปลายทาง</span> 
-      <div class="w-8 h-8 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-[13px]"> 
-        <i class="fa-solid fa-map-location-dot"></i> 
-      </div> 
-    </div> 
-    <p id="stat-postcodes" class="apple-hero-title text-[32px] text-purple-600 font-semibold">207</p> 
-    <span class="text-[11px] text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">พื้นที่ให้บริการ</span> 
-  </div> 
+                  <!-- KPI Card 3: Incomplete Parcels (Daily) --> 
+                  <div class="bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm hover:shadow-md transition"> 
+                    <div class="flex items-center justify-between text-[#7a7a7a]"> 
+                      <span class="apple-caption font-medium">ข้อมูลไม่ครบ (รายวัน)</span> 
+                      <div class="w-8 h-8 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center text-[13px]"> 
+                        <i class="fa-solid fa-triangle-exclamation"></i> 
+                      </div> 
+                    </div> 
+                    <p id="stat-incomplete" class="apple-hero-title text-[32px] text-rose-600 font-semibold">0</p> 
+                    <span class="text-[11px] text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">ขาดชื่อ เลข หรือรหัสไปรษณีย์</span> 
+                  </div> 
+                </div>
+            </div>
 
-  <!-- KPI Card 4: Top Area preview (ซ่อนการ์ดนี้โดยการเพิ่มคลาส hidden) --> 
-  <div class="hidden min-w-[280px] sm:min-w-[320px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition"> 
-    <div class="flex items-center justify-between text-[#7a7a7a] mb-1"> 
-      <span class="apple-caption font-medium">พื้นที่ปลายทางสูงสุด (Top 3)</span> 
-      <i class="fa-solid fa-chart-simple text-[13px] text-[#0066cc]"></i> 
-    </div> 
-    <div id="top-postcodes-list" class="space-y-1 text-[12px]"> 
-      <div class="flex items-center justify-between text-[12px] py-0.5 border-b border-[#f0f0f0] last:border-none"> 
-        <div class="flex items-center space-x-1.5"> 
-          <span class="w-4 h-4 rounded-full bg-[#f5f5f7] text-[#1d1d1f] text-[9px] flex items-center justify-center font-bold">1</span> 
-          <span class="font-mono text-[#1d1d1f] font-semibold">50000</span> 
-        </div> 
-        <span class="text-[#7a7a7a] font-medium">16 พัสดุ</span> 
-      </div> 
-      <div class="flex items-center justify-between text-[12px] py-0.5 border-b border-[#f0f0f0] last:border-none"> 
-        <div class="flex items-center space-x-1.5"> 
-          <span class="w-4 h-4 rounded-full bg-[#f5f5f7] text-[#1d1d1f] text-[9px] flex items-center justify-center font-bold">2</span> 
-          <span class="font-mono text-[#1d1d1f] font-semibold">10240</span> 
-        </div> 
-        <span class="text-[#7a7a7a] font-medium">14 พัสดุ</span> 
-      </div> 
-      <div class="flex items-center justify-between text-[12px] py-0.5 border-b border-[#f0f0f0] last:border-none"> 
-        <div class="flex items-center space-x-1.5"> 
-          <span class="w-4 h-4 rounded-full bg-[#f5f5f7] text-[#1d1d1f] text-[9px] flex items-center justify-center font-bold">3</span> 
-          <span class="font-mono text-[#1d1d1f] font-semibold">11000</span> 
-        </div> 
-        <span class="text-[#7a7a7a] font-medium">14 พัสดุ</span> 
-      </div> 
-    </div> 
-  </div> 
-
-  <!-- KPI Card 5: DB Status --> 
-  <div class="min-w-[220px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition"> 
-    <div class="flex items-center justify-between text-[#7a7a7a]"> 
-      <span class="apple-caption font-medium">สถานะฐานข้อมูล</span> 
-      <div class="w-8 h-8 rounded-full bg-gray-100 text-[#1d1d1f] flex items-center justify-center text-[13px]"> 
-        <i class="fa-solid fa-database text-[#0066cc]"></i> 
-      </div> 
-    </div> 
-    <p id="stat-status" class="apple-body-strong text-[18px] text-[#34c759] pt-1">เชื่อมต่อแล้ว</p> 
-    <span class="text-[11px] text-[#7a7a7a] font-mono">Supabase Active</span> 
-  </div> 
-</div>
             <!-- SECTION 2: Main Inventory Title & Controls --> 
-<div class="space-y-4 pt-2"> 
-  <!-- ลบเส้นใต้หัวข้อหลักออกแล้ว -->
-  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2"> 
-    <div> 
-      <p class="text-[12px] uppercase tracking-wider text-[#0066cc] font-semibold">INVENTORY WORKSPACE</p> 
-      <h1 class="apple-display-lg text-[28px] text-[#1d1d1f]">คลังข้อมูลพัสดุทั้งหมด</h1> 
-      <p class="apple-caption text-[#7a7a7a]"></p> 
-    </div> 
-    <!-- Controls & Filters (Apple Pills Style) --> 
-    <div class="flex flex-wrap items-center gap-2.5"> 
-      <div class="relative"> 
-        <input type="text" id="search-query" onkeyup="filterShippingData()" placeholder="ค้นหาชื่อ, เลขพัสดุ..." class="pl-9 pr-4 py-2 bg-[#fafafc] border border-[#e0e0e0] rounded-full text-[13px] focus:outline-none focus:border-[#0066cc] w-52 sm:w-64 shadow-sm"> 
-        <i class="fa-solid fa-magnifying-glass text-[#7a7a7a] absolute left-3.5 top-3 text-[12px]"></i> 
-      </div> 
-      <div class="flex items-center space-x-2 bg-[#fafafc] border border-[#e0e0e0] px-3.5 py-2 rounded-full text-[13px] shadow-sm"> 
-        <span class="text-[#7a7a7a] text-[12px]">วันที่:</span> 
-        <input type="date" id="filter-date" onchange="loadShippingData()" class="text-[#1d1d1f] focus:outline-none bg-transparent text-[12px]"> 
-        <button onclick="clearDateFilter()" class="text-[#0066cc] text-[11px] font-semibold hover:underline pl-1">ทั้งหมด</button> 
-      </div> 
-      <button onclick="loadShippingData()" class="w-9 h-9 rounded-full bg-[#fafafc] border border-[#e0e0e0] text-[#1d1d1f] hover:bg-gray-50 flex items-center justify-center shrink-0 transition apple-active-scale shadow-sm" title="รีเฟรชข้อมูล"> 
-        <i class="fa-solid fa-arrows-rotate text-[13px]"></i> 
-      </button> 
-    </div> 
-  </div> 
+            <div class="space-y-4 pt-2"> 
+              <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2"> 
+                <div> 
+                  <p class="text-[12px] uppercase tracking-wider text-[#0066cc] font-semibold">INVENTORY WORKSPACE</p> 
+                  <h1 class="apple-display-lg text-[28px] text-[#1d1d1f]">คลังข้อมูลพัสดุทั้งหมด</h1> 
+                </div> 
+                <!-- Controls & Filters (Apple Pills Style) --> 
+                <div class="flex flex-wrap items-center gap-2.5"> 
+                  <div class="relative"> 
+                    <input type="text" id="search-query" onkeyup="filterShippingData()" placeholder="ค้นหาชื่อ, เลขพัสดุ..." class="pl-9 pr-4 py-2 bg-[#fafafc] border border-[#e0e0e0] rounded-full text-[13px] focus:outline-none focus:border-[#0066cc] w-52 sm:w-64 shadow-sm"> 
+                    <i class="fa-solid fa-magnifying-glass text-[#7a7a7a] absolute left-3.5 top-3 text-[12px]"></i> 
+                  </div> 
+                  <div class="flex items-center space-x-2 bg-[#fafafc] border border-[#e0e0e0] px-3.5 py-2 rounded-full text-[13px] shadow-sm"> 
+                    <span class="text-[#7a7a7a] text-[12px]">วันที่:</span> 
+                    <input type="date" id="filter-date" onchange="loadShippingData()" class="text-[#1d1d1f] focus:outline-none bg-transparent text-[12px]"> 
+                    <button onclick="clearDateFilter()" class="text-[#0066cc] text-[11px] font-semibold hover:underline pl-1">ทั้งหมด</button> 
+                  </div> 
+                  <button onclick="loadShippingData()" class="hidden w-9 h-9 rounded-full bg-[#fafafc] border border-[#e0e0e0] text-[#1d1d1f] hover:bg-gray-50 flex items-center justify-center shrink-0 transition apple-active-scale shadow-sm" title="รีเฟรชข้อมูล"> 
+                    <i class="fa-solid fa-arrows-rotate text-[13px]"></i> 
+                  </button> 
+                </div> 
+              </div> 
 
-  <!-- Shipping Items Table Container (คงเส้นตัดแบ่งและขอบไว้เหมือนเดิมทุกประการ) --> 
-  <div class="bg-white border border-[#e0e0e0] rounded-[22px] overflow-hidden shadow-sm"> 
-    <div class="overflow-x-auto"> 
-      <table class="w-full text-left text-[13px]"> 
-        <thead class="bg-[#fafafc] border-b border-[#e0e0e0] text-[#7a7a7a] font-semibold uppercase tracking-wider text-[11px]"> 
-          <tr> 
-            <th class="py-3.5 px-4 text-center w-12">#</th> 
-            <th class="py-3.5 px-4">ลำดับ (ID)</th> 
-            <th class="py-3.5 px-4">เลขพัสดุ (Tracking)</th> 
-            <th class="py-3.5 px-4">ชื่อผู้รับ</th> 
-            <th class="py-3.5 px-4">รหัสไปรษณีย์</th> 
-            <th class="py-3.5 px-4">วันที่บันทึก</th> 
-            <th class="py-3.5 px-4 text-right">การจัดการ</th> 
-          </tr> 
-        </thead> 
-        <tbody id="shipping-table-body" class="divide-y divide-[#f0f0f0]"> 
-          <tr><td colspan="7" class="p-8 text-center text-[#7a7a7a]">กำลังโหลดข้อมูล...</td></tr> 
-        </tbody> 
-      </table> 
-    </div> 
-  </div> 
-</div> 
-</div>
-
-
-    </main>
-
-    <!-- 3. Edit Item Modal (Requirement 3: Professional Edit Function) -->
-    <div id="edit-modal" class="fixed inset-0 bg-[#000000]/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white border border-[#e0e0e0] w-full max-w-md rounded-[22px] p-6 sm:p-8 shadow-2xl relative">
-            <div class="flex justify-between items-center mb-5">
-                <h3 class="apple-body-strong text-[20px] text-[#1d1d1f] flex items-center gap-2">
-                    <i class="fa-solid fa-pen-to-square text-[#0066cc]"></i> แก้ไขข้อมูลพัสดุ
-                </h3>
-                <button onclick="closeEditModal()" class="text-[#7a7a7a] hover:text-[#1d1d1f] w-8 h-8 rounded-full flex items-center justify-center bg-[#f5f5f7] apple-active-scale">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <input type="hidden" id="edit-internal-id">
-
-            <div class="space-y-4">
-                <div>
-                    <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1">ลำดับ / ID</label>
-                    <input type="text" id="edit-shipping-id" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-2.5 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc] font-mono">
-                </div>
-                <div>
-                    <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1">เลขพัสดุ (Tracking Number)</label>
-                    <input type="text" id="edit-shipping-number" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-2.5 text-[14px] text-[#0066cc] font-semibold focus:outline-none focus:border-[#0066cc] font-mono uppercase">
-                </div>
-                <div>
-                    <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1">ชื่อผู้รับ</label>
-                    <input type="text" id="edit-shipping-name" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-2.5 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
-                </div>
-                <div>
-                    <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1">รหัสไปรษณีย์</label>
-                    <input type="text" id="edit-shipping-code" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-2.5 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc] font-mono">
-                </div>
-            </div>
-
-            <div class="mt-6 flex justify-end space-x-3">
-                <button onclick="closeEditModal()" class="px-5 py-2.5 bg-[#fafafc] border border-[#e0e0e0] rounded-full text-[14px] text-[#1d1d1f] apple-active-scale">ยกเลิก</button>
-                <button onclick="saveEditedShipping()" class="px-6 py-2.5 bg-[#0066cc] hover:bg-[#0071e3] text-white rounded-full text-[14px] font-medium apple-active-scale shadow">บันทึกการแก้ไข</button>
+              <!-- Shipping Items Table Container --> 
+              <div class="bg-white border border-[#e0e0e0] rounded-[22px] overflow-hidden shadow-sm"> 
+                <div class="overflow-x-auto"> 
+                  <table class="w-full text-left text-[13px]"> 
+                    <thead class="bg-[#fafafc] border-b border-[#e0e0e0] text-[#7a7a7a] font-semibold uppercase tracking-wider text-[11px]"> 
+                      <tr> 
+                        <th class="py-3.5 px-4 text-center w-12">#</th> 
+                        <th class="py-3.5 px-4">ลำดับ (ID)</th> 
+                        <th class="py-3.5 px-4">เลขพัสดุ (Tracking)</th> 
+                        <th class="py-3.5 px-4">ชื่อผู้รับ</th> 
+                        <th class="py-3.5 px-4">รหัสไปรษณีย์</th> 
+                        <th class="py-3.5 px-4">วันที่บันทึก</th> 
+                        <th class="py-3.5 px-4 text-right">การจัดการ</th> 
+                      </tr> 
+                    </thead> 
+                    <tbody id="shipping-table-body" class="divide-y divide-[#f0f0f0]"> 
+                      <tr><td colspan="7" class="p-8 text-center text-[#7a7a7a]">กำลังโหลดข้อมูล...</td></tr> 
+                    </tbody> 
+                  </table> 
+                </div> 
+              </div> 
             </div>
         </div>
     </div>
@@ -498,15 +413,17 @@
                     <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Gemini API Key</label>
                     <input type="password" id="input-gemini-key" oncopy="return false;" oncut="return false;" oncontextmenu="return false;" autocomplete="off" placeholder="ป้อน Key หรือเว้นว่างเพื่อใช้ Demo Mode" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
                 </div>
-                <div>
+                <!-- ซ่อนหัวข้อ Supabase Project URL -->
+                <div class="hidden">
                     <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Supabase Project URL</label>
                     <input type="text" id="input-supabase-url" value="https://ohlmrevzsgtnaglrhwwj.supabase.co" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
                 </div>
-                <div>
+                <!-- ซ่อนหัวข้อ Supabase Anon Key (ระบบจะดึงจาก api_key.supabase_key อัตโนมัติ) -->
+                <div class="hidden">
                     <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Supabase Anon Key</label>
                     <input type="password" id="input-supabase-key" oncopy="return false;" oncut="return false;" oncontextmenu="return false;" autocomplete="off" placeholder="eyJhbGci..." class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
                 </div>
-                <!-- ซ่อนหัวข้อ Database Table Name ตามข้อกำหนด -->
+                <!-- ซ่อนหัวข้อ Database Table Name -->
                 <div class="hidden">
                     <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Database Table Name</label>
                     <input type="text" id="input-table-name" value="shippings" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
@@ -568,7 +485,7 @@
 
     <!-- Application Logic Script -->
     <script>
-        let SUPABASE_URL = localStorage.getItem('cfg_supabase_url') || "https://ohlmrevzsgtnaglrhwwj.supabase.co";
+        let SUPABASE_URL = "https://ohlmrevzsgtnaglrhwwj.supabase.co";
         let SUPABASE_ANON_KEY = localStorage.getItem('cfg_supabase_key') || ""; 
         let TABLE_NAME = localStorage.getItem('cfg_table_name') || "shippings";
         let supabaseClient = null;
@@ -579,29 +496,41 @@
         let cameraStream = null;
         let currentFacingMode = 'environment';
 
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadSupabaseKeyFromFile();
             document.getElementById('input-supabase-url').value = SUPABASE_URL;
             document.getElementById('input-supabase-key').value = SUPABASE_ANON_KEY;
             document.getElementById('input-gemini-key').value = localStorage.getItem('cfg_gemini_key') || "";
             document.getElementById('input-table-name').value = TABLE_NAME;
 
             initSupabaseClient();
-            loadShippingData();
+            await loadShippingData();
             updateStatsUI();
         });
+
+        async function loadSupabaseKeyFromFile() {
+            try {
+                const response = await fetch('api_key.supabase_key');
+                if (response.ok) {
+                    const keyText = (await response.text()).trim();
+                    if (keyText) {
+                        SUPABASE_ANON_KEY = keyText;
+                        localStorage.setItem('cfg_supabase_key', keyText);
+                    }
+                }
+            } catch (err) {
+                console.warn('Auto-fetch api_key.supabase_key warning:', err);
+            }
+        }
 
         function initSupabaseClient() {
             try {
                 if (SUPABASE_ANON_KEY && typeof window.supabase !== 'undefined') {
                     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                     document.getElementById('db-status-dot-modal').innerText = 'Active';
-                    document.getElementById('stat-status').innerText = 'เชื่อมต่อแล้ว';
-                    document.getElementById('stat-status').className = 'apple-body-strong text-[18px] text-[#34c759] pt-1';
                 } else {
                     supabaseClient = null;
                     document.getElementById('db-status-dot-modal').innerText = 'Demo Mode';
-                    document.getElementById('stat-status').innerText = 'Local Demo Mode';
-                    document.getElementById('stat-status').className = 'apple-body-strong text-[18px] text-amber-600 pt-1';
                 }
             } catch (e) {
                 console.warn('Supabase fallback:', e);
@@ -628,11 +557,11 @@
             if (view === 'scan') {
                 viewScan.classList.remove('hidden');
                 btnScan.className = activeClass;
-                document.getElementById('subnav-title').innerText = 'Gemini Parcel Extractor';
+                document.getElementById('subnav-title').innerText = 'AI Flow Workspace';
             } else if (view === 'list') {
                 viewList.classList.remove('hidden');
                 btnList.className = activeClass + ' flex items-center gap-1.5';
-                document.getElementById('subnav-title').innerText = 'Parcel Inventory Workspace';
+                document.getElementById('subnav-title').innerText = 'AI Flow Workspace';
                 loadShippingData();
             }
         }
@@ -1214,41 +1143,53 @@
         }
 
         function updateStatsUI() {
-            const total = dbShippings.length;
+            const filterDate = document.getElementById('filter-date')?.value;
             const todayStr = new Date().toISOString().split('T')[0];
-            const todayCount = dbShippings.filter(x => x.created_at && x.created_at.startsWith(todayStr)).length;
+            const targetDate = filterDate || todayStr;
 
-            const postcodes = new Set(dbShippings.map(x => x.shipping_code).filter(Boolean));
+            // 1. พัสดุทั้งหมดในระบบ (คำนวณตามวันที่เลือก หรือทั้งหมดหากไม่ได้เลือกวันที่)
+            const activeData = filterDate 
+                ? dbShippings.filter(x => x.created_at && x.created_at.startsWith(filterDate))
+                : dbShippings;
 
-            document.getElementById('stat-total').innerText = total;
-            document.getElementById('stat-today').innerText = todayCount;
-            document.getElementById('stat-postcodes').innerText = postcodes.size;
-            document.getElementById('badge-total-count').innerText = total;
+            // 2. ข้อมูลรายวัน (ตามวันที่เลือก หรือวันนี้)
+            const dailyData = dbShippings.filter(x => x.created_at && x.created_at.startsWith(targetDate));
 
-            const postcodeCounts = {};
-            dbShippings.forEach(x => {
-                if (x.shipping_code) {
-                    postcodeCounts[x.shipping_code] = (postcodeCounts[x.shipping_code] || 0) + 1;
+            // คำนวณเลขพัสดุซ้ำ (รายวัน / วันที่เลือก)
+            const trackingCounts = {};
+            dailyData.forEach(x => {
+                const num = (x.shipping_number || '').trim().toUpperCase();
+                if (num && num !== '-') {
+                    trackingCounts[num] = (trackingCounts[num] || 0) + 1;
+                }
+            });
+            let duplicateCount = 0;
+            dailyData.forEach(x => {
+                const num = (x.shipping_number || '').trim().toUpperCase();
+                if (num && num !== '-' && trackingCounts[num] > 1) {
+                    duplicateCount++;
                 }
             });
 
-            const sorted = Object.entries(postcodeCounts).sort((a,b) => b[1] - a[1]).slice(0, 3);
-            const container = document.getElementById('top-postcodes-list');
+            // คำนวณข้อมูลไม่ครบ (รายวัน / วันที่เลือก)
+            const incompleteCount = dailyData.filter(x => {
+                const num = (x.shipping_number || '').trim();
+                const name = (x.shipping_name || '').trim();
+                const code = (x.shipping_code || '').trim();
+                return !num || num === '-' || !name || name === '-' || !code || code === '-';
+            }).length;
 
-            if (sorted.length === 0) {
-                container.innerHTML = '<p class="text-[#7a7a7a]">ยังไม่มีข้อมูล</p>';
-                return;
-            }
+            const statTotal = document.getElementById('stat-total');
+            if (statTotal) statTotal.innerText = activeData.length;
 
-            container.innerHTML = sorted.map(([code, count], idx) => `
-                <div class="flex items-center justify-between text-[12px] py-0.5 border-b border-[#f0f0f0] last:border-none">
-                    <div class="flex items-center space-x-1.5">
-                        <span class="w-4 h-4 rounded-full bg-[#f5f5f7] text-[#1d1d1f] text-[9px] flex items-center justify-center font-bold">${idx+1}</span>
-                        <span class="font-mono text-[#1d1d1f] font-semibold">${code}</span>
-                    </div>
-                    <span class="text-[#7a7a7a] font-medium">${count} พัสดุ</span>
-                </div>
-            `).join('');
+            const statDuplicate = document.getElementById('stat-duplicate');
+            if (statDuplicate) statDuplicate.innerText = duplicateCount;
+
+            const statIncomplete = document.getElementById('stat-incomplete');
+            if (statIncomplete) statIncomplete.innerText = incompleteCount;
+
+            const badgeTotal = document.getElementById('badge-total-count');
+            if (badgeTotal) badgeTotal.innerText = dbShippings.length;
         }
 
         function exportToCSV() {
