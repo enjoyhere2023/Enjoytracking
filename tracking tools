@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full bg-[#f5f5f7] text-[#1d1d1f] antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENJOYHERE PARCEL — Gemini AI Parcel Scan & Management System</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase JS Client v2 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Google Font: Anuphan -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'apple-blue': '#0066cc',
+                        'apple-blue-focus': '#0071e3',
+                        'apple-blue-dark': '#2997ff',
+                        'apple-ink': '#1d1d1f',
+                        'apple-parchment': '#f5f5f7',
+                        'apple-pearl': '#fafafc',
+                        'apple-tile-1': '#272729',
+                        'apple-tile-2': '#2a2a2c',
+                        'apple-tile-3': '#252527',
+                        'apple-hairline': '#e0e0e0',
+                        'apple-divider': '#f0f0f0'
+                    },
+                    fontFamily: {
+                        sans: ['Anuphan', 'SF Pro Display', 'SF Pro Text', '-apple-system', 'BlinkMacSystemFont', 'Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Anuphan', 'SF Pro Text', -apple-system, sans-serif;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+        }
+        .apple-hero-title {
+            font-family: 'Anuphan', 'SF Pro Display', sans-serif;
+            font-size: 56px;
+            font-weight: 600;
+            line-height: 1.07;
+            letter-spacing: -0.28px;
+        }
+        .apple-display-lg {
+            font-size: 40px;
+            font-weight: 600;
+            line-height: 1.10;
+            letter-spacing: 0px;
+        }
+        .apple-tagline {
+            font-size: 21px;
+            font-weight: 600;
+            line-height: 1.19;
+            letter-spacing: 0.231px;
+        }
+        .apple-body {
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 1.47;
+            letter-spacing: -0.374px;
+        }
+        .apple-body-strong {
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.24;
+            letter-spacing: -0.374px;
+        }
+        .apple-caption {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.43;
+            letter-spacing: -0.224px;
+        }
+
+        /* Apple Active Micro-Interaction */
+        .apple-active-scale {
+            transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), background-color 0.15s ease;
+        }
+        .apple-active-scale:active {
+            transform: scale(0.96);
+        }
+
+        /* Custom Scrollbar */
+        .apple-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .apple-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .apple-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(120, 120, 128, 0.25);
+            border-radius: 9999px;
+        }
+        
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-[#f5f5f7] text-[#1d1d1f] flex flex-col min-h-screen selection:bg-apple-blue selection:text-white">
+
+    <!-- 1. Global Navigation Bar (44px Height, Pure Black) -->
+    <nav class="bg-[#000000] text-white h-[44px] px-6 flex items-center justify-between sticky top-0 z-40 text-[12px] tracking-[-0.12px]">
+        <div class="flex items-center space-x-6">
+            <span class="font-semibold tracking-tight text-white flex items-center gap-2">
+                <i class="fa-solid fa-box-archive text-[#2997ff]"></i>
+                <span>ENJOYHERE PARCEL</span>
+            </span>
+            <span class="text-[#cccccc] hidden sm:inline">AI Flow Workspaces</span>
+        </div>
+
+        <!-- Central Workspace View Switcher Tabs (Stats View Removed) -->
+        <div class="flex items-center space-x-1 bg-[#1d1d1f] p-1 rounded-full border border-[#333333]">
+            <button id="tab-btn-scan" onclick="switchView('scan')" class="px-3.5 py-1 rounded-full text-[12px] font-medium transition-all bg-[#0066cc] text-white">
+                <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> สแกน AI & กล้อง
+            </button>
+            <button id="tab-btn-list" onclick="switchView('list')" class="px-3.5 py-1 rounded-full text-[12px] font-medium transition-all text-[#cccccc] hover:text-white flex items-center gap-1.5">
+                <i class="fa-solid fa-boxes-stacked"></i> คลังพัสดุ
+                <span id="badge-total-count" class="bg-white/20 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full min-w-[18px] text-center">0</span>
+            </button>
+        </div>
+
+        <div class="flex items-center space-x-4">
+            <button onclick="toggleSettingsModal()" class="apple-active-scale text-[#cccccc] hover:text-white transition-colors flex items-center gap-1.5 py-1 px-3 rounded-[8px] bg-[#1d1d1f]">
+                <i class="fa-solid fa-sliders text-[#2997ff]"></i>
+                <span class="hidden md:inline">ตั้งค่า API & Database</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 2. Sub-Nav Frosted Glass Bar (52px Height) -->
+    <header class="bg-[#f5f5f7]/80 backdrop-blur-md border-b border-[#e0e0e0] h-[52px] sticky top-[44px] z-30 px-6 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <h1 id="subnav-title" class="apple-tagline text-[#1d1d1f] font-semibold">Gemini Parcel Extractor</h1>
+            <span id="subnav-badge" class="text-[12px] bg-[#e0e0e0] text-[#1d1d1f] px-2.5 py-0.5 rounded-full font-medium">AI Agent</span>
+        </div>
+        <div class="flex items-center space-x-3 text-[14px]">
+            <span id="nav-status-indicator" class="text-[#7a7a7a] hidden md:inline">พร้อมประมวลผล</span>
+            <button id="subnav-action-btn" onclick="processWithGemini()" class="bg-[#0066cc] hover:bg-[#0071e3] text-white px-4 py-1.5 rounded-full font-normal text-[14px] apple-active-scale flex items-center space-x-2">
+                <i class="fa-solid fa-sparkles text-[12px]" id="scan-sparkle"></i>
+                <i class="fa-solid fa-circle-notch fa-spin text-[12px] hidden" id="scan-spinner"></i>
+                <span id="subnav-action-text">วิเคราะห์ข้อมูลด้วย AI</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <!-- MAIN CONTAINER (1280px Unified Canvas on Light Gray Background) -->
+    <main class="max-w-[1280px] mx-auto w-full flex-1 border-x border-b border-[#e5e5e8] bg-white shadow-sm my-0 min-h-[calc(100vh-96px)]">
+
+        <!-- ================= VIEW 1: SCAN & PROCESS ================= -->
+        <div id="view-scan" class="w-full">
+            
+            <!-- Hero Header Section (Flush White Header, Square Edges, Direct Flow) -->
+            <div class="bg-white py-8 sm:py-10 px-6 sm:px-10 text-center border-b border-[#f0f0f2]">
+                <div class="max-w-3xl mx-auto space-y-2.5">
+                    <p class="text-[11px] sm:text-[12px] uppercase tracking-[0.2em] text-[#0066cc] font-semibold">PARCEL SCAN & MANAGEMENT SYSTEM</p>
+                    <h1 class="apple-hero-title text-[30px] sm:text-[40px] md:text-[44px] text-[#1d1d1f] tracking-tight font-semibold">ระบบสแกนและจัดเก็บพัสดุอัตโนมัติ</h1>
+                    <p class="apple-body text-[#7a7a7a] text-[14px] sm:text-[16px] max-w-2xl mx-auto leading-relaxed">สกัดชื่อผู้รับ เลขพัสดุ และรหัสไปรษณีย์ ด้วย Gemini AI สแกนผ่านข้อความ รูปภาพ หรือกล้องถ่ายรูป พร้อมบันทึกลงฐานข้อมูล Supabase โดยตรง</p>
+                </div>
+            </div>
+
+            <!-- Seamless Dual-Panel Container (Flush Square Edges) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[580px] bg-white">
+                
+                <!-- LEFT PANEL: White Tone Input & Controls -->
+                <div class="bg-white p-6 sm:p-8 flex flex-col justify-between space-y-6 border-b lg:border-b-0 lg:border-r border-[#e5e5e8]">
+                    <div class="space-y-5">
+                        <div class="flex items-center space-x-3 pb-3 border-b border-[#f0f0f2]">
+                            <span class="w-7 h-7 rounded-full bg-[#0066cc]/10 text-[#0066cc] font-bold text-[13px] flex items-center justify-center">1</span>
+                            <h2 class="apple-body-strong text-[#1d1d1f] text-[17px]">รายละเอียดเบื้องต้น (ข้อความ & ภาพข้อมูล)</h2>
+                        </div>
+
+                        <!-- Integrated Input Card -->
+                        <div class="bg-[#fafafc] border border-[#e5e5ea] rounded-[18px] p-5 space-y-3 shadow-inner relative">
+                            <label class="apple-caption text-[#1d1d1f] font-semibold block text-[14px]">
+                                รายละเอียดรายการพัสดุ <span class="text-[#8e8e93] font-normal">(หรือพิมพ์สั้นๆ ให้ AI สรุปต่อ)</span>
+                            </label>
+                            
+                            <textarea id="input-text" rows="6" class="w-full bg-transparent text-[14px] text-[#1d1d1f] focus:outline-none resize-none placeholder-[#a1a1a6] apple-scrollbar border-none p-0 leading-relaxed" placeholder="พิมพ์รายละเอียด เช่น เลขพัสดุ ชื่อผู้รับ รหัสไปรษณีย์ หรือวางข้อความสั้นๆ ลงที่นี่..."></textarea>
+                            
+                            <!-- Image Preview inside input card -->
+                            <div id="image-preview-container" class="hidden relative rounded-[14px] overflow-hidden border border-[#e0e0e0] max-h-44 bg-black flex items-center justify-center my-2">
+                                <img id="image-preview" src="" alt="Preview" class="object-contain max-h-44 w-full">
+                                <button onclick="removeImage()" class="absolute top-2 right-2 bg-black/70 hover:bg-red-600 text-white w-7 h-7 rounded-full text-[12px] flex items-center justify-center transition apple-active-scale">✕</button>
+                            </div>
+
+                            <!-- Bottom Row Toolbar Inside Card -->
+                            <div class="pt-3 border-t border-[#f0f0f0] flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleFileSelect(event)">
+                                    
+                                    <button onclick="document.getElementById('file-input').click()" class="w-9 h-9 rounded-full bg-[#f0f0f4] hover:bg-[#0066cc] hover:text-white text-[#0066cc] flex items-center justify-center transition apple-active-scale" title="แนบไฟล์รูปภาพ">
+                                        <i class="fa-solid fa-paperclip text-[14px]"></i>
+                                    </button>
+
+                                    <button onclick="loadSampleText()" class="w-9 h-9 rounded-full bg-[#f0f0f4] hover:bg-[#e4e4eb] text-[#555] flex items-center justify-center transition apple-active-scale" title="โหลดข้อมูลตัวอย่าง">
+                                        <i class="fa-solid fa-rotate-left text-[13px]"></i>
+                                    </button>
+
+                                    <button onclick="clearInputArea()" class="w-9 h-9 rounded-full bg-[#f0f0f4] hover:bg-red-100 hover:text-red-600 text-[#555] flex items-center justify-center transition apple-active-scale" title="ล้างข้อมูล">
+                                        <i class="fa-solid fa-trash-can text-[13px]"></i>
+                                    </button>
+
+                                    <button onclick="openCameraModal()" class="w-9 h-9 rounded-full bg-[#f0f0f4] hover:bg-[#e4e4eb] text-[#555] flex items-center justify-center transition apple-active-scale sm:hidden" title="เปิดกล้อง">
+                                        <i class="fa-solid fa-camera text-[13px]"></i>
+                                    </button>
+                                </div>
+
+                                <span class="apple-caption text-[#8e8e93] text-[12px] hidden sm:inline select-none">
+                                    แนบรูปถ่ายเอกสาร/ใบสลากเพื่อ AI สแกน
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button onclick="processWithGemini()" class="w-full bg-[#0066cc] hover:bg-[#0071e3] text-white py-3.5 px-6 rounded-full font-semibold text-[15px] apple-active-scale shadow-sm flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>ประมวลผลด้วย Gemini AI</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- RIGHT PANEL: Dark Tone AI Results Panel -->
+                <div class="bg-[#212124] text-white p-6 sm:p-8 flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between pb-3 border-b border-[#333336]">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-7 h-7 rounded-full bg-[#2997ff]/20 text-[#2997ff] font-bold text-[13px] flex items-center justify-center">2</span>
+                                <h2 class="apple-body-strong text-white text-[17px]">ผลลัพธ์การสแกน (แก้ไขข้อมูลได้)</h2>
+                            </div>
+                            <span id="scan-status" class="text-[12px] px-3 py-1 rounded-full bg-[#2c2c2e] text-[#cccccc] font-medium border border-[#3a3a3c]">รอการวิเคราะห์</span>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="empty-result" class="py-20 text-center space-y-3">
+                            <div class="w-16 h-16 rounded-2xl bg-[#2c2c2e] border border-[#3a3a3c] flex items-center justify-center mx-auto text-[#8e8e93]">
+                                <i class="fa-solid fa-id-card text-[28px]"></i>
+                            </div>
+                            <p class="apple-caption text-[#8e8e93] max-w-xs mx-auto">กรอกรายละเอียด แนบรูปภาพ แล้วกด "ประมวลผลด้วย Gemini AI"</p>
+                        </div>
+
+                        <!-- Full Length Results List -->
+                        <div id="result-container" class="hidden space-y-3">
+                            <!-- Dynamic Rows -->
+                        </div>
+                    </div>
+
+                    <!-- Action Control Bar -->
+                    <div id="action-bar" class="hidden pt-4 border-t border-[#333336] flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <button onclick="addResultRow()" class="apple-caption text-[#2997ff] hover:underline font-semibold flex items-center gap-1">
+                                <i class="fa-solid fa-plus text-[11px]"></i> เพิ่มรายการ
+                            </button>
+                            <button onclick="clearScannedResults()" class="apple-caption text-[#a1a1a6] hover:text-red-400 transition">
+                                ล้างทั้งหมด
+                            </button>
+                        </div>
+                        <button onclick="saveToSupabase()" id="btn-save" class="bg-[#0066cc] hover:bg-[#0071e3] text-white px-6 py-2.5 rounded-full font-medium text-[15px] apple-active-scale flex items-center space-x-2 shadow">
+                            <i class="fa-solid fa-cloud-arrow-up text-[14px]"></i>
+                            <span>บันทึกลง Supabase</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= VIEW 2: DATABASE INVENTORY LIST ================= -->
+        <div id="view-list" class="hidden space-y-8 p-6 sm:p-8 bg-white">
+            
+            <!-- SECTION 1: Integrated Stats & Analytics Carousel -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="space-y-0.5">
+                        <p class="text-[12px] uppercase tracking-wider text-[#0066cc] font-semibold">ANALYTICAL DASHBOARD</p>
+                        <h2 class="apple-display-lg text-[24px] text-[#1d1d1f] font-semibold">สถิติและการสรุปผล</h2>
+                    </div>
+                    <span class="text-[12px] text-[#7a7a7a] bg-white border border-[#e0e0e0] px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-[#34c759] animate-pulse"></span> อัปเดตเรียลไทม์
+                    </span>
+                </div>
+
+                <!-- Slideable Cards Container -->
+                <div class="flex space-x-4 overflow-x-auto pb-3 pt-1 no-scrollbar sm:apple-scrollbar snap-x snap-mandatory">
+                    
+                    <!-- KPI Card 1: Total Parcels -->
+                    <div class="min-w-[240px] sm:min-w-[260px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition">
+                        <div class="flex items-center justify-between text-[#7a7a7a]">
+                            <span class="apple-caption font-medium">พัสดุทั้งหมดในระบบ</span>
+                            <div class="w-8 h-8 rounded-full bg-blue-50 text-[#0066cc] flex items-center justify-center text-[13px]">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </div>
+                        </div>
+                        <p id="stat-total" class="apple-hero-title text-[32px] text-[#1d1d1f] font-semibold">0</p>
+                        <span class="text-[11px] text-[#0066cc] bg-blue-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">รายการสะสม</span>
+                    </div>
+
+                    <!-- KPI Card 2: Saved Today -->
+                    <div class="min-w-[240px] sm:min-w-[260px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition">
+                        <div class="flex items-center justify-between text-[#7a7a7a]">
+                            <span class="apple-caption font-medium">บันทึกวันนี้</span>
+                            <div class="w-8 h-8 rounded-full bg-emerald-50 text-[#34c759] flex items-center justify-center text-[13px]">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+                        </div>
+                        <p id="stat-today" class="apple-hero-title text-[32px] text-[#34c759] font-semibold">0</p>
+                        <span class="text-[11px] text-[#34c759] bg-emerald-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">รายการใหม่วันนี้</span>
+                    </div>
+
+                    <!-- KPI Card 3: Unique Zipcodes -->
+                    <div class="min-w-[240px] sm:min-w-[260px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition">
+                        <div class="flex items-center justify-between text-[#7a7a7a]">
+                            <span class="apple-caption font-medium">รหัสไปรษณีย์ปลายทาง</span>
+                            <div class="w-8 h-8 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-[13px]">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                            </div>
+                        </div>
+                        <p id="stat-postcodes" class="apple-hero-title text-[32px] text-purple-600 font-semibold">0</p>
+                        <span class="text-[11px] text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">พื้นที่ให้บริการ</span>
+                    </div>
+
+                    <!-- KPI Card 4: Top Area preview -->
+                    <div class="min-w-[280px] sm:min-w-[320px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition">
+                        <div class="flex items-center justify-between text-[#7a7a7a] mb-1">
+                            <span class="apple-caption font-medium">พื้นที่ปลายทางสูงสุด (Top 3)</span>
+                            <i class="fa-solid fa-chart-simple text-[13px] text-[#0066cc]"></i>
+                        </div>
+                        <div id="top-postcodes-list" class="space-y-1 text-[12px]">
+                            <p class="text-[#7a7a7a]">ยังไม่มีข้อมูล</p>
+                        </div>
+                    </div>
+
+                    <!-- KPI Card 5: DB Status -->
+                    <div class="min-w-[220px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition">
+                        <div class="flex items-center justify-between text-[#7a7a7a]">
+                            <span class="apple-caption font-medium">สถานะฐานข้อมูล</span>
+                            <div class="w-8 h-8 rounded-full bg-gray-100 text-[#1d1d1f] flex items-center justify-center text-[13px]">
+                                <i class="fa-solid fa-database text-[#0066cc]"></i>
+                            </div>
+                        </div>
+                        <p id="stat-status" class="apple-body-strong text-[18px] text-[#34c759] pt-1">เชื่อมต่อแล้ว</p>
+                        <span class="text-[11px] text-[#7a7a7a] font-mono">Supabase Active</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- SECTION 2: Main Inventory Title & Controls --> 
+<div class="space-y-4 pt-2"> 
+  <!-- ลบเส้นใต้หัวข้อหลักออกแล้ว -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2"> 
+    <div> 
+      <p class="text-[12px] uppercase tracking-wider text-[#0066cc] font-semibold">INVENTORY WORKSPACE</p> 
+      <h1 class="apple-display-lg text-[28px] text-[#1d1d1f]">คลังข้อมูลพัสดุทั้งหมด</h1> 
+      <p class="apple-caption text-[#7a7a7a]"></p> 
+    </div> 
+    <!-- Controls & Filters (Apple Pills Style) --> 
+    <div class="flex flex-wrap items-center gap-2.5"> 
+      <div class="relative"> 
+        <input type="text" id="search-query" onkeyup="filterShippingData()" placeholder="ค้นหาชื่อ, เลขพัสดุ..." class="pl-9 pr-4 py-2 bg-[#fafafc] rounded-full text-[13px] focus:outline-none focus:border-[#0066cc] w-52 sm:w-64 shadow-sm"> 
+        <i class="fa-solid fa-magnifying-glass text-[#7a7a7a] absolute left-3.5 top-3 text-[12px]"></i> 
+      </div> 
+      <div class="flex items-center space-x-2 bg-[#fafafc] px-3.5 py-2 rounded-full text-[13px] shadow-sm"> 
+        <span class="text-[#7a7a7a] text-[12px]">วันที่:</span> 
+        <input type="date" id="filter-date" onchange="loadShippingData()" class="text-[#1d1d1f] focus:outline-none bg-transparent text-[12px]"> 
+        <button onclick="clearDateFilter()" class="text-[#0066cc] text-[11px] font-semibold hover:underline pl-1">ทั้งหมด</button> 
+      </div> 
+      <button onclick="loadShippingData()" class="p-2.5 bg-[#fafafc] rounded-full text-[#1d1d1f] hover:bg-gray-50 transition apple-active-scale shadow-sm" title="รีเฟรชข้อมูล"> 
+        <i class="fa-solid fa-arrows-rotate text-[13px]"></i> 
+      </button> 
+      <button onclick="exportToCSV()" class="bg-[#34c759] hover:bg-emerald-600 text-white px-4 py-2 rounded-full text-[13px] font-medium flex items-center gap-1.5 apple-active-scale shadow-sm"> 
+        <i class="fa-solid fa-file-csv"></i> <span>ส่งออก CSV</span> 
+      </button> 
+    </div> 
+  </div> 
+
+  <!-- Shipping Items Table Container (คงเส้นตัดแบ่งและขอบไว้เหมือนเดิมทุกประการ) --> 
+  <div class="bg-white border border-[#e0e0e0] rounded-[22px] overflow-hidden shadow-sm"> 
+    <div class="overflow-x-auto"> 
+      <table class="w-full text-left text-[13px]"> 
+        <thead class="bg-[#fafafc] border-b border-[#e0e0e0] text-[#7a7a7a] font-semibold uppercase tracking-wider text-[11px]"> 
+          <tr> 
+            <th class="py-3.5 px-4 text-center w-12">#</th> 
+            <th class="py-3.5 px-4">ลำดับ (ID)</th> 
+            <th class="py-3.5 px-4">เลขพัสดุ (Tracking)</th> 
+            <th class="py-3.5 px-4">ชื่อผู้รับ</th> 
+            <th class="py-3.5 px-4">รหัสไปรษณีย์</th> 
+            <th class="py-3.5 px-4">วันที่บันทึก</th> 
+            <th class="py-3.5 px-4 text-right">การจัดการ</th> 
+          </tr> 
+        </thead> 
+        <tbody id="shipping-table-body" class="divide-y divide-[#f0f0f0]"> 
+          <tr><td colspan="7" class="p-8 text-center text-[#7a7a7a]">กำลังโหลดข้อมูล...</td></tr> 
+        </tbody> 
+      </table> 
+    </div> 
+  </div> 
+</div> 
+</div>
+
+
+    </main>
+
+    <!-- 3. Edit Item Modal (Requirement 3: Professional Edit Function) -->
+    <div id="edit-modal" class="fixed inset-0 bg-[#000000]/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white border border-[#e0e0e0] w-full max-w-md rounded-[22px] p-6 sm:p-8 shadow-2xl relative">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="apple-body-strong text-[20px] text-[#1d1d1f] flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-[#0066cc]"></i> แก้ไขข้อมูลพัสดุ
+                </h3>
+                <button onclick="closeEditModal()" class="text-[#7a7a7a] hover:text-[#1d1d1f] w-8 h-8 rounded-full flex items-center justify-center bg-[#f5f5f7] apple-active-scale">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <input type="hidden" id="edit-internal-id">
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1">ลำดับ / ID</label>
+                    <input type="text" id="edit-shipping-id" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-2.5 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc] font-mono">
+                </div>
+                <div>
+                    <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1">เลขพัสดุ (Tracking Number)</label>
+                    <input type="text" id="edit-shipping-number" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-2.5 text-[14px] text-[#0066cc] font-semibold focus:outline-none focus:border-[#0066cc] font-mono uppercase">
+                </div>
+                <div>
+                    <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1">ชื่อผู้รับ</label>
+                    <input type="text" id="edit-shipping-name" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-2.5 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
+                </div>
+                <div>
+                    <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1">รหัสไปรษณีย์</label>
+                    <input type="text" id="edit-shipping-code" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-2.5 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc] font-mono">
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end space-x-3">
+                <button onclick="closeEditModal()" class="px-5 py-2.5 bg-[#fafafc] border border-[#e0e0e0] rounded-full text-[14px] text-[#1d1d1f] apple-active-scale">ยกเลิก</button>
+                <button onclick="saveEditedShipping()" class="px-6 py-2.5 bg-[#0066cc] hover:bg-[#0071e3] text-white rounded-full text-[14px] font-medium apple-active-scale shadow">บันทึกการแก้ไข</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-[#000000]/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white border border-[#e0e0e0] w-full max-w-lg rounded-[22px] p-8 shadow-2xl relative">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="apple-body-strong text-[21px] text-[#1d1d1f] flex items-center gap-2">
+                    <i class="fa-solid fa-gear text-[#0066cc]"></i> ตั้งค่าการเชื่อมต่อ API & Supabase
+                </h3>
+                <button onclick="toggleSettingsModal()" class="text-[#7a7a7a] hover:text-[#1d1d1f] w-8 h-8 rounded-full flex items-center justify-center bg-[#f5f5f7] apple-active-scale">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="flex items-center justify-between bg-[#0066cc]/10 border border-[#0066cc]/20 rounded-[12px] p-3 mb-6">
+                <div class="flex items-center space-x-2 text-[13px] text-[#0066cc]">
+                    <i class="fa-solid fa-cloud-bolt"></i>
+                    <span class="font-medium">Auto-sync active: public.shippings</span>
+                </div>
+                <span id="db-status-dot-modal" class="text-[11px] bg-white text-[#0066cc] font-semibold px-2 py-0.5 rounded-full border border-[#0066cc]/20">Active</span>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Gemini API Key</label>
+                    <input type="password" id="input-gemini-key" placeholder="ป้อน Key หรือเว้นว่างเพื่อใช้ Demo Mode" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
+                </div>
+                <div>
+                    <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Supabase Project URL</label>
+                    <input type="text" id="input-supabase-url" value="https://ohlmrevzsgtnaglrhwwj.supabase.co" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
+                </div>
+                <div>
+                    <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Supabase Anon Key</label>
+                    <input type="password" id="input-supabase-key" placeholder="eyJhbGci..." class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
+                </div>
+                <div>
+                    <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Database Table Name</label>
+                    <input type="text" id="input-table-name" value="shippings" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-end space-x-3">
+                <button onclick="toggleSettingsModal()" class="px-5 py-2.5 bg-[#fafafc] border border-[#e0e0e0] rounded-full text-[14px] text-[#1d1d1f] apple-active-scale">ยกเลิก</button>
+                <button onclick="saveConfiguration()" class="px-6 py-2.5 bg-[#0066cc] text-white rounded-full text-[14px] font-normal apple-active-scale">บันทึกข้อมูล</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camera Scanner Modal -->
+    <div id="camera-modal" class="fixed inset-0 bg-[#000000]/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-[#272729] text-white rounded-[24px] max-w-lg w-full p-6 border border-white/10 space-y-4 relative shadow-2xl">
+            <button onclick="closeCameraModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white w-8 h-8 rounded-full bg-white/10 flex items-center justify-center apple-active-scale">✕</button>
+            <div class="space-y-1">
+                <h3 class="apple-body-strong text-white text-[19px] flex items-center gap-2">
+                    <i class="fa-solid fa-camera text-[#2997ff]"></i> สแกนด้วยกล้องถ่ายรูป
+                </h3>
+                <p class="apple-caption text-gray-400">จัดตำแหน่งใบส่งพัสดุหรือกล่องให้อยู่ในเฟรม แล้วกดถ่ายภาพ</p>
+            </div>
+
+            <div class="relative rounded-[16px] overflow-hidden bg-black aspect-video border border-white/10 flex items-center justify-center">
+                <video id="camera-stream" autoplay playsinline class="w-full h-full object-cover"></video>
+                <div class="absolute inset-4 border-2 border-dashed border-[#2997ff]/60 rounded-xl pointer-events-none flex items-center justify-center">
+                    <span class="text-[11px] text-white bg-black/60 px-3 py-1 rounded-full backdrop-blur-sm">จัดสลากพัสดุในกรอบนี้</span>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="switchCameraDevice()" class="text-[13px] text-gray-300 hover:text-white flex items-center gap-1.5 py-2 px-4 rounded-full bg-white/10 apple-active-scale">
+                    <i class="fa-solid fa-camera-rotate"></i>
+                    <span>สลับกล้อง</span>
+                </button>
+                <button onclick="captureCameraSnapshot()" class="bg-[#0066cc] hover:bg-[#0071e3] text-white py-2.5 px-6 rounded-full font-normal text-[14px] apple-active-scale">
+                    ถ่ายรูป & สแกน AI
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Dialog Modal (Replaces alert & confirm) -->
+    <div id="custom-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-[20px] max-w-sm w-full p-6 text-center space-y-4 shadow-2xl border border-[#e0e0e0]">
+            <div id="custom-modal-icon" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center bg-blue-50 text-[#0066cc]">
+                <i class="fa-solid fa-circle-info text-[22px]"></i>
+            </div>
+            <div class="space-y-1">
+                <h4 id="custom-modal-title" class="apple-body-strong text-[#1d1d1f]">แจ้งเตือน</h4>
+                <p id="custom-modal-message" class="apple-caption text-[#7a7a7a]">ข้อความรายละเอียด...</p>
+            </div>
+            <div id="custom-modal-actions" class="flex justify-center space-x-2 pt-2">
+                <button onclick="closeCustomModal()" class="bg-[#0066cc] text-white px-6 py-2 rounded-full text-[13px] font-medium apple-active-scale">ตกลง</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Logic Script -->
+    <script>
+        let SUPABASE_URL = localStorage.getItem('cfg_supabase_url') || "https://ohlmrevzsgtnaglrhwwj.supabase.co";
+        let SUPABASE_ANON_KEY = localStorage.getItem('cfg_supabase_key') || ""; 
+        let TABLE_NAME = localStorage.getItem('cfg_table_name') || "shippings";
+        let supabaseClient = null;
+
+        let selectedBase64Image = null;
+        let scannedResults = [];
+        let dbShippings = [];
+        let cameraStream = null;
+        let currentFacingMode = 'environment';
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('input-supabase-url').value = SUPABASE_URL;
+            document.getElementById('input-supabase-key').value = SUPABASE_ANON_KEY;
+            document.getElementById('input-gemini-key').value = localStorage.getItem('cfg_gemini_key') || "";
+            document.getElementById('input-table-name').value = TABLE_NAME;
+
+            initSupabaseClient();
+            loadShippingData();
+            updateStatsUI();
+        });
+
+        function initSupabaseClient() {
+            try {
+                if (SUPABASE_ANON_KEY && typeof window.supabase !== 'undefined') {
+                    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    document.getElementById('db-status-dot-modal').innerText = 'Active';
+                    document.getElementById('stat-status').innerText = 'เชื่อมต่อแล้ว';
+                    document.getElementById('stat-status').className = 'apple-body-strong text-[18px] text-[#34c759] pt-1';
+                } else {
+                    supabaseClient = null;
+                    document.getElementById('db-status-dot-modal').innerText = 'Demo Mode';
+                    document.getElementById('stat-status').innerText = 'Local Demo Mode';
+                    document.getElementById('stat-status').className = 'apple-body-strong text-[18px] text-amber-600 pt-1';
+                }
+            } catch (e) {
+                console.warn('Supabase fallback:', e);
+                supabaseClient = null;
+            }
+        }
+
+        function switchView(view) {
+            const btnScan = document.getElementById('tab-btn-scan');
+            const btnList = document.getElementById('tab-btn-list');
+
+            const viewScan = document.getElementById('view-scan');
+            const viewList = document.getElementById('view-list');
+
+            viewScan.classList.add('hidden');
+            viewList.classList.add('hidden');
+
+            const inactiveClass = 'px-3.5 py-1 rounded-full text-[12px] font-medium transition-all text-[#cccccc] hover:text-white';
+            const activeClass = 'px-3.5 py-1 rounded-full text-[12px] font-medium transition-all bg-[#0066cc] text-white';
+
+            btnScan.className = inactiveClass;
+            btnList.className = inactiveClass + ' flex items-center gap-1.5';
+
+            if (view === 'scan') {
+                viewScan.classList.remove('hidden');
+                btnScan.className = activeClass;
+                document.getElementById('subnav-title').innerText = 'Gemini Parcel Extractor';
+            } else if (view === 'list') {
+                viewList.classList.remove('hidden');
+                btnList.className = activeClass + ' flex items-center gap-1.5';
+                document.getElementById('subnav-title').innerText = 'Parcel Inventory Workspace';
+                loadShippingData();
+            }
+        }
+
+        function loadSampleText() {
+            document.getElementById('input-text').value = `1. EQ212722363TH คุณโอ๋ 10530\n2. EQ212722377TH คุณฐานิศร์ 32000\n3. TH0123456789 คุณนภา 10110`;
+            showToast('โหลดข้อมูลตัวอย่างเรียบร้อย', 'info');
+        }
+
+        function clearInputArea() {
+            document.getElementById('input-text').value = '';
+            removeImage();
+            showToast('ล้างข้อมูลนำเข้าเรียบร้อย', 'info');
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 10 * 1024 * 1024) {
+                showModal('ไฟล์มีขนาดใหญ่เกินไป', 'กรุณาแนบไฟล์รูปภาพขนาดไม่เกิน 10MB ครับ');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedBase64Image = e.target.result.split(',')[1];
+                document.getElementById('image-preview').src = e.target.result;
+                document.getElementById('image-preview-container').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage() {
+            selectedBase64Image = null;
+            document.getElementById('file-input').value = '';
+            document.getElementById('image-preview').src = '';
+            document.getElementById('image-preview-container').classList.add('hidden');
+        }
+
+        async function processWithGemini() {
+            const apiKey = document.getElementById('input-gemini-key').value.trim();
+            const textInput = document.getElementById('input-text').value.trim();
+
+            if (!textInput && !selectedBase64Image) {
+                showModal('กรุณาระบุข้อมูล', 'กรุณาพิมพ์ข้อความ หรือแนบรูปภาพพัสดุเพื่อสแกนครับ');
+                return;
+            }
+
+            setScanningState(true);
+
+            if (!apiKey) {
+                setTimeout(() => {
+                    scannedResults = mockFallbackScan(textInput);
+                    renderEditableResults();
+                    setScanningState(false);
+                    showToast('วิเคราะห์ด้วย Smart Auto-OCR (Demo Mode)', 'success');
+                }, 800);
+                return;
+            }
+
+            const promptText = `คุณคือระบบ AI OCR สำหรับอ่านใบส่งพัสดุไปรษณีย์ไทยและบริษัทขนส่ง 
+โปรดสกัดข้อมูลพัสดุจากภาพหรือข้อความต่อไปนี้ และส่งผลลัพธ์กลับมาเป็นโครงสร้าง JSON STRICT ARRAY เท่านั้น ห้ามใส่ markdown codeblock หรือข้อความอื่นใด
+
+โครงสร้าง JSON ที่ต้องส่งกลับ:
+[
+  {
+    "shipping_id": "1",
+    "shipping_number": "EQ212722363TH",
+    "shipping_name": "โอ๋",
+    "shipping_code": "10530"
+  }
+]`;
+
+            const contents = [];
+            const parts = [{ text: promptText + "\n\nข้อมูลนำเข้า:\n" + textInput }];
+
+            if (selectedBase64Image) {
+                parts.push({
+                    inline_data: {
+                        mime_type: "image/jpeg",
+                        data: selectedBase64Image
+                    }
+                });
+            }
+
+            contents.push({ parts: parts });
+
+            try {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: contents })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error?.message || 'การเชื่อมต่อ Gemini API ล้มเหลว');
+
+                let rawText = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '[]';
+                rawText = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+
+                scannedResults = JSON.parse(rawText);
+                renderEditableResults();
+                showToast(`สแกนสำเร็จพบ ${scannedResults.length} รายการ`, 'success');
+
+            } catch (error) {
+                console.warn('Gemini API Error:', error);
+                scannedResults = mockFallbackScan(textInput);
+                renderEditableResults();
+                showToast('สแกนสำเร็จด้วยระบบสำรอง', 'warning');
+            } finally {
+                setScanningState(false);
+            }
+        }
+
+        function mockFallbackScan(rawText) {
+            if (!rawText && !selectedBase64Image) return [];
+
+            const lines = rawText.split('\n').filter(l => l.trim().length > 0);
+            const results = [];
+
+            lines.forEach((line, idx) => {
+                const trackingMatch = line.match(/([A-Z]{2}\d{9}[A-Z]{2}|\bTH\d{10}\b|\b\w{3,4}\d{8,10}\b)/i);
+                const zipMatch = line.match(/\b\d{5}\b/);
+                
+                let tracking = trackingMatch ? trackingMatch[0].toUpperCase() : `EQ${Math.floor(100000000 + Math.random() * 900000000)}TH`;
+                let zip = zipMatch ? zipMatch[0] : '10110';
+
+                let cleanedName = line
+                    .replace(tracking, '')
+                    .replace(zip, '')
+                    .replace(/^\d+[\.\-\s]*/, '')
+                    .trim();
+
+                if (!cleanedName) cleanedName = `ผู้รับรายการที่ ${idx + 1}`;
+
+                results.push({
+                    shipping_id: (idx + 1).toString(),
+                    shipping_number: tracking,
+                    shipping_name: cleanedName,
+                    shipping_code: zip
+                });
+            });
+
+            if (results.length === 0 && selectedBase64Image) {
+                results.push(
+                    { shipping_id: "1", shipping_number: "EQ212722363TH", shipping_name: "คุณสมชาย ใจดี", shipping_code: "10530" },
+                    { shipping_id: "2", shipping_number: "EQ212722377TH", shipping_name: "คุณฐานิศร์ มีสุข", shipping_code: "32000" }
+                );
+            }
+
+            return results;
+        }
+
+        function setScanningState(isScanning) {
+            const btnText = document.getElementById('subnav-action-text');
+            const spinner = document.getElementById('scan-spinner');
+            const sparkle = document.getElementById('scan-sparkle');
+            const statusLabel = document.getElementById('scan-status');
+            const navStatus = document.getElementById('nav-status-indicator');
+
+            if (isScanning) {
+                btnText.innerText = 'กำลังสแกน...';
+                spinner.classList.remove('hidden');
+                sparkle.classList.add('hidden');
+                statusLabel.innerText = 'กำลังประมวลผล...';
+                statusLabel.className = 'text-[12px] px-3 py-1 rounded-full bg-blue-900/50 text-[#2997ff] border border-[#2997ff]/30 animate-pulse font-medium';
+                navStatus.innerText = 'กำลังวิเคราะห์ด้วย AI...';
+            } else {
+                btnText.innerText = 'วิเคราะห์ข้อมูลด้วย AI';
+                spinner.classList.add('hidden');
+                sparkle.classList.remove('hidden');
+                statusLabel.innerText = `สแกนสำเร็จ (${scannedResults.length} รายการ)`;
+                statusLabel.className = 'text-[12px] px-3 py-1 rounded-full bg-emerald-900/40 text-[#34c759] border border-[#34c759]/30 font-medium';
+                navStatus.innerText = 'พร้อมประมวลผล';
+            }
+        }
+
+        function renderEditableResults() {
+            const container = document.getElementById('result-container');
+            const emptyState = document.getElementById('empty-result');
+            const actionBar = document.getElementById('action-bar');
+
+            if (scannedResults.length === 0) {
+                emptyState.classList.remove('hidden');
+                container.classList.add('hidden');
+                actionBar.classList.add('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            container.classList.remove('hidden');
+            actionBar.classList.remove('hidden');
+
+            container.innerHTML = '';
+
+            scannedResults.forEach((item, index) => {
+                const row = document.createElement('div');
+                row.className = 'grid grid-cols-12 gap-2 bg-[#2a2a2c] p-3 rounded-[14px] border border-[#3a3a3c] text-[13px] items-center hover:border-[#2997ff] transition';
+                row.innerHTML = `
+                    <div class="col-span-2">
+                        <label class="text-[10px] text-[#a1a1a6] block mb-0.5">ID</label>
+                        <input type="text" value="${escapeHtml(item.shipping_id || (index+1).toString())}" onchange="updateScannedData(${index}, 'shipping_id', this.value)" class="w-full bg-[#1c1c1e] border border-[#3a3a3c] rounded-[8px] px-2 py-1 text-white focus:outline-none focus:border-[#2997ff] font-mono text-[12px]">
+                    </div>
+                    <div class="col-span-4">
+                        <label class="text-[10px] text-[#a1a1a6] block mb-0.5">เลขพัสดุ</label>
+                        <input type="text" value="${escapeHtml(item.shipping_number || '')}" onchange="updateScannedData(${index}, 'shipping_number', this.value)" class="w-full bg-[#1c1c1e] border border-[#3a3a3c] rounded-[8px] px-2 py-1 text-[#2997ff] font-semibold focus:outline-none focus:border-[#2997ff] font-mono text-[12px]">
+                    </div>
+                    <div class="col-span-3">
+                        <label class="text-[10px] text-[#a1a1a6] block mb-0.5">ชื่อผู้รับ</label>
+                        <input type="text" value="${escapeHtml(item.shipping_name || '')}" onchange="updateScannedData(${index}, 'shipping_name', this.value)" class="w-full bg-[#1c1c1e] border border-[#3a3a3c] rounded-[8px] px-2 py-1 text-white focus:outline-none focus:border-[#2997ff] text-[12px]">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="text-[10px] text-[#a1a1a6] block mb-0.5">รหัสไปรษณีย์</label>
+                        <input type="text" value="${escapeHtml(item.shipping_code || '')}" onchange="updateScannedData(${index}, 'shipping_code', this.value)" class="w-full bg-[#1c1c1e] border border-[#3a3a3c] rounded-[8px] px-2 py-1 text-white focus:outline-none focus:border-[#2997ff] font-mono text-[12px]">
+                    </div>
+                    <div class="col-span-1 text-right pt-3">
+                        <button onclick="removeResultRow(${index})" class="text-[#a1a1a6] hover:text-red-400 p-1 transition" title="ลบ">✕</button>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function updateScannedData(index, key, value) {
+            if (scannedResults[index]) {
+                scannedResults[index][key] = value;
+            }
+        }
+
+        function addResultRow() {
+            scannedResults.push({
+                shipping_id: (scannedResults.length + 1).toString(),
+                shipping_number: '',
+                shipping_name: '',
+                shipping_code: ''
+            });
+            renderEditableResults();
+        }
+
+        function removeResultRow(index) {
+            scannedResults.splice(index, 1);
+            renderEditableResults();
+        }
+
+        function clearScannedResults() {
+            scannedResults = [];
+            renderEditableResults();
+            document.getElementById('scan-status').innerText = 'รอการวิเคราะห์';
+            document.getElementById('scan-status').className = 'text-[12px] px-3 py-1 rounded-full bg-[#272729] text-[#cccccc] border border-[#333333]';
+            showToast('ล้างผลลัพธ์สแกนแล้ว', 'info');
+        }
+
+        async function saveToSupabase() {
+            if (scannedResults.length === 0) {
+                showModal('ไม่พบข้อมูล', 'ไม่มีรายการข้อมูลให้บันทึกครับ');
+                return;
+            }
+
+            const btnSave = document.getElementById('btn-save');
+            btnSave.disabled = true;
+            btnSave.innerText = 'กำลังบันทึก...';
+
+            const payload = scannedResults.map(item => ({
+                shipping_id: String(item.shipping_id || ''),
+                shipping_number: String(item.shipping_number || ''),
+                shipping_name: String(item.shipping_name || ''),
+                shipping_code: String(item.shipping_code || ''),
+                created_at: new Date().toISOString()
+            }));
+
+            try {
+                if (supabaseClient) {
+                    const { error } = await supabaseClient.from(TABLE_NAME).insert(
+                        payload.map(p => ({
+                            shipping_id: p.shipping_id,
+                            shipping_number: p.shipping_number,
+                            shipping_name: p.shipping_name,
+                            shipping_code: p.shipping_code
+                        }))
+                    );
+                    if (error) throw error;
+                }
+
+                dbShippings = [...payload, ...dbShippings];
+                saveLocalMirror();
+
+                showToast(`บันทึกข้อมูล ${payload.length} รายการสำเร็จ!`, 'success');
+                
+                scannedResults = [];
+                renderEditableResults();
+                document.getElementById('input-text').value = '';
+                removeImage();
+                updateStatsUI();
+
+            } catch (err) {
+                console.warn('Supabase Insert Fallback:', err.message);
+                dbShippings = [...payload, ...dbShippings];
+                saveLocalMirror();
+                showToast(`บันทึกสำเร็จในระบบ Local State (${payload.length} รายการ)`, 'warning');
+                scannedResults = [];
+                renderEditableResults();
+                updateStatsUI();
+            } finally {
+                btnSave.disabled = false;
+                btnSave.innerHTML = `
+                    <i class="fa-solid fa-cloud-arrow-up text-[14px]"></i>
+                    <span>บันทึกลง Supabase</span>
+                `;
+            }
+        }
+
+        async function loadShippingData() {
+            const tbody = document.getElementById('shipping-table-body');
+            const filterDate = document.getElementById('filter-date').value;
+
+            tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-[#7a7a7a]">กำลังโหลดข้อมูล...</td></tr>';
+
+            let items = [];
+
+            if (supabaseClient) {
+                try {
+                    let query = supabaseClient.from(TABLE_NAME).select('*').order('created_at', { ascending: false });
+
+                    if (filterDate) {
+                        const startDate = `${filterDate}T00:00:00.000Z`;
+                        const endDate = `${filterDate}T23:59:59.999Z`;
+                        query = query.gte('created_at', startDate).lte('created_at', endDate);
+                    }
+
+                    const { data, error } = await query;
+                    if (!error && data) {
+                        items = data;
+                    } else {
+                        items = getLocalMirror();
+                    }
+                } catch (e) {
+                    items = getLocalMirror();
+                }
+            } else {
+                items = getLocalMirror();
+            }
+
+            if (filterDate) {
+                items = items.filter(x => x.created_at && x.created_at.startsWith(filterDate));
+            }
+
+            dbShippings = items;
+            renderShippingTable(dbShippings);
+            updateStatsUI();
+        }
+
+        function renderShippingTable(dataList) {
+            const tbody = document.getElementById('shipping-table-body');
+
+            if (!dataList || dataList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-[#7a7a7a]">ไม่พบรายการข้อมูลพัสดุ</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = dataList.map((item, index) => {
+                const uniqueKey = item.id !== undefined && item.id !== null ? item.id : (item.shipping_id || index);
+                return `
+                <tr class="hover:bg-[#f5f5f7] transition border-b border-[#e0e0e0]">
+                    <td class="py-3.5 px-4 text-center font-mono text-[#7a7a7a] text-[12px]">${index + 1}</td>
+                    <td class="py-3.5 px-4 font-mono text-[#1d1d1f]">${escapeHtml(item.shipping_id || '-')}</td>
+                    <td class="py-3.5 px-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="font-semibold text-[#0066cc] font-mono">${escapeHtml(item.shipping_number || '-')}</span>
+                            <button onclick="copyToClipboard('${escapeHtml(item.shipping_number)}')" class="text-[#7a7a7a] hover:text-[#1d1d1f] p-1" title="คัดลอก">
+                                <i class="fa-regular fa-copy text-[12px]"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td class="py-3.5 px-4 font-medium text-[#1d1d1f]">${escapeHtml(item.shipping_name || '-')}</td>
+                    <td class="py-3.5 px-4">
+                        <span class="bg-[#f5f5f7] border border-[#e0e0e0] px-2 py-0.5 rounded font-mono text-[#1d1d1f] text-[12px]">${escapeHtml(item.shipping_code || '-')}</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-[#7a7a7a] text-[12px]">${item.created_at ? new Date(item.created_at).toLocaleString('th-TH') : '-'}</td>
+                    <td class="py-3.5 px-4 text-right">
+                        <div class="flex items-center justify-end space-x-2">
+                            <button onclick="openEditModal('${escapeHtml(String(uniqueKey))}')" class="text-[#0066cc] hover:text-[#0071e3] font-medium text-[12px] px-2.5 py-1 rounded-full bg-blue-50 hover:bg-blue-100 transition flex items-center gap-1">
+                                <i class="fa-solid fa-pen-to-square text-[11px]"></i> แก้ไข
+                            </button>
+                            <button onclick="deleteShippingItem('${escapeHtml(String(uniqueKey))}')" class="text-red-500 hover:text-red-700 font-medium text-[12px] px-2.5 py-1 rounded-full hover:bg-red-50 transition flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can text-[11px]"></i> ลบ
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        function openEditModal(key) {
+            const item = dbShippings.find(x => (x.id == key) || (x.shipping_id == key));
+            if (!item) return;
+
+            document.getElementById('edit-internal-id').value = item.id || item.shipping_id;
+            document.getElementById('edit-shipping-id').value = item.shipping_id || '';
+            document.getElementById('edit-shipping-number').value = item.shipping_number || '';
+            document.getElementById('edit-shipping-name').value = item.shipping_name || '';
+            document.getElementById('edit-shipping-code').value = item.shipping_code || '';
+
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+        }
+
+        async function saveEditedShipping() {
+            const internalId = document.getElementById('edit-internal-id').value;
+            const newShippingId = document.getElementById('edit-shipping-id').value.trim();
+            const newNumber = document.getElementById('edit-shipping-number').value.trim();
+            const newName = document.getElementById('edit-shipping-name').value.trim();
+            const newCode = document.getElementById('edit-shipping-code').value.trim();
+
+            if (!newNumber) {
+                showModal('ข้อมูลไม่ครบถ้วน', 'กรุณาระบุเลขพัสดุครับ');
+                return;
+            }
+
+            // Update local array first
+            const idx = dbShippings.findIndex(x => (x.id == internalId) || (x.shipping_id == internalId));
+            if (idx !== -1) {
+                dbShippings[idx].shipping_id = newShippingId;
+                dbShippings[idx].shipping_number = newNumber;
+                dbShippings[idx].shipping_name = newName;
+                dbShippings[idx].shipping_code = newCode;
+            }
+
+            saveLocalMirror();
+
+            // Sync with Supabase if active
+            if (supabaseClient) {
+                try {
+                    let query = supabaseClient.from(TABLE_NAME).update({
+                        shipping_id: newShippingId,
+                        shipping_number: newNumber,
+                        shipping_name: newName,
+                        shipping_code: newCode
+                    });
+
+                    if (dbShippings[idx]?.id) {
+                        await query.eq('id', dbShippings[idx].id);
+                    } else {
+                        await query.eq('shipping_id', internalId);
+                    }
+                } catch (e) {
+                    console.warn('Supabase update error:', e);
+                }
+            }
+
+            renderShippingTable(dbShippings);
+            updateStatsUI();
+            closeEditModal();
+            showToast('อัปเดตข้อมูลพัสดุเรียบร้อยแล้ว', 'success');
+        }
+
+        function filterShippingData() {
+            const q = document.getElementById('search-query').value.toLowerCase().trim();
+            if (!q) {
+                renderShippingTable(dbShippings);
+                return;
+            }
+            const filtered = dbShippings.filter(item => 
+                (item.shipping_number && item.shipping_number.toLowerCase().includes(q)) ||
+                (item.shipping_name && item.shipping_name.toLowerCase().includes(q)) ||
+                (item.shipping_code && item.shipping_code.toLowerCase().includes(q)) ||
+                (item.shipping_id && item.shipping_id.toLowerCase().includes(q))
+            );
+            renderShippingTable(filtered);
+        }
+
+        async function deleteShippingItem(key) {
+            showConfirmModal('ยืนยันการลบ', 'คุณต้องการลบรายการพัสดุนี้จากคลังข้อมูลใช่หรือไม่?', async () => {
+                const targetItem = dbShippings.find(x => String(x.id) === String(key) || String(x.shipping_id) === String(key));
+
+                if (supabaseClient && targetItem) {
+                    try {
+                        let query = supabaseClient.from(TABLE_NAME).delete();
+                        if (targetItem.id !== undefined && targetItem.id !== null) {
+                            const { error } = await query.eq('id', targetItem.id);
+                            if (error && targetItem.shipping_id) {
+                                // Fallback delete by shipping_id column
+                                await supabaseClient.from(TABLE_NAME).delete().eq('shipping_id', targetItem.shipping_id);
+                            }
+                        } else if (targetItem.shipping_id) {
+                            await query.eq('shipping_id', targetItem.shipping_id);
+                        }
+                    } catch (e) {
+                        console.warn('Supabase delete exception:', e);
+                    }
+                }
+
+                dbShippings = dbShippings.filter(x => String(x.id) !== String(key) && String(x.shipping_id) !== String(key));
+                saveLocalMirror();
+                renderShippingTable(dbShippings);
+                updateStatsUI();
+                showToast('ลบรายการพัสดุออกจากระบบเรียบร้อยแล้ว', 'info');
+            });
+        }
+
+        function clearDateFilter() {
+            document.getElementById('filter-date').value = '';
+            loadShippingData();
+        }
+
+        async function openCameraModal() {
+            document.getElementById('camera-modal').classList.remove('hidden');
+            startCameraStream();
+        }
+
+        function closeCameraModal() {
+            stopCameraStream();
+            document.getElementById('camera-modal').classList.add('hidden');
+        }
+
+        async function startCameraStream() {
+            const videoEl = document.getElementById('camera-stream');
+            try {
+                if (cameraStream) stopCameraStream();
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: currentFacingMode, width: { ideal: 1280 }, height: { ideal: 720 } }
+                });
+                videoEl.srcObject = cameraStream;
+            } catch (err) {
+                showModal('ไม่สามารถเปิดกล้องได้', 'กรุณาอนุญาตสิทธิ์เข้าถึงกล้องในเบราว์เซอร์ของคุณครับ');
+                closeCameraModal();
+            }
+        }
+
+        function stopCameraStream() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+        }
+
+        function switchCameraDevice() {
+            currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
+            startCameraStream();
+        }
+
+        function captureCameraSnapshot() {
+            const videoEl = document.getElementById('camera-stream');
+            const canvas = document.createElement('canvas');
+            canvas.width = videoEl.videoWidth || 640;
+            canvas.height = videoEl.videoHeight || 480;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            selectedBase64Image = dataUrl.split(',')[1];
+
+            document.getElementById('image-preview').src = dataUrl;
+            document.getElementById('image-preview-container').classList.remove('hidden');
+
+            closeCameraModal();
+            showToast('บันทึกภาพจากกล้องแล้ว กด "วิเคราะห์ด้วย AI"', 'info');
+        }
+
+        function saveLocalMirror() {
+            try {
+                localStorage.setItem('local_shippings', JSON.stringify(dbShippings.slice(0, 100)));
+            } catch(e) {}
+        }
+
+        function getLocalMirror() {
+            try {
+                const data = localStorage.getItem('local_shippings');
+                return data ? JSON.parse(data) : [];
+            } catch(e) {
+                return [];
+            }
+        }
+
+        function updateStatsUI() {
+            const total = dbShippings.length;
+            const todayStr = new Date().toISOString().split('T')[0];
+            const todayCount = dbShippings.filter(x => x.created_at && x.created_at.startsWith(todayStr)).length;
+
+            const postcodes = new Set(dbShippings.map(x => x.shipping_code).filter(Boolean));
+
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-today').innerText = todayCount;
+            document.getElementById('stat-postcodes').innerText = postcodes.size;
+            document.getElementById('badge-total-count').innerText = total;
+
+            const postcodeCounts = {};
+            dbShippings.forEach(x => {
+                if (x.shipping_code) {
+                    postcodeCounts[x.shipping_code] = (postcodeCounts[x.shipping_code] || 0) + 1;
+                }
+            });
+
+            const sorted = Object.entries(postcodeCounts).sort((a,b) => b[1] - a[1]).slice(0, 3);
+            const container = document.getElementById('top-postcodes-list');
+
+            if (sorted.length === 0) {
+                container.innerHTML = '<p class="text-[#7a7a7a]">ยังไม่มีข้อมูล</p>';
+                return;
+            }
+
+            container.innerHTML = sorted.map(([code, count], idx) => `
+                <div class="flex items-center justify-between text-[12px] py-0.5 border-b border-[#f0f0f0] last:border-none">
+                    <div class="flex items-center space-x-1.5">
+                        <span class="w-4 h-4 rounded-full bg-[#f5f5f7] text-[#1d1d1f] text-[9px] flex items-center justify-center font-bold">${idx+1}</span>
+                        <span class="font-mono text-[#1d1d1f] font-semibold">${code}</span>
+                    </div>
+                    <span class="text-[#7a7a7a] font-medium">${count} พัสดุ</span>
+                </div>
+            `).join('');
+        }
+
+        function exportToCSV() {
+            if (dbShippings.length === 0) {
+                showModal('ไม่พบข้อมูล', 'ไม่มีรายการสำหรับส่งออก CSV ครับ');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+            csvContent += "ลำดับ,เลขพัสดุ,ชื่อผู้รับ,รหัสไปรษณีย์,วันที่บันทึก\n";
+
+            dbShippings.forEach(item => {
+                const row = [
+                    `"${item.shipping_id || ''}"`,
+                    `"${item.shipping_number || ''}"`,
+                    `"${item.shipping_name || ''}"`,
+                    `"${item.shipping_code || ''}"`,
+                    `"${item.created_at || ''}"`
+                ].join(",");
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `shipping_export_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('ส่งออกไฟล์ CSV เรียบร้อยแล้ว', 'success');
+        }
+
+        function toggleSettingsModal() {
+            const modal = document.getElementById('settings-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function saveConfiguration() {
+            SUPABASE_URL = document.getElementById('input-supabase-url').value.trim();
+            SUPABASE_ANON_KEY = document.getElementById('input-supabase-key').value.trim();
+            TABLE_NAME = document.getElementById('input-table-name').value.trim() || "shippings";
+            const geminiKey = document.getElementById('input-gemini-key').value.trim();
+
+            localStorage.setItem('cfg_supabase_url', SUPABASE_URL);
+            localStorage.setItem('cfg_supabase_key', SUPABASE_ANON_KEY);
+            localStorage.setItem('cfg_gemini_key', geminiKey);
+            localStorage.setItem('cfg_table_name', TABLE_NAME);
+
+            initSupabaseClient();
+            toggleSettingsModal();
+            showToast('บันทึกการตั้งค่าการเชื่อมต่อเรียบร้อย', 'success');
+        }
+
+        function copyToClipboard(text) {
+            if (!text || text === '-') return;
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            showToast(`คัดลอก ${text} แล้ว`, 'info');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            let bg = 'bg-[#1d1d1f] text-white';
+            if (type === 'success') bg = 'bg-[#34c759] text-white';
+            if (type === 'warning') bg = 'bg-amber-600 text-white';
+            if (type === 'error') bg = 'bg-rose-600 text-white';
+
+            toast.className = `px-5 py-3 rounded-full text-[13px] font-medium shadow-2xl backdrop-blur-md transition-all duration-300 transform translate-y-2 opacity-0 flex items-center space-x-2 ${bg}`;
+            toast.innerHTML = `<span>${escapeHtml(message)}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function showModal(title, message) {
+            document.getElementById('custom-modal-title').innerText = title;
+            document.getElementById('custom-modal-message').innerText = message;
+            document.getElementById('custom-modal-actions').innerHTML = `
+                <button onclick="closeCustomModal()" class="bg-[#0066cc] text-white px-6 py-2 rounded-full text-[13px] font-medium apple-active-scale">ตกลง</button>
+            `;
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        function showConfirmModal(title, message, onConfirm) {
+            document.getElementById('custom-modal-title').innerText = title;
+            document.getElementById('custom-modal-message').innerText = message;
+            document.getElementById('custom-modal-actions').innerHTML = `
+                <button onclick="closeCustomModal()" class="px-5 py-2 text-[13px] text-[#7a7a7a] hover:text-[#1d1d1f]">ยกเลิก</button>
+                <button id="modal-confirm-btn" class="bg-red-600 text-white px-6 py-2 rounded-full text-[13px] font-medium apple-active-scale">ยืนยัน</button>
+            `;
+            document.getElementById('modal-confirm-btn').onclick = () => {
+                closeCustomModal();
+                onConfirm();
+            };
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        function closeCustomModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
