@@ -520,6 +520,15 @@
         let supabaseClient = null;
         let activeGeminiKey = localStorage.getItem('cfg_gemini_key') || "";
 
+        function getLocalDateString(dateVal = new Date()) {
+            const d = new Date(dateVal);
+            if (isNaN(d.getTime())) return '';
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
         window.addEventListener('DOMContentLoaded', async () => {
             await loadSupabaseKeyFromFile();
             
@@ -527,6 +536,12 @@
             document.getElementById('input-supabase-key').value = SUPABASE_ANON_KEY;
             document.getElementById('input-gemini-key').value = activeGeminiKey;
             document.getElementById('input-table-name').value = TABLE_NAME;
+
+            // Set default date filter to today's local date
+            const dateInput = document.getElementById('filter-date');
+            if (dateInput && !dateInput.value) {
+                dateInput.value = getLocalDateString();
+            }
 
             // Auto-connect to Supabase for all visitors
             initSupabaseClient();
@@ -956,15 +971,8 @@
 
             if (supabaseClient) {
                 try {
-                    let query = supabaseClient.from(TABLE_NAME).select('*').order('created_at', { ascending: false });
+                    const { data, error } = await supabaseClient.from(TABLE_NAME).select('*').order('created_at', { ascending: false });
 
-                    if (filterDate) {
-                        const startDate = `${filterDate}T00:00:00.000Z`;
-                        const endDate = `${filterDate}T23:59:59.999Z`;
-                        query = query.gte('created_at', startDate).lte('created_at', endDate);
-                    }
-
-                    const { data, error } = await query;
                     if (!error && data) {
                         items = data;
                     } else {
@@ -978,7 +986,10 @@
             }
 
             if (filterDate) {
-                items = items.filter(x => x.created_at && x.created_at.startsWith(filterDate));
+                items = items.filter(x => {
+                    if (!x.created_at) return false;
+                    return getLocalDateString(x.created_at) === filterDate || x.created_at.startsWith(filterDate);
+                });
             }
 
             dbShippings = items;
@@ -1212,16 +1223,16 @@
 
         function updateStatsUI() {
             const filterDate = document.getElementById('filter-date')?.value;
-            const todayStr = new Date().toISOString().split('T')[0];
+            const todayStr = getLocalDateString();
             const targetDate = filterDate || todayStr;
 
             // Active parcels based on selected date filter
             const activeData = filterDate 
-                ? dbShippings.filter(x => x.created_at && x.created_at.startsWith(filterDate))
+                ? dbShippings.filter(x => x.created_at && (getLocalDateString(x.created_at) === filterDate || x.created_at.startsWith(filterDate)))
                 : dbShippings;
 
             // Daily tracking data
-            const dailyData = dbShippings.filter(x => x.created_at && x.created_at.startsWith(targetDate));
+            const dailyData = dbShippings.filter(x => x.created_at && (getLocalDateString(x.created_at) === targetDate || x.created_at.startsWith(targetDate)));
 
             // Calculate duplicates
             const trackingCounts = {};
