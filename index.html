@@ -174,8 +174,8 @@
             <div class="bg-white py-8 sm:py-10 px-6 sm:px-10 text-center border-b border-[#f0f0f2]">
                 <div class="max-w-3xl mx-auto space-y-2.5">
                     <p class="text-[11px] sm:text-[12px] uppercase tracking-[0.2em] text-[#0066cc] font-semibold">PARCEL SCAN & MANAGEMENT SYSTEM</p>
-                    <h1 class="apple-hero-title text-[30px] sm:text-[40px] md:text-[44px] text-[#1d1d1f] tracking-tight font-semibold">ระบบสแกนและจัดเก็บพัสดุอัตโนมัติ</h1>
-                    <p class="apple-body text-[#7a7a7a] text-[14px] sm:text-[16px] max-w-2xl mx-auto leading-relaxed">สกัดชื่อผู้รับ เลขพัสดุ และรหัสไปรษณีย์ ด้วย Gemini AI สแกนผ่านข้อความ รูปภาพ หรือกล้องถ่ายรูป พร้อมบันทึกลงฐานข้อมูล Supabase โดยตรง</p>
+                    <h1 class="apple-hero-title text-[30px] sm:text-[40px] md:text-[44px] text-[#1d1d1f] tracking-tight font-semibold">ระบบสร้างเลขพัสดุอัตโนมัติ</h1>
+                    <p class="apple-body text-[#7a7a7a] text-[14px] sm:text-[16px] max-w-2xl mx-auto leading-relaxed">เก็บข้อมูลชื่อผู้รับ เลขพัสดุ และรหัสไปรษณีย์ ด้วย Gemini AI สแกนผ่านข้อความหรือรูปภาพ พร้อมบันทึกลงฐานข้อมูลโดยตรง</p>
                 </div>
             </div>
 
@@ -300,70 +300,86 @@
                 </div>
 
                 <!-- Slideable Cards Container -->
-                <div class="flex space-x-4 overflow-x-auto pb-3 pt-1 no-scrollbar sm:apple-scrollbar snap-x snap-mandatory">
-                    
-                    <!-- KPI Card 1: Total Parcels -->
-                    <div class="min-w-[240px] sm:min-w-[260px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition">
-                        <div class="flex items-center justify-between text-[#7a7a7a]">
-                            <span class="apple-caption font-medium">พัสดุทั้งหมดในระบบ</span>
-                            <div class="w-8 h-8 rounded-full bg-blue-50 text-[#0066cc] flex items-center justify-center text-[13px]">
-                                <i class="fa-solid fa-boxes-stacked"></i>
-                            </div>
-                        </div>
-                        <p id="stat-total" class="apple-hero-title text-[32px] text-[#1d1d1f] font-semibold">0</p>
-                        <span class="text-[11px] text-[#0066cc] bg-blue-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">รายการสะสม</span>
-                    </div>
+                <div class="flex space-x-4 overflow-x-auto pb-3 pt-1 no-scrollbar sm:apple-scrollbar snap-x snap-mandatory"> 
+  <!-- KPI Card 1: Total Parcels --> 
+  <div class="min-w-[240px] sm:min-w-[260px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition"> 
+    <div class="flex items-center justify-between text-[#7a7a7a]"> 
+      <span class="apple-caption font-medium">พัสดุทั้งหมดในระบบ</span> 
+      <div class="w-8 h-8 rounded-full bg-blue-50 text-[#0066cc] flex items-center justify-center text-[13px]"> 
+        <i class="fa-solid fa-boxes-stacked"></i> 
+      </div> 
+    </div> 
+    <p id="stat-total" class="apple-hero-title text-[32px] text-[#1d1d1f] font-semibold">571</p> 
+    <span class="text-[11px] text-[#0066cc] bg-blue-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">รายการสะสม</span> 
+  </div> 
 
-                    <!-- KPI Card 2: Saved Today -->
-                    <div class="min-w-[240px] sm:min-w-[260px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition">
-                        <div class="flex items-center justify-between text-[#7a7a7a]">
-                            <span class="apple-caption font-medium">บันทึกวันนี้</span>
-                            <div class="w-8 h-8 rounded-full bg-emerald-50 text-[#34c759] flex items-center justify-center text-[13px]">
-                                <i class="fa-solid fa-calendar-check"></i>
-                            </div>
-                        </div>
-                        <p id="stat-today" class="apple-hero-title text-[32px] text-[#34c759] font-semibold">0</p>
-                        <span class="text-[11px] text-[#34c759] bg-emerald-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">รายการใหม่วันนี้</span>
-                    </div>
+  <!-- KPI Card 2: Saved Today --> 
+  <div class="min-w-[240px] sm:min-w-[260px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition"> 
+    <div class="flex items-center justify-between text-[#7a7a7a]"> 
+      <span class="apple-caption font-medium">บันทึกวันนี้</span> 
+      <div class="w-8 h-8 rounded-full bg-emerald-50 text-[#34c759] flex items-center justify-center text-[13px]"> 
+        <i class="fa-solid fa-calendar-check"></i> 
+      </div> 
+    </div> 
+    <p id="stat-today" class="apple-hero-title text-[32px] text-[#34c759] font-semibold">2</p> 
+    <span class="text-[11px] text-[#34c759] bg-emerald-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">รายการใหม่วันนี้</span> 
+  </div> 
 
-                    <!-- KPI Card 3: Unique Zipcodes -->
-                    <div class="min-w-[240px] sm:min-w-[260px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition">
-                        <div class="flex items-center justify-between text-[#7a7a7a]">
-                            <span class="apple-caption font-medium">รหัสไปรษณีย์ปลายทาง</span>
-                            <div class="w-8 h-8 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-[13px]">
-                                <i class="fa-solid fa-map-location-dot"></i>
-                            </div>
-                        </div>
-                        <p id="stat-postcodes" class="apple-hero-title text-[32px] text-purple-600 font-semibold">0</p>
-                        <span class="text-[11px] text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">พื้นที่ให้บริการ</span>
-                    </div>
+  <!-- KPI Card 3: Unique Zipcodes --> 
+  <div class="min-w-[240px] sm:min-w-[260px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition"> 
+    <div class="flex items-center justify-between text-[#7a7a7a]"> 
+      <span class="apple-caption font-medium">รหัสไปรษณีย์ปลายทาง</span> 
+      <div class="w-8 h-8 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-[13px]"> 
+        <i class="fa-solid fa-map-location-dot"></i> 
+      </div> 
+    </div> 
+    <p id="stat-postcodes" class="apple-hero-title text-[32px] text-purple-600 font-semibold">207</p> 
+    <span class="text-[11px] text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full font-semibold inline-block">พื้นที่ให้บริการ</span> 
+  </div> 
 
-                    <!-- KPI Card 4: Top Area preview -->
-                    <div class="min-w-[280px] sm:min-w-[320px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition">
-                        <div class="flex items-center justify-between text-[#7a7a7a] mb-1">
-                            <span class="apple-caption font-medium">พื้นที่ปลายทางสูงสุด (Top 3)</span>
-                            <i class="fa-solid fa-chart-simple text-[13px] text-[#0066cc]"></i>
-                        </div>
-                        <div id="top-postcodes-list" class="space-y-1 text-[12px]">
-                            <p class="text-[#7a7a7a]">ยังไม่มีข้อมูล</p>
-                        </div>
-                    </div>
+  <!-- KPI Card 4: Top Area preview (ซ่อนการ์ดนี้โดยการเพิ่มคลาส hidden) --> 
+  <div class="hidden min-w-[280px] sm:min-w-[320px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition"> 
+    <div class="flex items-center justify-between text-[#7a7a7a] mb-1"> 
+      <span class="apple-caption font-medium">พื้นที่ปลายทางสูงสุด (Top 3)</span> 
+      <i class="fa-solid fa-chart-simple text-[13px] text-[#0066cc]"></i> 
+    </div> 
+    <div id="top-postcodes-list" class="space-y-1 text-[12px]"> 
+      <div class="flex items-center justify-between text-[12px] py-0.5 border-b border-[#f0f0f0] last:border-none"> 
+        <div class="flex items-center space-x-1.5"> 
+          <span class="w-4 h-4 rounded-full bg-[#f5f5f7] text-[#1d1d1f] text-[9px] flex items-center justify-center font-bold">1</span> 
+          <span class="font-mono text-[#1d1d1f] font-semibold">50000</span> 
+        </div> 
+        <span class="text-[#7a7a7a] font-medium">16 พัสดุ</span> 
+      </div> 
+      <div class="flex items-center justify-between text-[12px] py-0.5 border-b border-[#f0f0f0] last:border-none"> 
+        <div class="flex items-center space-x-1.5"> 
+          <span class="w-4 h-4 rounded-full bg-[#f5f5f7] text-[#1d1d1f] text-[9px] flex items-center justify-center font-bold">2</span> 
+          <span class="font-mono text-[#1d1d1f] font-semibold">10240</span> 
+        </div> 
+        <span class="text-[#7a7a7a] font-medium">14 พัสดุ</span> 
+      </div> 
+      <div class="flex items-center justify-between text-[12px] py-0.5 border-b border-[#f0f0f0] last:border-none"> 
+        <div class="flex items-center space-x-1.5"> 
+          <span class="w-4 h-4 rounded-full bg-[#f5f5f7] text-[#1d1d1f] text-[9px] flex items-center justify-center font-bold">3</span> 
+          <span class="font-mono text-[#1d1d1f] font-semibold">11000</span> 
+        </div> 
+        <span class="text-[#7a7a7a] font-medium">14 พัสดุ</span> 
+      </div> 
+    </div> 
+  </div> 
 
-                    <!-- KPI Card 5: DB Status -->
-                    <div class="min-w-[220px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition">
-                        <div class="flex items-center justify-between text-[#7a7a7a]">
-                            <span class="apple-caption font-medium">สถานะฐานข้อมูล</span>
-                            <div class="w-8 h-8 rounded-full bg-gray-100 text-[#1d1d1f] flex items-center justify-center text-[13px]">
-                                <i class="fa-solid fa-database text-[#0066cc]"></i>
-                            </div>
-                        </div>
-                        <p id="stat-status" class="apple-body-strong text-[18px] text-[#34c759] pt-1">เชื่อมต่อแล้ว</p>
-                        <span class="text-[11px] text-[#7a7a7a] font-mono">Supabase Active</span>
-                    </div>
-
-                </div>
-            </div>
-
+  <!-- KPI Card 5: DB Status --> 
+  <div class="min-w-[220px] flex-1 bg-[#fafafc] p-5 rounded-[20px] border border-[#e0e0e0] space-y-2 shadow-sm snap-start hover:shadow-md transition"> 
+    <div class="flex items-center justify-between text-[#7a7a7a]"> 
+      <span class="apple-caption font-medium">สถานะฐานข้อมูล</span> 
+      <div class="w-8 h-8 rounded-full bg-gray-100 text-[#1d1d1f] flex items-center justify-center text-[13px]"> 
+        <i class="fa-solid fa-database text-[#0066cc]"></i> 
+      </div> 
+    </div> 
+    <p id="stat-status" class="apple-body-strong text-[18px] text-[#34c759] pt-1">เชื่อมต่อแล้ว</p> 
+    <span class="text-[11px] text-[#7a7a7a] font-mono">Supabase Active</span> 
+  </div> 
+</div>
             <!-- SECTION 2: Main Inventory Title & Controls --> 
 <div class="space-y-4 pt-2"> 
   <!-- ลบเส้นใต้หัวข้อหลักออกแล้ว -->
@@ -376,19 +392,16 @@
     <!-- Controls & Filters (Apple Pills Style) --> 
     <div class="flex flex-wrap items-center gap-2.5"> 
       <div class="relative"> 
-        <input type="text" id="search-query" onkeyup="filterShippingData()" placeholder="ค้นหาชื่อ, เลขพัสดุ..." class="pl-9 pr-4 py-2 bg-[#fafafc] rounded-full text-[13px] focus:outline-none focus:border-[#0066cc] w-52 sm:w-64 shadow-sm"> 
+        <input type="text" id="search-query" onkeyup="filterShippingData()" placeholder="ค้นหาชื่อ, เลขพัสดุ..." class="pl-9 pr-4 py-2 bg-[#fafafc] border border-[#e0e0e0] rounded-full text-[13px] focus:outline-none focus:border-[#0066cc] w-52 sm:w-64 shadow-sm"> 
         <i class="fa-solid fa-magnifying-glass text-[#7a7a7a] absolute left-3.5 top-3 text-[12px]"></i> 
       </div> 
-      <div class="flex items-center space-x-2 bg-[#fafafc] px-3.5 py-2 rounded-full text-[13px] shadow-sm"> 
+      <div class="flex items-center space-x-2 bg-[#fafafc] border border-[#e0e0e0] px-3.5 py-2 rounded-full text-[13px] shadow-sm"> 
         <span class="text-[#7a7a7a] text-[12px]">วันที่:</span> 
         <input type="date" id="filter-date" onchange="loadShippingData()" class="text-[#1d1d1f] focus:outline-none bg-transparent text-[12px]"> 
         <button onclick="clearDateFilter()" class="text-[#0066cc] text-[11px] font-semibold hover:underline pl-1">ทั้งหมด</button> 
       </div> 
-      <button onclick="loadShippingData()" class="p-2.5 bg-[#fafafc] rounded-full text-[#1d1d1f] hover:bg-gray-50 transition apple-active-scale shadow-sm" title="รีเฟรชข้อมูล"> 
+      <button onclick="loadShippingData()" class="w-9 h-9 rounded-full bg-[#fafafc] border border-[#e0e0e0] text-[#1d1d1f] hover:bg-gray-50 flex items-center justify-center shrink-0 transition apple-active-scale shadow-sm" title="รีเฟรชข้อมูล"> 
         <i class="fa-solid fa-arrows-rotate text-[13px]"></i> 
-      </button> 
-      <button onclick="exportToCSV()" class="bg-[#34c759] hover:bg-emerald-600 text-white px-4 py-2 rounded-full text-[13px] font-medium flex items-center gap-1.5 apple-active-scale shadow-sm"> 
-        <i class="fa-solid fa-file-csv"></i> <span>ส่งออก CSV</span> 
       </button> 
     </div> 
   </div> 
@@ -483,7 +496,7 @@
             <div class="space-y-4">
                 <div>
                     <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Gemini API Key</label>
-                    <input type="password" id="input-gemini-key" placeholder="ป้อน Key หรือเว้นว่างเพื่อใช้ Demo Mode" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
+                    <input type="password" id="input-gemini-key" oncopy="return false;" oncut="return false;" oncontextmenu="return false;" autocomplete="off" placeholder="ป้อน Key หรือเว้นว่างเพื่อใช้ Demo Mode" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
                 </div>
                 <div>
                     <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Supabase Project URL</label>
@@ -491,9 +504,10 @@
                 </div>
                 <div>
                     <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Supabase Anon Key</label>
-                    <input type="password" id="input-supabase-key" placeholder="eyJhbGci..." class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
+                    <input type="password" id="input-supabase-key" oncopy="return false;" oncut="return false;" oncontextmenu="return false;" autocomplete="off" placeholder="eyJhbGci..." class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
                 </div>
-                <div>
+                <!-- ซ่อนหัวข้อ Database Table Name ตามข้อกำหนด -->
+                <div class="hidden">
                     <label class="block apple-caption font-semibold text-[#1d1d1f] mb-1.5">Database Table Name</label>
                     <input type="text" id="input-table-name" value="shippings" class="w-full bg-[#f5f5f7] border border-[#e0e0e0] rounded-[11px] p-3 text-[14px] text-[#1d1d1f] focus:outline-none focus:border-[#0066cc]">
                 </div>
