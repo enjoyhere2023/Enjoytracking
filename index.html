@@ -198,7 +198,7 @@
       </main>
 
       <!-- VIEW 2: CART SUMMARY PAGE -->
-      <section id="view-cart-page" class="hidden px-4 pt-4 space-y-4 min-h-full">
+      <section id="view-cart-page" class="hidden px-4 pt-4 pb-32 space-y-4 min-h-full">
         <div class="flex items-center justify-between border-b border-slate-200 pb-3">
           <button onclick="navSwitch('shop')" class="w-8 h-8 rounded-full bg-white hover:bg-slate-100 active:scale-95 text-apple-dark font-bold text-lg flex items-center justify-center transition border border-slate-200 shadow-sm" aria-label="Back">
             ‹
@@ -244,14 +244,10 @@
             <span id="cart-page-total" class="font-num text-apple-blue text-base font-bold">฿0</span>
           </div>
         </div>
-
-        <button onclick="proceedToPayment()" class="w-full py-3.5 bg-apple-blue hover:bg-apple-blueHover text-white font-semibold rounded-pill font-th text-xs transition shadow-md active:scale-98">
-          เข้าสู่ขั้นตอนชำระเงิน ›
-        </button>
       </section>
 
       <!-- VIEW 3: PAYMENT PAGE -->
-      <section id="view-payment-page" class="hidden px-4 pt-4 space-y-4 min-h-full">
+      <section id="view-payment-page" class="hidden px-4 pt-4 pb-32 space-y-4 min-h-full">
         
         <div class="bg-slate-900 text-white p-4 rounded-2xl shadow-md border border-slate-800 space-y-2">
           <div class="flex items-center justify-between">
@@ -324,10 +320,6 @@
             </div>
           </div>
         </div>
-
-        <button onclick="submitPayment()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-pill font-th text-xs transition shadow-md active:scale-98">
-          ยืนยันการแจ้งชำระเงิน
-        </button>
       </section>
 
       <!-- VIEW 4: ORDERS HISTORY -->
@@ -448,24 +440,63 @@
 
     </div> <!-- END SCROLL VIEW -->
 
-    <!-- FLOATING CART BAR (Positioned perfectly above bottom navigation) -->
-    <div id="floating-cart" class="absolute bottom-16 left-0 right-0 z-30 hidden px-3 pb-2 pt-2 bg-gradient-to-t from-slate-100 via-slate-100/90 to-transparent backdrop-blur-md animate-slide-up">
-      <div onclick="navSwitch('cart-page')" class="vision-glass-dark text-white h-14 px-4 rounded-2xl flex items-center justify-between cursor-pointer shadow-float active:scale-98 transition">
-        <div class="flex items-center gap-3">
-          <div class="relative bg-apple-blue w-9 h-9 rounded-xl flex items-center justify-center text-sm shadow-md">
-            🛒
-            <span id="cart-badge-count" class="absolute -top-1.5 -right-1.5 bg-rose-500 text-white font-bold font-num text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center border-2 border-slate-900 shadow">
-              0
+    <!-- FLOATING CART OVERLAY (Shop Page) -->
+    <div id="floating-cart" class="absolute bottom-0 left-0 right-0 z-50 hidden p-4 bg-white/95 backdrop-blur-xl border-t border-slate-200/90 shadow-[0_-10px_30px_rgba(0,0,0,0.08)] animate-slide-up transition-all rounded-t-2xl">
+      <div class="max-w-md mx-auto space-y-3 font-th">
+        <div class="flex items-center justify-between px-1">
+          <div class="flex items-center gap-2">
+            <span class="text-slate-800 font-semibold text-sm font-th">รวมทั้งหมด</span>
+            <span class="inline-flex items-center gap-1 text-[11px] font-medium font-th text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200/80">
+              ✨ สะสม <span id="cart-floating-points" class="font-bold font-num">+0</span> แต้ม
             </span>
           </div>
-          <div>
-            <span class="text-[10px] text-slate-300 font-th block leading-none mb-0.5">รวมรายการในตะกร้า</span>
-            <span id="cart-floating-price" class="font-bold font-num text-white text-base tracking-tight">฿0</span>
+          <div id="cart-floating-price" class="font-bold font-num text-xl text-slate-900 tracking-tight">
+            ฿0
           </div>
         </div>
         
-        <button class="bg-apple-blue hover:bg-apple-blueHover text-white px-4 py-2 rounded-pill text-xs font-bold font-th transition shadow-md flex items-center gap-1 active:scale-95">
-          สั่งซื้อเลย ›
+        <button onclick="navSwitch('cart-page')" class="w-full py-3.5 bg-[#00B14F] hover:bg-[#009643] active:bg-[#00823a] text-white font-bold text-sm rounded-full transition-all shadow-md flex items-center justify-center gap-2 active:scale-98 font-th">
+          <span>สั่งซื้อ</span>
+          <span id="cart-floating-qty" class="bg-white/20 text-white font-num font-semibold text-xs px-2 py-0.5 rounded-full">
+            0 รายการ
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- FLOATING BAR (Cart Summary Page) -->
+    <div id="floating-cart-page-bar" class="absolute bottom-0 left-0 right-0 z-50 hidden p-4 bg-white/95 backdrop-blur-xl border-t border-slate-200/90 shadow-[0_-10px_30px_rgba(0,0,0,0.08)] animate-slide-up transition-all rounded-t-2xl">
+      <div class="max-w-md mx-auto space-y-3 font-th">
+        <div class="flex items-center justify-between px-1">
+          <div class="flex items-center gap-2">
+            <span class="text-slate-800 font-semibold text-sm font-th">รวมทั้งหมด</span>
+            <span class="inline-flex items-center gap-1 text-[11px] font-medium font-th text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200/80">
+              ✨ สะสม <span id="cart-page-bar-points" class="font-bold font-num">+0</span> แต้ม
+            </span>
+          </div>
+          <div id="cart-page-bar-price" class="font-bold font-num text-xl text-slate-900 tracking-tight">
+            ฿0
+          </div>
+        </div>
+        
+        <button onclick="proceedToPayment()" class="w-full py-3.5 bg-apple-blue hover:bg-apple-blueHover text-white font-bold text-sm rounded-full transition-all shadow-md flex items-center justify-center gap-2 active:scale-98 font-th">
+          <span>ยืนยันชำระเงิน</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- FLOATING BAR (Payment Page) -->
+    <div id="floating-payment-bar" class="absolute bottom-0 left-0 right-0 z-50 hidden p-4 bg-white/95 backdrop-blur-xl border-t border-slate-200/90 shadow-[0_-10px_30px_rgba(0,0,0,0.08)] animate-slide-up transition-all rounded-t-2xl">
+      <div class="max-w-md mx-auto space-y-3 font-th">
+        <div class="flex items-center justify-between px-1">
+          <span class="text-slate-800 font-semibold text-sm font-th">ยอดโอนสุทธิ</span>
+          <div id="payment-bar-price" class="font-bold font-num text-xl text-apple-blue tracking-tight">
+            ฿0
+          </div>
+        </div>
+        
+        <button onclick="submitPayment()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-sm rounded-full transition-all shadow-md flex items-center justify-center gap-2 active:scale-98 font-th">
+          <span>ยืนยันคำสั่งซื้อ</span>
         </button>
       </div>
     </div>
@@ -716,15 +747,25 @@
       const totalCount = state.cart.reduce((sum, item) => sum + item.quantity, 0);
       const totalPrice = state.cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
 
-      const badge = document.getElementById('cart-badge-count');
       const priceDisplay = document.getElementById('cart-floating-price');
+      const qtyDisplay = document.getElementById('cart-floating-qty');
+      const pointsDisplay = document.getElementById('cart-floating-points');
       const floatingBar = document.getElementById('floating-cart');
 
-      if (badge) badge.innerText = totalCount;
       if (priceDisplay) priceDisplay.innerText = `฿${totalPrice.toLocaleString()}`;
+      if (qtyDisplay) qtyDisplay.innerText = `${totalCount} รายการ`;
+      if (pointsDisplay) pointsDisplay.innerText = `+${totalCount}`;
+
+      // Update Cart Page Floating Bar values
+      const cartPageBarPrice = document.getElementById('cart-page-bar-price');
+      const cartPageBarPoints = document.getElementById('cart-page-bar-points');
+      if (cartPageBarPrice) cartPageBarPrice.innerText = `฿${totalPrice.toLocaleString()}`;
+      if (cartPageBarPoints) cartPageBarPoints.innerText = `+${totalCount}`;
 
       if (floatingBar) {
-        if (totalCount > 0) {
+        const shopView = document.getElementById('view-shop');
+        const isShopActive = shopView && !shopView.classList.contains('hidden');
+        if (totalCount > 0 && isShopActive) {
           floatingBar.classList.remove('hidden');
         } else {
           floatingBar.classList.add('hidden');
@@ -740,9 +781,16 @@
 
       container.innerHTML = '';
       const totalPrice = state.cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+      const totalCount = state.cart.reduce((sum, item) => sum + item.quantity, 0);
 
       if (subtotalEl) subtotalEl.innerText = `฿${totalPrice.toLocaleString()}`;
       if (totalEl) totalEl.innerText = `฿${totalPrice.toLocaleString()}`;
+
+      // Sync floating bar for cart page
+      const cartPageBarPrice = document.getElementById('cart-page-bar-price');
+      const cartPageBarPoints = document.getElementById('cart-page-bar-points');
+      if (cartPageBarPrice) cartPageBarPrice.innerText = `฿${totalPrice.toLocaleString()}`;
+      if (cartPageBarPoints) cartPageBarPoints.innerText = `+${totalCount}`;
 
       if (state.cart.length === 0) {
         container.innerHTML = `
@@ -801,6 +849,9 @@
       };
 
       document.getElementById('payment-page-total').innerText = `฿${totalPrice.toLocaleString()}`;
+      
+      const paymentBarPrice = document.getElementById('payment-bar-price');
+      if (paymentBarPrice) paymentBarPrice.innerText = `฿${totalPrice.toLocaleString()}`;
 
       startPaymentTimer(180);
       navSwitch('payment-page');
@@ -1020,6 +1071,24 @@
           activeNav.classList.remove('text-apple-muted');
           activeNav.classList.add('text-apple-blue');
         }
+      }
+
+      // Toggle floating bottom action bars overlaying the nav menu
+      const floatingCart = document.getElementById('floating-cart');
+      const floatingCartPageBar = document.getElementById('floating-cart-page-bar');
+      const floatingPaymentBar = document.getElementById('floating-payment-bar');
+      const totalCount = state.cart.reduce((sum, item) => sum + item.quantity, 0);
+
+      if (floatingCart) floatingCart.classList.add('hidden');
+      if (floatingCartPageBar) floatingCartPageBar.classList.add('hidden');
+      if (floatingPaymentBar) floatingPaymentBar.classList.add('hidden');
+
+      if (viewName === 'shop' && totalCount > 0 && floatingCart) {
+        floatingCart.classList.remove('hidden');
+      } else if (viewName === 'cart-page' && floatingCartPageBar) {
+        floatingCartPageBar.classList.remove('hidden');
+      } else if (viewName === 'payment-page' && floatingPaymentBar) {
+        floatingPaymentBar.classList.remove('hidden');
       }
 
       const scrollView = document.getElementById('main-scroll-view');
