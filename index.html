@@ -17,28 +17,26 @@
           colors: {
             apple: {
               blue: '#0066cc',
-              blueHover: '#0052a3',
-              canvas: '#f8fafc',
-              dark: '#0f172a',
-              muted: '#64748b',
-              border: '#e2e8f0',
-              glass: 'rgba(255, 255, 255, 0.75)',
-              glassDark: 'rgba(15, 23, 42, 0.85)',
+              blueHover: '#0071e3',
+              sky: '#2997ff',
+              canvas: '#ffffff',
+              parchment: '#f5f5f7',
+              dark: '#1d1d1f',
+              muted: '#86868b',
+              hairline: '#e5e5ea',
+              glass: 'rgba(255, 255, 255, 0.85)',
+              green: '#34c759',
+              red: '#ff3b30'
             }
           },
           fontFamily: {
-            sans: ['Anuphun', 'Poppins', '-apple-system', 'sans-serif'],
+            sans: ['Anuphun', '-apple-system', 'SF Pro Text', 'Poppins', 'sans-serif'],
             th: ['Anuphun', 'sans-serif'],
             num: ['Poppins', 'Anuphun', 'sans-serif']
           },
           borderRadius: {
-            'apple': '20px',
+            'apple': '18px',
             'pill': '9999px',
-          },
-          boxShadow: {
-            'vision': '0 20px 40px -15px rgba(0, 0, 0, 0.07), 0 0 1px 1px rgba(255, 255, 255, 0.6) inset',
-            'vision-dark': '0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(255, 255, 255, 0.1) inset',
-            'float': '0 12px 32px -8px rgba(0, 0, 0, 0.15)',
           }
         }
       }
@@ -47,18 +45,18 @@
   
   <style>
     * {
-      font-family: 'Anuphun', 'Poppins', -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      font-family: 'Anuphun', -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif;
       box-sizing: border-box;
+      letter-spacing: -0.012em;
     }
     
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
-      background-color: #090d16;
-      color: #0f172a;
+      background-color: #000000;
+      color: #1d1d1f;
       -webkit-tap-highlight-color: transparent;
-      letter-spacing: -0.015em;
     }
 
     .font-th { font-family: 'Anuphun', sans-serif; }
@@ -68,29 +66,14 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
     .vision-glass {
-      background: rgba(255, 255, 255, 0.82);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(20px) saturate(180%);
       -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.6);
-    }
-
-    .vision-glass-dark {
-      background: rgba(15, 23, 42, 0.88);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
     
-    .product-shadow {
-      filter: drop-shadow(0px 10px 18px rgba(0, 0, 0, 0.12));
-    }
-
-    @keyframes pulseSoft {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.6; transform: scale(0.96); }
-    }
-    .animate-pulse-soft {
-      animation: pulseSoft 2.5s infinite ease-in-out;
+    .product-render-shadow {
+      filter: drop-shadow(0px 8px 14px rgba(0, 0, 0, 0.12));
     }
 
     @keyframes slideUp {
@@ -98,161 +81,313 @@
       to { transform: translateY(0); opacity: 1; }
     }
     .animate-slide-up {
-      animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: slideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
   </style>
 </head>
 
-<body class="h-full font-sans antialiased text-apple-dark selection:bg-apple-blue selection:text-white flex justify-center bg-slate-950">
+<body class="h-full font-sans antialiased text-apple-dark selection:bg-apple-blue selection:text-white flex justify-center bg-black">
 
-  <!-- MAIN MOBILE VIEWPORT CONTAINER (Full Screen standard max 480px frame for desktop, 100% on mobile) -->
-  <div class="w-full max-w-md min-h-full h-full bg-slate-50 relative flex flex-col overflow-hidden shadow-2xl border-x border-slate-800/40">
+  <!-- MAIN MOBILE CONTAINER -->
+  <div class="w-full max-w-md min-h-full h-full bg-white relative flex flex-col overflow-hidden shadow-2xl border-x border-slate-800/40">
     
     <!-- MAIN SCROLLABLE CONTAINER -->
-    <div id="main-scroll-view" class="flex-1 overflow-y-auto overflow-x-hidden no-scrollbar pb-24">
+    <div id="main-scroll-view" class="flex-1 overflow-y-auto overflow-x-hidden no-scrollbar pb-24 bg-white">
       
-      <!-- VIEW 1: SHOP STORE -->
-      <main id="view-shop" class="min-h-full">
+      <main id="view-shop" class="min-h-full bg-[#f5f5f7]">
         
-        <!-- 1. HERO BANNER - Standard 16:7 -->
-        <div class="relative w-full overflow-hidden bg-slate-900 shadow-sm">
+        <!-- 1. HERO BANNER -->
+        <div class="relative w-full overflow-hidden bg-slate-900">
           <img src="https://ohlmrevzsgtnaglrhwwj.supabase.co/storage/v1/object/public/Enjoyhere/Banner_2.png" 
                alt="ENJOYHERE Banner" 
                class="w-full aspect-[16/7] object-cover block">
         </div>
 
-        <!-- 2. BOUTIQUE BRAND HEADER CARD (VisionOS Style) -->
-        <div class="px-4 relative -mt-8 z-10 mb-4">
-          <div class="vision-glass rounded-2xl p-4 shadow-vision flex items-center justify-between gap-3">
+        <!-- 2. BOUTIQUE HEADER CARD -->
+        <div class="px-4 relative -mt-8 z-10 mb-3">
+          <div class="vision-glass rounded-2xl p-4 shadow-sm flex items-center justify-between gap-3 border border-white/60">
             <div class="flex items-center gap-3">
-              <div class="w-13 h-13 w-12 h-12 rounded-2xl bg-slate-900 text-white font-bold flex items-center justify-center text-base shadow-md border-2 border-white shrink-0 font-num">
+              <div class="w-12 h-12 rounded-2xl bg-[#1d1d1f] text-white font-bold flex items-center justify-center text-sm shadow-sm border border-white/20 shrink-0 font-num">
                 EH
               </div>
               <div>
                 <div class="flex items-center gap-1.5">
                   <h1 class="font-bold text-sm font-th text-apple-dark tracking-tight">ENJOYHERE</h1>
-                  <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded font-th border border-amber-200/80">
+                  <span class="bg-amber-100/80 text-amber-900 text-[10px] font-semibold px-1.5 py-0.5 rounded font-th">
                     OFFICIAL
                   </span>
                 </div>
                 <p class="text-[11px] text-apple-muted font-th mt-0.5">Exclusive Perfume Boutique</p>
                 <div class="flex items-center gap-2 mt-1">
-                  <span class="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-th">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> เปิดบริการอยู่
+                  <span class="inline-flex items-center gap-1 text-[10px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60 font-th">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> เปิดบริการ
                   </span>
                   <span class="text-[10px] text-apple-muted font-num">09:00 - 22:00 น.</span>
                 </div>
               </div>
             </div>
             
-            <button onclick="navSwitch('profile')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-apple-dark text-xs font-semibold rounded-pill font-th transition border border-slate-200 shrink-0 active:scale-95 shadow-sm">
+            <button onclick="navSwitch('profile')" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-apple-dark text-xs font-semibold rounded-pill font-th transition border border-slate-200/80 shrink-0 active:scale-95 shadow-sm">
               แต้มสะสม
             </button>
           </div>
         </div>
 
-        <!-- 3. TRUST BADGE & VIP INFO -->
+        <!-- 3. VIP / TRUST BADGE -->
         <div class="px-4 mb-3">
-          <div class="bg-white/80 backdrop-blur-md border border-slate-200/80 rounded-xl px-3.5 py-2 flex items-center justify-between text-xs font-th text-apple-muted shadow-sm">
-            <span class="flex items-center gap-1.5">
-              <span class="text-xs">🚚</span> จัดส่งฟรีด่วนทั่วประเทศ • รับประกันแท้ 100%
+          <div class="bg-white border border-slate-200/60 rounded-xl px-3.5 py-2 flex items-center justify-between text-xs font-th text-apple-muted shadow-sm">
+            <span class="flex items-center gap-1.5 text-[11px]">
+              🚚 จัดส่งฟรีด่วนทั่วประเทศ • รับประกันแท้ 100%
             </span>
-            <span class="text-[10px] font-bold text-apple-blue font-num bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">VIP 1=1 แต้ม</span>
+            <span class="text-[10px] font-semibold text-apple-blue font-num bg-blue-50 px-2 py-0.5 rounded-full">
+              VIP 1 ขวด = 1 แต้ม
+            </span>
           </div>
         </div>
 
-        <!-- 4. SEARCH BAR -->
+        <!-- 4. CATEGORY SELECT & SEARCH BAR -->
         <div class="px-4 mb-3">
-          <div class="relative">
-            <input type="text" id="search-input" onkeyup="filterPerfumes()" placeholder="ค้นหากลิ่น, รหัส หรือโน้ตน้ำหอม..." 
-              class="w-full pl-9 pr-4 py-2.5 bg-white rounded-pill text-xs border border-slate-200/80 focus:border-apple-blue font-th transition shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
+          <div id="filter-bar-default" class="flex items-center justify-between gap-2">
+            <!-- Category Dropdown -->
+            <div class="relative flex-1">
+              <select id="cat-select" onchange="onCategorySelectChange(this.value)" 
+                class="w-full appearance-none bg-white text-apple-dark font-th font-semibold text-xs py-2.5 pl-4 pr-9 rounded-full border border-slate-200/80 shadow-sm focus:outline-none focus:border-apple-blue transition cursor-pointer">
+                <option value="all">ทุกหมวดหมู่ (16)</option>
+                <option value="him">👔 น้ำหอมผู้ชาย (4)</option>
+                <option value="her">👗 น้ำหอมผู้หญิง (4)</option>
+                <option value="unisex">🌿 Unisex (4)</option>
+                <option value="signature">👑 Signature (4)</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400 text-[10px]">
+                ▼
+              </div>
+            </div>
+
+            <!-- Search Toggle Button -->
+            <button onclick="toggleSearchMode(true)" 
+              class="w-9 h-9 rounded-full bg-white border border-slate-200/80 text-slate-600 flex items-center justify-center shadow-sm hover:bg-slate-50 active:scale-95 transition shrink-0"
+              aria-label="ค้นหากลิ่นน้ำหอม">
+              <svg class="w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Search Mode Input Row -->
+          <div id="filter-bar-search" class="hidden flex items-center gap-2">
+            <div class="relative flex-1">
+              <input type="text" id="search-input" onkeyup="filterPerfumes()" placeholder="ค้นหากลิ่น, รหัส หรือโน้ตน้ำหอม..." 
+                class="w-full pl-9 pr-8 py-2 bg-white rounded-full text-xs border border-apple-blue font-th transition shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+              <button onclick="clearSearchInput()" class="absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs font-bold p-0.5">
+                ✕
+              </button>
+            </div>
+            <button onclick="toggleSearchMode(false)" class="text-xs font-th text-apple-blue font-semibold px-1 py-1 shrink-0 active:opacity-70">
+              ยกเลิก
+            </button>
           </div>
         </div>
 
-        <!-- 5. CATEGORY CHIPS -->
-        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar px-4 pb-3">
-          <button onclick="switchCategory('all')" id="cat-all" class="cat-chip active px-4 py-1.5 rounded-pill text-xs font-semibold whitespace-nowrap transition bg-slate-900 text-white font-th shadow-sm">
-            ทั้งหมด (16)
-          </button>
-          <button onclick="switchCategory('him')" id="cat-him" class="cat-chip px-4 py-1.5 rounded-pill text-xs font-semibold whitespace-nowrap transition bg-white text-slate-700 border border-slate-200 font-th hover:bg-slate-100">
-            👔 ผู้ชาย (4)
-          </button>
-          <button onclick="switchCategory('her')" id="cat-her" class="cat-chip px-4 py-1.5 rounded-pill text-xs font-semibold whitespace-nowrap transition bg-white text-slate-700 border border-slate-200 font-th hover:bg-slate-100">
-            👗 ผู้หญิง (4)
-          </button>
-          <button onclick="switchCategory('unisex')" id="cat-unisex" class="cat-chip px-4 py-1.5 rounded-pill text-xs font-semibold whitespace-nowrap transition bg-white text-slate-700 border border-slate-200 font-th hover:bg-slate-100">
-            🌿 Unisex (4)
-          </button>
-          <button onclick="switchCategory('signature')" id="cat-signature" class="cat-chip px-4 py-1.5 rounded-pill text-xs font-semibold whitespace-nowrap transition bg-white text-slate-700 border border-slate-200 font-th hover:bg-slate-100">
-            👑 Signature (4)
-          </button>
-        </div>
-
-        <!-- 6. PRODUCT LIST CONTAINER -->
-        <div id="product-grid" class="divide-y divide-slate-100 border-t border-b border-slate-200/70 bg-white shadow-sm">
+        <!-- 5. PRODUCT LIST CONTAINER -->
+        <div id="product-grid" class="divide-y divide-slate-100 border-t border-b border-slate-200/60 bg-white shadow-sm">
           <!-- Injected dynamically via JS -->
         </div>
       </main>
 
-      <!-- VIEW 2: CART SUMMARY PAGE -->
-      <section id="view-cart-page" class="hidden px-4 pt-4 pb-32 space-y-4 min-h-full">
-        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-          <button onclick="navSwitch('shop')" class="w-8 h-8 rounded-full bg-white hover:bg-slate-100 active:scale-95 text-apple-dark font-bold text-lg flex items-center justify-center transition border border-slate-200 shadow-sm" aria-label="Back">
+      <section id="view-cart-page" class="hidden min-h-full bg-white text-apple-dark font-th">
+        
+        <!-- Header Bar -->
+        <div class="sticky top-0 z-20 vision-glass px-4 py-3 flex items-center justify-between border-b border-slate-100">
+          <button onclick="navSwitch('shop')" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 text-apple-dark font-bold text-lg flex items-center justify-center transition" aria-label="Back">
             ‹
           </button>
-          <h2 class="font-bold text-apple-dark font-th text-base tracking-tight">สรุปรายการสั่งซื้อ</h2>
-          <span class="w-8"></span>
+          <h2 class="font-bold text-apple-dark text-base tracking-tight text-center flex-1 pr-8">สรุปรายการสั่งซื้อ</h2>
         </div>
 
-        <div id="cart-page-items-container" class="space-y-2.5">
-          <!-- Rendered by JS -->
-        </div>
-
-        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 space-y-3 shadow-sm font-th">
-          <h3 class="font-semibold text-apple-dark text-xs border-b border-slate-100 pb-2">ข้อมูลจัดส่งสินค้า</h3>
+        <!-- FULL SCREEN UNFRAMED SECTIONS -->
+        <div class="divide-y divide-slate-100">
           
-          <div>
-            <label class="block text-[11px] font-medium text-apple-muted mb-1">ชื่อ-นามสกุล ผู้รับ *</label>
-            <input type="text" id="cust-name" placeholder="คุณสมชาย ใจดี" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-th focus:outline-none focus:border-apple-blue focus:bg-white transition">
+          <!-- SECTION 1: ข้อมูลจัดส่ง (Shipping Information) -->
+          <div class="p-4 space-y-2 bg-white">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-sm text-apple-dark">ข้อมูลจัดส่ง</h3>
+              <button onclick="navSwitch('address-page')" class="text-xs font-semibold text-apple-blue hover:underline active:opacity-70 font-th">
+                เพิ่ม / แก้ไข
+              </button>
+            </div>
+            
+            <div id="summary-shipping-info" class="text-xs text-slate-600 leading-relaxed space-y-0.5 pt-1">
+              <!-- Dynamically Populated by JS -->
+            </div>
           </div>
 
-          <div>
-            <label class="block text-[11px] font-medium text-apple-muted mb-1">เบอร์โทรศัพท์ติดต่อ *</label>
-            <input type="tel" id="cust-phone" placeholder="08X-XXX-XXXX" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-num focus:outline-none focus:border-apple-blue focus:bg-white transition">
+          <!-- SECTION 2: รายการสินค้า (Order Items List - Matched Image 1 S__65396777_0_2.jpg) -->
+          <div class="p-4 space-y-3 bg-white">
+            <div class="flex items-center justify-between mb-1">
+              <h3 class="font-bold text-sm text-apple-dark">รายการสินค้า</h3>
+              <span id="summary-items-count" class="text-xs text-apple-muted font-num">0 รายการ</span>
+            </div>
+
+            <div id="cart-page-items-container" class="divide-y divide-slate-100">
+              <!-- Rendered by JS -->
+            </div>
+
+            <!-- Expand/Collapse row -->
+            <div class="pt-2 flex justify-center">
+              <button onclick="toggleItemsExpand()" id="btn-toggle-expand" class="text-xs text-apple-muted flex items-center gap-1 hover:text-apple-dark font-th font-medium">
+                <span>ย่อรายการ</span>
+                <span id="expand-icon" class="text-[10px]">▲</span>
+              </button>
+            </div>
           </div>
 
-          <div>
-            <label class="block text-[11px] font-medium text-apple-muted mb-1">ที่อยู่จัดส่งโดยละเอียด *</label>
-            <textarea id="cust-address" rows="2" placeholder="บ้านเลขที่, ถนน, แขวง/ตำบล, เขต/อำเภอ, จังหวัด, รหัสไปรษณีย์" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-th focus:outline-none focus:border-apple-blue focus:bg-white transition"></textarea>
+          <!-- SECTION 3: ส่วนลด / โปรโมชัน (Promotions - Matched Image 2 S__65396775_0.jpg entry point) -->
+          <div class="p-4 bg-white">
+            <div onclick="navSwitch('promo-page')" class="flex items-center justify-between cursor-pointer py-1 group">
+              <div class="flex items-center gap-2.5">
+                <span class="text-base text-amber-500">🏷️</span>
+                <div>
+                  <span class="font-bold text-xs text-apple-dark block">ส่วนลด & โปรโมชัน</span>
+                  <span id="summary-active-promo-text" class="text-[11px] text-apple-muted block">เลือกโปรโมชัน หรือกรอกโค้ดส่วนลด</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5 text-xs font-semibold text-apple-blue font-num">
+                <span id="summary-promo-badge" class="hidden bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full text-[10px]">ประหยัดแล้ว</span>
+                <span class="text-slate-400 group-hover:translate-x-0.5 transition">›</span>
+              </div>
+            </div>
           </div>
+
+          <!-- SECTION 4: แสดงสรุปยอด (Financial Breakdown - Matched Image 1 S__65396777_0_2.jpg) -->
+          <div class="p-4 space-y-2.5 bg-white text-xs">
+            <div class="flex justify-between items-center text-slate-700">
+              <span>รวมค่าสินค้า</span>
+              <span id="summary-subtotal" class="font-num font-semibold text-apple-dark">฿0</span>
+            </div>
+
+            <div class="flex justify-between items-center text-slate-700">
+              <div class="flex items-center gap-1">
+                <span>ค่าจัดส่ง</span>
+                <span class="w-3.5 h-3.5 rounded-full bg-slate-200 text-slate-600 text-[9px] flex items-center justify-center font-bold">i</span>
+              </div>
+              <span id="summary-shipping-fee" class="font-num font-semibold text-apple-dark">฿40</span>
+            </div>
+
+            <!-- Discount Line Items (Green Text with Tags) -->
+            <div id="summary-discounts-list" class="space-y-2 pt-1">
+              <!-- Dynamically inserted discount lines -->
+            </div>
+
+            <div class="border-t border-slate-100 pt-3 mt-2 flex justify-between items-center">
+              <span class="font-bold text-sm text-apple-dark">รวมทั้งหมด</span>
+              <div class="flex items-center gap-2">
+                <span class="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md font-medium border border-emerald-200/50">💵 โอนชำระ</span>
+                <span id="summary-total" class="font-bold text-base font-num text-apple-dark">฿0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 5: โปรไฟล์ & หมายเหตุ -->
+          <div class="p-4 bg-slate-50/50 space-y-3">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-semibold text-apple-dark">โปรไฟล์ผู้สั่งซื้อ</span>
+              <span class="text-slate-500 font-medium flex items-center gap-1">
+                👤 สมาชิกทั่วไป
+              </span>
+            </div>
+
+            <div class="bg-white p-3 rounded-xl border border-slate-200/60 text-[11px] text-slate-500 flex items-center gap-2">
+              <span class="text-emerald-600 font-bold text-sm">🚚</span>
+              <span> ENJOYHERE รับประกันความหอมสดชื่น จัดส่งด่วน 1-2 วันทำการ</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="view-promo-page" class="hidden min-h-full bg-white text-apple-dark font-th">
+        
+        <!-- Header -->
+        <div class="sticky top-0 z-20 vision-glass px-4 py-3 flex items-center justify-between border-b border-slate-100">
+          <button onclick="navSwitch('cart-page')" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 text-apple-dark font-bold text-lg flex items-center justify-center transition" aria-label="Back">
+            ←
+          </button>
+          <h2 class="font-bold text-apple-dark text-base tracking-tight text-center flex-1 pr-8">โปรโมชัน</h2>
         </div>
 
-        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 space-y-2 font-th text-xs shadow-sm">
-          <div class="flex justify-between text-apple-muted">
-            <span>รวมยอดสินค้า</span>
-            <span id="cart-page-subtotal" class="font-num font-semibold text-apple-dark">฿0</span>
+        <div class="p-4 space-y-4">
+          <!-- Search / Promo Code Input Box -->
+          <div class="relative flex items-center">
+            <input type="text" id="promo-code-input" placeholder="กรอกรหัสโปรโมชัน หรือรหัสบัตรกำนัล" 
+                   class="w-full pl-9 pr-16 py-2.5 bg-slate-100 rounded-xl text-xs font-th border-none focus:outline-none focus:ring-2 focus:ring-apple-blue/20">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <button onclick="applyPromoCodeManual()" class="absolute right-2 px-3 py-1 bg-apple-blue text-white text-xs font-semibold rounded-lg active:scale-95 transition">
+              ใช้
+            </button>
           </div>
-          <div class="flex justify-between text-apple-muted">
-            <span>ค่าจัดส่งด่วน</span>
-            <span class="text-emerald-600 font-semibold font-th">ฟรีค่าบริการ</span>
-          </div>
-          <div class="flex justify-between text-apple-dark font-semibold text-sm pt-2 border-t border-slate-100">
-            <span>ยอดรวมชำระทั้งสิ้น</span>
-            <span id="cart-page-total" class="font-num text-apple-blue text-base font-bold">฿0</span>
+
+          <!-- PROMO LIST CONTAINER -->
+          <div id="promo-vouchers-container" class="space-y-4">
+            <!-- Dynamically Rendered by JS matching S__65396775_0.jpg -->
           </div>
         </div>
       </section>
 
-      <!-- VIEW 3: PAYMENT PAGE -->
-      <section id="view-payment-page" class="hidden px-4 pt-4 pb-32 space-y-4 min-h-full">
+      <section id="view-address-page" class="hidden min-h-full bg-[#f5f5f7] text-apple-dark font-th">
+        <!-- Header -->
+        <div class="sticky top-0 z-20 vision-glass px-4 py-3 flex items-center justify-between border-b border-slate-200/80">
+          <button onclick="navSwitch('cart-page')" class="w-8 h-8 rounded-full bg-white hover:bg-slate-100 active:scale-95 text-apple-dark font-bold text-lg flex items-center justify-center transition shadow-sm border border-slate-200" aria-label="Back">
+            ‹
+          </button>
+          <h2 class="font-bold text-apple-dark text-base tracking-tight text-center flex-1 pr-8">จัดการที่อยู่จัดส่ง</h2>
+        </div>
+
+        <div class="p-4 space-y-4">
+          <!-- Saved Address List -->
+          <div class="space-y-2.5">
+            <h3 class="font-bold text-xs text-apple-muted tracking-wider uppercase">ที่อยู่จัดส่งของฉัน</h3>
+            <div id="address-list-container" class="space-y-2">
+              <!-- JS Injected -->
+            </div>
+          </div>
+
+          <!-- Add New Address Form Section -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+            <h3 class="font-bold text-xs text-apple-dark border-b border-slate-100 pb-2">➕ เพิ่มที่อยู่จัดส่งใหม่</h3>
+            
+            <div>
+              <label class="block text-[11px] font-medium text-apple-muted mb-1">ชื่อ-นามสกุล ผู้รับ *</label>
+              <input type="text" id="new-addr-name" placeholder="คุณสมชาย ใจดี" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-th focus:outline-none focus:border-apple-blue focus:bg-white transition">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-medium text-apple-muted mb-1">เบอร์โทรศัพท์ *</label>
+              <input type="tel" id="new-addr-phone" placeholder="08X-XXX-XXXX" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-num focus:outline-none focus:border-apple-blue focus:bg-white transition">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-medium text-apple-muted mb-1">ที่อยู่จัดส่งโดยละเอียด *</label>
+              <textarea id="new-addr-detail" rows="3" placeholder="บ้านเลขที่, ซอย, ถนน, แขวง/ตำบล, เขต/อำเภอ, จังหวัด, รหัสไปรษณีย์" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-th focus:outline-none focus:border-apple-blue focus:bg-white transition"></textarea>
+            </div>
+
+            <button onclick="saveNewAddress()" class="w-full py-2.5 bg-apple-blue hover:bg-apple-blueHover text-white text-xs font-semibold rounded-xl font-th transition active:scale-98 shadow-sm">
+              บันทึกและเลือกใช้งาน
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-payment-page" class="hidden px-4 pt-4 pb-32 space-y-4 min-h-full bg-[#f5f5f7]">
         
-        <div class="bg-slate-900 text-white p-4 rounded-2xl shadow-md border border-slate-800 space-y-2">
+        <div class="bg-[#1d1d1f] text-white p-4 rounded-2xl shadow-md border border-slate-800 space-y-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse-soft"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
               <span class="text-xs font-semibold font-th tracking-wide text-slate-200">สำรองสินค้าไว้ให้คุณชั่วคราว</span>
             </div>
             <span class="text-[10px] text-slate-400 font-num uppercase tracking-wider">RESERVATION LOCK</span>
@@ -322,8 +457,7 @@
         </div>
       </section>
 
-      <!-- VIEW 4: ORDERS HISTORY -->
-      <section id="view-orders" class="hidden px-4 pt-4 space-y-4 min-h-full">
+      <section id="view-orders" class="hidden px-4 pt-4 space-y-4 min-h-full bg-[#f5f5f7]">
         <div class="flex justify-between items-center">
           <div>
             <h2 class="font-semibold text-apple-dark font-th text-lg tracking-tight">รายการคำสั่งซื้อ</h2>
@@ -339,11 +473,10 @@
         </div>
       </section>
 
-      <!-- VIEW 5: USER PROFILE & REWARDS -->
-      <section id="view-profile" class="hidden px-4 pt-4 space-y-4 min-h-full">
+      <section id="view-profile" class="hidden px-4 pt-4 space-y-4 min-h-full bg-[#f5f5f7]">
         <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm space-y-4">
           <div class="flex items-center gap-4">
-            <div class="w-14 h-14 rounded-full bg-slate-900 text-white font-semibold text-base flex items-center justify-center font-num shadow-sm">
+            <div class="w-14 h-14 rounded-full bg-[#1d1d1f] text-white font-semibold text-base flex items-center justify-center font-num shadow-sm">
               EH
             </div>
             <div class="flex-1">
@@ -358,7 +491,7 @@
             </div>
           </div>
 
-          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center justify-between">
+          <div class="bg-[#f5f5f7] p-4 rounded-xl border border-slate-200/80 flex items-center justify-between">
             <div>
               <span class="text-xs text-apple-muted font-th block">แต้มสะสมทั้งหมด</span>
               <div class="flex items-baseline gap-1 mt-0.5">
@@ -366,7 +499,7 @@
                 <span class="text-xs font-th text-apple-dark font-medium">คะแนน</span>
               </div>
             </div>
-            <div class="text-right border-l border-slate-200 pl-4">
+            <div class="text-right border-l border-slate-200/80 pl-4">
               <span class="text-[11px] text-apple-muted font-th block">เงื่อนไขการสะสม</span>
               <span class="text-xs font-th font-medium text-apple-dark">ซื้อ 1 ขวด = รับ 1 แต้ม</span>
             </div>
@@ -406,102 +539,64 @@
             </button>
           </div>
         </div>
-
-        <div class="space-y-2 pt-1">
-          <h3 class="font-semibold text-apple-dark font-th text-xs tracking-wide">ตั้งค่า</h3>
-          
-          <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm divide-y divide-slate-100 overflow-hidden font-th text-xs">
-            <button onclick="handleSettingClick('จัดการโปรไฟล์')" class="w-full px-4 py-3.5 flex items-center justify-between hover:bg-slate-50 transition text-left active:bg-slate-100">
-              <div class="flex items-center gap-3 text-apple-dark font-medium">
-                <span class="text-sm">👤</span>
-                <span>จัดการโปรไฟล์</span>
-              </div>
-              <span class="text-apple-muted font-num text-base">›</span>
-            </button>
-
-            <button onclick="handleSettingClick('จัดการที่อยู่จัดส่ง')" class="w-full px-4 py-3.5 flex items-center justify-between hover:bg-slate-50 transition text-left active:bg-slate-100">
-              <div class="flex items-center gap-3 text-apple-dark font-medium">
-                <span class="text-sm">📍</span>
-                <span>จัดการที่อยู่จัดส่ง</span>
-              </div>
-              <span class="text-apple-muted font-num text-base">›</span>
-            </button>
-
-            <button onclick="handleSettingClick('ออกจากระบบ')" class="w-full px-4 py-3.5 flex items-center justify-between hover:bg-slate-50 transition text-left active:bg-slate-100 text-rose-600">
-              <div class="flex items-center gap-3 font-medium">
-                <span class="text-sm">🚪</span>
-                <span>ออกจากระบบ</span>
-              </div>
-              <span class="text-rose-400 font-num text-base">›</span>
-            </button>
-          </div>
-        </div>
       </section>
 
     </div> <!-- END SCROLL VIEW -->
 
     <!-- FLOATING CART OVERLAY (Shop Page) -->
-    <div id="floating-cart" class="absolute bottom-0 left-0 right-0 z-50 hidden p-4 bg-white/95 backdrop-blur-xl border-t border-slate-200/90 shadow-[0_-10px_30px_rgba(0,0,0,0.08)] animate-slide-up transition-all rounded-t-2xl">
+    <div id="floating-cart" class="absolute bottom-0 left-0 right-0 z-50 hidden p-4 bg-white/90 backdrop-blur-2xl border-t border-slate-200/80 shadow-[0_-8px_25px_rgba(0,0,0,0.06)] animate-slide-up transition-all rounded-t-2xl">
       <div class="max-w-md mx-auto space-y-3 font-th">
         <div class="flex items-center justify-between px-1">
-          <div class="flex items-center gap-2">
-            <span class="text-slate-800 font-semibold text-sm font-th">รวมทั้งหมด</span>
-            <span class="inline-flex items-center gap-1 text-[11px] font-medium font-th text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200/80">
-              ✨ สะสม <span id="cart-floating-points" class="font-bold font-num">+0</span> แต้ม
-            </span>
+          <div class="flex items-baseline gap-2">
+            <span id="cart-floating-price" class="font-bold font-num text-xl text-slate-900 tracking-tight">฿0</span>
+            <span id="cart-floating-qty" class="text-xs text-slate-500 font-th font-normal">(0 รายการ)</span>
           </div>
-          <div id="cart-floating-price" class="font-bold font-num text-xl text-slate-900 tracking-tight">
-            ฿0
+          <div class="text-xs text-slate-600 font-th font-normal">
+            สะสม <span id="cart-floating-points" class="font-num font-semibold text-slate-800">0</span> แต้ม
           </div>
         </div>
         
-        <button onclick="navSwitch('cart-page')" class="w-full py-3.5 bg-[#00B14F] hover:bg-[#009643] active:bg-[#00823a] text-white font-bold text-sm rounded-full transition-all shadow-md flex items-center justify-center gap-2 active:scale-98 font-th">
-          <span>สั่งซื้อ</span>
-          <span id="cart-floating-qty" class="bg-white/20 text-white font-num font-semibold text-xs px-2 py-0.5 rounded-full">
-            0 รายการ
-          </span>
+        <button onclick="navSwitch('cart-page')" class="w-full py-3.5 bg-apple-blue hover:bg-apple-blueHover active:bg-[#0052a3] text-white font-medium text-sm rounded-full transition-all shadow-sm flex items-center justify-center gap-2 active:scale-98 font-th">
+          <span>สรุปรายการสั่งซื้อ</span>
         </button>
       </div>
     </div>
 
     <!-- FLOATING BAR (Cart Summary Page) -->
-    <div id="floating-cart-page-bar" class="absolute bottom-0 left-0 right-0 z-50 hidden p-4 bg-white/95 backdrop-blur-xl border-t border-slate-200/90 shadow-[0_-10px_30px_rgba(0,0,0,0.08)] animate-slide-up transition-all rounded-t-2xl">
+    <div id="floating-cart-page-bar" class="absolute bottom-0 left-0 right-0 z-50 hidden p-4 bg-white/90 backdrop-blur-2xl border-t border-slate-200/80 shadow-[0_-8px_25px_rgba(0,0,0,0.06)] animate-slide-up transition-all rounded-t-2xl">
       <div class="max-w-md mx-auto space-y-3 font-th">
         <div class="flex items-center justify-between px-1">
-          <div class="flex items-center gap-2">
-            <span class="text-slate-800 font-semibold text-sm font-th">รวมทั้งหมด</span>
-            <span class="inline-flex items-center gap-1 text-[11px] font-medium font-th text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200/80">
-              ✨ สะสม <span id="cart-page-bar-points" class="font-bold font-num">+0</span> แต้ม
-            </span>
+          <div class="flex items-baseline gap-2">
+            <span id="cart-page-bar-price" class="font-bold font-num text-xl text-slate-900 tracking-tight">฿0</span>
           </div>
-          <div id="cart-page-bar-price" class="font-bold font-num text-xl text-slate-900 tracking-tight">
-            ฿0
+          <div class="text-xs text-slate-600 font-th font-normal">
+            สะสม <span id="cart-page-bar-points" class="font-num font-semibold text-slate-800">0</span> แต้ม
           </div>
         </div>
         
-        <button onclick="proceedToPayment()" class="w-full py-3.5 bg-apple-blue hover:bg-apple-blueHover text-white font-bold text-sm rounded-full transition-all shadow-md flex items-center justify-center gap-2 active:scale-98 font-th">
-          <span>ยืนยันชำระเงิน</span>
+        <button onclick="proceedToPayment()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-medium text-sm rounded-full transition-all shadow-sm flex items-center justify-center gap-2 active:scale-98 font-th">
+          <span>ดำเนินการชำระเงิน</span>
         </button>
       </div>
     </div>
 
     <!-- FLOATING BAR (Payment Page) -->
-    <div id="floating-payment-bar" class="absolute bottom-0 left-0 right-0 z-50 hidden p-4 bg-white/95 backdrop-blur-xl border-t border-slate-200/90 shadow-[0_-10px_30px_rgba(0,0,0,0.08)] animate-slide-up transition-all rounded-t-2xl">
+    <div id="floating-payment-bar" class="absolute bottom-0 left-0 right-0 z-50 hidden p-4 bg-white/90 backdrop-blur-2xl border-t border-slate-200/80 shadow-[0_-8px_25px_rgba(0,0,0,0.06)] animate-slide-up transition-all rounded-t-2xl">
       <div class="max-w-md mx-auto space-y-3 font-th">
         <div class="flex items-center justify-between px-1">
-          <span class="text-slate-800 font-semibold text-sm font-th">ยอดโอนสุทธิ</span>
+          <span class="text-slate-700 font-medium text-sm font-th">ยอดโอนสุทธิ</span>
           <div id="payment-bar-price" class="font-bold font-num text-xl text-apple-blue tracking-tight">
             ฿0
           </div>
         </div>
         
-        <button onclick="submitPayment()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-sm rounded-full transition-all shadow-md flex items-center justify-center gap-2 active:scale-98 font-th">
+        <button onclick="submitPayment()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-medium text-sm rounded-full transition-all shadow-sm flex items-center justify-center gap-2 active:scale-98 font-th">
           <span>ยืนยันคำสั่งซื้อ</span>
         </button>
       </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION MENU - Strictly docked at the absolute bottom of the container -->
+    <!-- BOTTOM NAVIGATION MENU -->
     <nav class="absolute bottom-0 left-0 right-0 h-16 vision-glass border-t border-slate-200/80 z-40 px-3 py-1 flex items-center justify-around shadow-lg">
       <button onclick="navSwitch('shop')" id="nav-shop" class="tab-item active flex flex-col items-center gap-1 text-apple-blue transition-all active:scale-95">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -512,7 +607,7 @@
 
       <button onclick="navSwitch('orders')" id="nav-orders" class="tab-item flex flex-col items-center gap-1 text-apple-muted hover:text-apple-dark transition-all active:scale-95">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 022 2h2a2 2 0 022-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
         </svg>
         <span class="text-[10px] font-th font-semibold">รายการ</span>
       </button>
@@ -536,7 +631,7 @@
     </div>
 
     <!-- TOAST NOTIFICATION -->
-    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 backdrop-blur-md text-white px-4 py-2.5 rounded-pill text-xs font-th shadow-2xl flex items-center gap-2 hidden transition-all border border-slate-700/80">
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-[#1d1d1f]/90 backdrop-blur-md text-white px-4 py-2.5 rounded-pill text-xs font-th shadow-2xl flex items-center gap-2 hidden transition-all border border-slate-700/80">
       <span id="toast-icon">✨</span>
       <span id="toast-msg">ข้อความ</span>
     </div>
@@ -566,6 +661,77 @@
       { id: 'sig-4', code: 'EH-IR14', category: 'signature', name: 'ENJOY Grand Iris Royale', volume: '50 ml', price: 2690, topNotes: 'Iris Butter, Violet Leaf', heartNotes: 'Orris Root, Mimosa', baseNotes: 'French Vanilla, Leather', desc: 'กลิ่นหอมแป้งดอกไอริสอันสูงศักดิ์ สง่างามแบบราชนิกูล', liquidColor: '#8b5cf6', bottleBg: '#2e1065' }
     ];
 
+    // PROMOTIONS & VOUCHERS DATA (Matching Image S__65396775_0.jpg)
+    const PROMO_DATA = [
+      {
+        id: 'p1',
+        title: '[ENJOY & Exclusive] เงินคืน ฿400',
+        subtitle: 'ไม่มีขั้นต่ำ',
+        type: 'cashback',
+        value: 400,
+        iconBg: '#10b981',
+        iconText: '🪙',
+        eligible: true,
+        desc: 'รับเงินคืนสะสมสูงสุด 400 แต้ม'
+      },
+      {
+        id: 'p2',
+        title: 'ส่วนลด 10% สูงสุด ฿100',
+        subtitle: 'ส่งฟรีด่วนทั่วประเทศ',
+        type: 'percent',
+        value: 0.10,
+        maxDiscount: 100,
+        iconBg: '#f59e0b',
+        iconText: '🏷️',
+        eligible: true,
+        desc: 'รับส่วนลดทันที 10%'
+      },
+      {
+        id: 'p3',
+        title: 'คูปองส่งฟรีสูงสุด ฿15',
+        subtitle: 'ไม่มีขั้นต่ำ',
+        type: 'fixed',
+        value: 15,
+        iconBg: '#3b82f6',
+        iconText: '🚚',
+        eligible: true,
+        desc: 'ส่วนลดค่าจัดส่ง ฿15'
+      },
+      {
+        id: 'p4',
+        title: '[UnionPay] ส่วนลด ฿120',
+        subtitle: 'ลด ฿120, สั่งเพิ่มอีก ฿521 เพื่อให้ถึงยอดขั้นต่ำของโปรโมชันนี้',
+        type: 'fixed',
+        value: 120,
+        iconBg: '#94a3b8',
+        iconText: '💳',
+        eligible: false,
+        desc: 'ชำระด้วยบัตร UnionPay ขั้นต่ำ ฿2,000'
+      },
+      {
+        id: 'p5',
+        title: '[UOB] ส่วนลด ฿100',
+        subtitle: 'ลด ฿100, โปรดเลือกการจัดส่งช่วง ศ. - อา. 00:00 - 23:59 น.',
+        type: 'fixed',
+        value: 100,
+        iconBg: '#94a3b8',
+        iconText: '🏦',
+        eligible: false,
+        desc: 'เฉพาะวันศุกร์ - อาทิตย์'
+      },
+      {
+        id: 'p6',
+        title: 'รับ 1,000 Loyalty Coins (฿50)',
+        subtitle: 'สั่งเพิ่มอีก ฿1,200 เพื่อให้ถึงยอดขั้นต่ำของโปรโมชันนี้',
+        type: 'fixed',
+        value: 50,
+        iconBg: '#94a3b8',
+        iconText: '🪙',
+        eligible: false,
+        desc: 'ขั้นต่ำ ฿3,000'
+      }
+    ];
+
     let state = {
       cart: [], 
       userPoints: 12,
@@ -574,6 +740,17 @@
       timerInterval: null,
       selectedSlipFile: null,
       pendingOrder: null,
+      selectedPromoId: 'p2', // Default active discount
+      isItemsExpanded: true,
+      selectedAddressId: 'addr-1',
+      addresses: [
+        {
+          id: 'addr-1',
+          name: 'คุณสมชาย ใจดี',
+          phone: '081-234-5678',
+          detail: '99/88 อาคารสาทรทาวเวอร์ ชั้น 12 ถนนสาทรเหนือ แขวงสีลม เขตบางรัก กรุงเทพมหานคร 10500'
+        }
+      ],
       orders: [
         {
           id: 'EH-88492',
@@ -592,6 +769,8 @@
       renderOrdersHistory();
       updateProfileDisplay();
       updateCartUI();
+      renderPromoPage();
+      renderAddressPage();
     });
 
     function updateProfileDisplay() {
@@ -601,26 +780,12 @@
       }
     }
 
-    function redeemReward(rewardName, cost) {
-      if (state.userPoints >= cost) {
-        state.userPoints -= cost;
-        updateProfileDisplay();
-        showToast(`แลกรับ ${rewardName} เรียบร้อยแล้ว!`, '🎁');
-      } else {
-        showToast(`แต้มสะสมไม่เพียงพอ (ต้องการ ${cost} แต้ม)`, '⚠️');
-      }
-    }
-
-    function handleSettingClick(settingName) {
-      showToast(`เลือกเมนู: ${settingName}`, '⚙️');
-    }
-
     function generatePerfumeSVG(liquidColor, capBg) {
       return `
-        <svg viewBox="0 0 100 120" class="w-14 h-16 product-shadow transition group-hover:scale-105">
-          <rect x="42" y="10" width="16" height="12" rx="2" fill="${capBg}" stroke="#d1d5db" stroke-width="1"/>
+        <svg viewBox="0 0 100 120" class="w-16 h-18 product-render-shadow transition-transform hover:scale-105">
+          <rect x="42" y="10" width="16" height="12" rx="2" fill="${capBg}" stroke="#e0e0e0" stroke-width="1"/>
           <rect x="45" y="22" width="10" height="6" fill="#e5e7eb"/>
-          <rect x="24" y="28" width="52" height="78" rx="10" fill="rgba(255,255,255,0.85)" stroke="#ffffff" stroke-width="2"/>
+          <rect x="24" y="28" width="52" height="78" rx="10" fill="rgba(255,255,255,0.92)" stroke="#ffffff" stroke-width="2"/>
           <rect x="27" y="44" width="46" height="58" rx="6" fill="${liquidColor}" opacity="0.85"/>
           <rect x="31" y="52" width="38" height="28" rx="4" fill="#ffffff" opacity="0.95"/>
           <text x="50" y="65" font-size="4.5" font-weight="600" fill="#1d1d1f" text-anchor="middle" font-family="Poppins">ENJOYHERE</text>
@@ -655,65 +820,42 @@
 
       filtered.forEach(product => {
         const row = document.createElement('div');
-        row.className = "px-4 py-3 flex items-center justify-between gap-3 hover:bg-slate-50 transition group active:bg-slate-100 cursor-pointer";
+        row.className = "p-4 flex items-center justify-between gap-4 hover:bg-slate-50/70 transition group cursor-pointer active:bg-slate-100/60";
         
         row.innerHTML = `
-          <div onclick="openDetailModal('${product.id}')" class="w-16 h-16 flex items-center justify-center shrink-0">
+          <div onclick="openDetailModal('${product.id}')" class="w-20 h-20 shrink-0 flex items-center justify-center overflow-visible">
             ${generatePerfumeSVG(product.liquidColor, product.bottleBg)}
           </div>
 
-          <div onclick="openDetailModal('${product.id}')" class="flex-1 min-w-0 pr-1">
-            <div class="flex items-center gap-1.5 mb-0.5">
-              <span class="inline-block bg-blue-50 text-apple-blue font-num font-bold text-[11px] px-1.5 py-0.2 rounded border border-blue-100 tracking-tight">
-                ${product.code}
-              </span>
-              <span class="text-[10px] text-emerald-700 font-th font-semibold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-100">
-                +1 แต้ม
-              </span>
+          <div onclick="openDetailModal('${product.id}')" class="flex-1 min-w-0 py-0.5">
+            <div class="text-[11px] font-semibold text-apple-blue font-num tracking-wide mb-0.5">
+              ${product.code}
             </div>
             
-            <h2 class="font-bold text-apple-dark text-xs font-th truncate leading-snug">
+            <h2 class="font-bold text-apple-dark text-sm font-th leading-snug tracking-tight">
               ${product.name}
             </h2>
-            
-            <p class="text-[10px] text-apple-muted font-th truncate mt-0.5">
-              ${product.volume} • Top: ${product.topNotes}
-            </p>
+
+            <div class="flex items-center gap-2 mt-1.5">
+              <span class="font-bold text-apple-dark font-num text-sm">
+                ฿${product.price.toLocaleString()}
+              </span>
+              <span class="text-xs text-slate-400 font-th font-normal">
+                • 1 แต้ม
+              </span>
+            </div>
           </div>
 
-          <div class="flex items-center gap-2.5 shrink-0">
-            <div class="text-right">
-              <span class="text-[9px] text-apple-muted font-th block leading-none">ราคา</span>
-              <span class="font-bold text-apple-dark font-num text-sm">฿${product.price.toLocaleString()}</span>
-            </div>
-            
-            <button onclick="event.stopPropagation(); addToCart('${product.id}');" class="w-8 h-8 rounded-full bg-apple-blue hover:bg-apple-blueHover text-white flex items-center justify-center font-bold text-base transition shadow-sm active:scale-95">
+          <div class="shrink-0 self-center">
+            <button onclick="event.stopPropagation(); addToCart('${product.id}');" 
+              class="w-8 h-8 rounded-full bg-apple-blue hover:bg-apple-blueHover text-white flex items-center justify-center font-medium text-base shadow-none active:scale-95 transition"
+              aria-label="เพิ่มลงตะกร้า">
               +
             </button>
           </div>
         `;
         grid.appendChild(row);
       });
-    }
-
-    function switchCategory(cat) {
-      state.activeCategory = cat;
-      document.querySelectorAll('.cat-chip').forEach(btn => {
-        btn.classList.remove('bg-slate-900', 'text-white', 'shadow-sm');
-        btn.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-200');
-      });
-
-      const activeBtn = document.getElementById(`cat-${cat}`);
-      if (activeBtn) {
-        activeBtn.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-200');
-        activeBtn.classList.add('bg-slate-900', 'text-white', 'shadow-sm');
-      }
-      renderProducts();
-    }
-
-    function filterPerfumes() {
-      state.searchQuery = document.getElementById('search-input').value;
-      renderProducts();
     }
 
     function addToCart(productId) {
@@ -745,22 +887,16 @@
 
     function updateCartUI() {
       const totalCount = state.cart.reduce((sum, item) => sum + item.quantity, 0);
-      const totalPrice = state.cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-
+      const subtotal = state.cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+      
       const priceDisplay = document.getElementById('cart-floating-price');
       const qtyDisplay = document.getElementById('cart-floating-qty');
       const pointsDisplay = document.getElementById('cart-floating-points');
       const floatingBar = document.getElementById('floating-cart');
 
-      if (priceDisplay) priceDisplay.innerText = `฿${totalPrice.toLocaleString()}`;
-      if (qtyDisplay) qtyDisplay.innerText = `${totalCount} รายการ`;
-      if (pointsDisplay) pointsDisplay.innerText = `+${totalCount}`;
-
-      // Update Cart Page Floating Bar values
-      const cartPageBarPrice = document.getElementById('cart-page-bar-price');
-      const cartPageBarPoints = document.getElementById('cart-page-bar-points');
-      if (cartPageBarPrice) cartPageBarPrice.innerText = `฿${totalPrice.toLocaleString()}`;
-      if (cartPageBarPoints) cartPageBarPoints.innerText = `+${totalCount}`;
+      if (priceDisplay) priceDisplay.innerText = `฿${subtotal.toLocaleString()}`;
+      if (qtyDisplay) qtyDisplay.innerText = `(${totalCount} รายการ)`;
+      if (pointsDisplay) pointsDisplay.innerText = `${totalCount}`;
 
       if (floatingBar) {
         const shopView = document.getElementById('view-shop');
@@ -775,83 +911,331 @@
 
     function renderCartPageItems() {
       const container = document.getElementById('cart-page-items-container');
-      const subtotalEl = document.getElementById('cart-page-subtotal');
-      const totalEl = document.getElementById('cart-page-total');
       if (!container) return;
 
-      container.innerHTML = '';
-      const totalPrice = state.cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+      const subtotal = state.cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
       const totalCount = state.cart.reduce((sum, item) => sum + item.quantity, 0);
 
-      if (subtotalEl) subtotalEl.innerText = `฿${totalPrice.toLocaleString()}`;
-      if (totalEl) totalEl.innerText = `฿${totalPrice.toLocaleString()}`;
+      // 1. Render Shipping Address Info Section
+      const selectedAddr = state.addresses.find(a => a.id === state.selectedAddressId) || state.addresses[0];
+      const addrContainer = document.getElementById('summary-shipping-info');
+      if (addrContainer && selectedAddr) {
+        addrContainer.innerHTML = `
+          <p class="font-bold text-apple-dark">${selectedAddr.name} <span class="font-normal font-num text-slate-500">(${selectedAddr.phone})</span></p>
+          <p class="text-slate-500 leading-snug">${selectedAddr.detail}</p>
+        `;
+      }
 
-      // Sync floating bar for cart page
-      const cartPageBarPrice = document.getElementById('cart-page-bar-price');
-      const cartPageBarPoints = document.getElementById('cart-page-bar-points');
-      if (cartPageBarPrice) cartPageBarPrice.innerText = `฿${totalPrice.toLocaleString()}`;
-      if (cartPageBarPoints) cartPageBarPoints.innerText = `+${totalCount}`;
+      // 2. Render Product List
+      container.innerHTML = '';
+      document.getElementById('summary-items-count').innerText = `${totalCount} รายการ`;
 
       if (state.cart.length === 0) {
         container.innerHTML = `
-          <div class="bg-white p-8 rounded-2xl border border-slate-200 text-center text-apple-muted font-th shadow-sm">
-            <p class="text-3xl mb-2">🛒</p>
-            <p class="text-xs">ตะกร้าของคุณยังไม่มีสินค้า</p>
+          <div class="py-8 text-center text-apple-muted font-th">
+            <p class="text-2xl mb-1">🛒</p>
+            <p class="text-xs">ไม่มีสินค้าในรายการสั่งซื้อ</p>
           </div>
         `;
-        return;
+      } else {
+        const displayItems = state.isItemsExpanded ? state.cart : state.cart.slice(0, 2);
+        displayItems.forEach(item => {
+          const row = document.createElement('div');
+          row.className = "py-3 flex items-center justify-between gap-3";
+          row.innerHTML = `
+            <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center shrink-0 border border-slate-200/60 overflow-hidden">
+              ${generatePerfumeSVG(item.product.liquidColor, item.product.bottleBg)}
+            </div>
+            
+            <div class="flex-1 min-w-0">
+              <h4 class="font-medium text-xs text-apple-dark truncate leading-snug">${item.product.name}</h4>
+              <p class="text-[11px] text-apple-muted font-num mt-0.5">฿${item.product.price.toLocaleString()}</p>
+            </div>
+
+            <div class="text-right shrink-0">
+              <span class="font-num font-semibold text-xs text-apple-dark block">฿${(item.product.price * item.quantity).toLocaleString()}</span>
+              <span class="text-[11px] text-slate-400 font-num">${item.quantity}x</span>
+            </div>
+          `;
+          container.appendChild(row);
+        });
       }
 
-      state.cart.forEach(item => {
-        const row = document.createElement('div');
-        row.className = "bg-white p-3.5 rounded-2xl border border-slate-200/80 flex items-center justify-between shadow-sm font-th";
-        row.innerHTML = `
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center border border-slate-200 text-xs shrink-0">
-              🍾
+      // 3. Render Promo Active Display
+      const activePromo = PROMO_DATA.find(p => p.id === state.selectedPromoId);
+      const activePromoText = document.getElementById('summary-active-promo-text');
+      const promoBadge = document.getElementById('summary-promo-badge');
+
+      if (activePromo && activePromo.eligible) {
+        if (activePromoText) activePromoText.innerText = activePromo.title;
+        if (promoBadge) promoBadge.classList.remove('hidden');
+      } else {
+        if (activePromoText) activePromoText.innerText = 'เลือกโปรโมชัน หรือกรอกโค้ดส่วนลด';
+        if (promoBadge) promoBadge.classList.add('hidden');
+      }
+
+      // 4. Calculate Financials (Matching Image 1 S__65396777_0_2.jpg Breakdown)
+      let shippingFee = subtotal > 0 ? 40 : 0;
+      let freeShippingDiscount = 0;
+      let couponDiscount = 0;
+
+      if (activePromo && activePromo.eligible && subtotal > 0) {
+        if (activePromo.id === 'p3') {
+          freeShippingDiscount = 15;
+        } else if (activePromo.type === 'percent') {
+          couponDiscount = Math.min(subtotal * activePromo.value, activePromo.maxDiscount || 9999);
+          freeShippingDiscount = 15; // Free shipping promo default
+        } else if (activePromo.type === 'fixed') {
+          couponDiscount = activePromo.value;
+        }
+      }
+
+      const netTotal = Math.max(0, subtotal + shippingFee - freeShippingDiscount - couponDiscount);
+
+      document.getElementById('summary-subtotal').innerText = `฿${subtotal.toLocaleString()}`;
+      document.getElementById('summary-shipping-fee').innerText = `฿${shippingFee}`;
+      document.getElementById('summary-total').innerText = `฿${netTotal.toLocaleString()}`;
+
+      // Render Discount Line Items (Green Text with Tags)
+      const discountListContainer = document.getElementById('summary-discounts-list');
+      if (discountListContainer) {
+        discountListContainer.innerHTML = '';
+        
+        if (freeShippingDiscount > 0) {
+          discountListContainer.innerHTML += `
+            <div class="flex justify-between items-center text-xs">
+              <div class="flex items-center gap-1.5 text-slate-700">
+                <span class="text-amber-500">🏷️</span>
+                <span>ส่งฟรีสูงสุด ฿15</span>
+              </div>
+              <span class="font-num font-semibold text-emerald-600">-15</span>
             </div>
-            <div>
-              <h4 class="font-semibold text-xs text-apple-dark leading-snug">${item.product.name}</h4>
-              <p class="text-[10px] text-apple-muted font-num">฿${item.product.price.toLocaleString()} x ${item.quantity}</p>
+          `;
+        }
+
+        if (couponDiscount > 0) {
+          discountListContainer.innerHTML += `
+            <div class="flex justify-between items-center text-xs">
+              <div class="flex items-center gap-1.5 text-slate-700">
+                <span class="text-amber-500">🏷️</span>
+                <span>${activePromo.title}</span>
+              </div>
+              <span class="font-num font-semibold text-emerald-600">-${couponDiscount}</span>
             </div>
+          `;
+        }
+      }
+
+      // Update Floating Bottom Bar
+      const cartPageBarPrice = document.getElementById('cart-page-bar-price');
+      const cartPageBarPoints = document.getElementById('cart-page-bar-points');
+      if (cartPageBarPrice) cartPageBarPrice.innerText = `฿${netTotal.toLocaleString()}`;
+      if (cartPageBarPoints) cartPageBarPoints.innerText = `${totalCount}`;
+    }
+
+    function toggleItemsExpand() {
+      state.isItemsExpanded = !state.isItemsExpanded;
+      const btnText = document.querySelector('#btn-toggle-expand span');
+      const icon = document.getElementById('expand-icon');
+      
+      if (state.isItemsExpanded) {
+        if (btnText) btnText.innerText = 'ย่อรายการ';
+        if (icon) icon.innerText = '▲';
+      } else {
+        if (btnText) btnText.innerText = 'ขยายรายการทั้งหมด';
+        if (icon) icon.innerText = '▼';
+      }
+      renderCartPageItems();
+    }
+
+    function renderPromoPage() {
+      const container = document.getElementById('promo-vouchers-container');
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      // Section 1: Available Vouchers
+      const availableVouchers = PROMO_DATA.filter(p => p.eligible);
+      if (availableVouchers.length > 0) {
+        const sectionTitle = document.createElement('h3');
+        sectionTitle.className = "text-xs font-bold text-apple-dark mb-2";
+        sectionTitle.innerText = "คูปองที่ใช้ได้";
+        container.appendChild(sectionTitle);
+
+        availableVouchers.forEach(p => {
+          const isSelected = state.selectedPromoId === p.id;
+          const card = document.createElement('div');
+          card.className = "p-3.5 bg-white rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between gap-3 cursor-pointer hover:border-apple-blue transition";
+          card.onclick = () => selectPromo(p.id);
+
+          card.innerHTML = `
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg text-white font-bold shrink-0" style="background-color: ${p.iconBg}">
+                ${p.iconText}
+              </div>
+              <div>
+                <h4 class="font-bold text-xs text-apple-dark">${p.title}</h4>
+                <p class="text-[11px] text-apple-muted font-th mt-0.5 flex items-center gap-1">
+                  <span>${p.subtitle}</span>
+                  <span class="text-slate-300">›</span>
+                </p>
+              </div>
+            </div>
+
+            <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+              isSelected ? 'border-apple-blue bg-apple-blue' : 'border-slate-300'
+            }">
+              ${isSelected ? '<span class="text-white text-[10px] font-bold">✓</span>' : ''}
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+      // Section 2: Unavailable Vouchers (Greyed out)
+      const unavailableVouchers = PROMO_DATA.filter(p => !p.eligible);
+      if (unavailableVouchers.length > 0) {
+        const sectionTitle = document.createElement('h3');
+        sectionTitle.className = "text-xs font-bold text-slate-400 mt-6 mb-2";
+        sectionTitle.innerText = "คูปองที่ไม่สามารถใช้ได้ในขณะนี้";
+        container.appendChild(sectionTitle);
+
+        unavailableVouchers.forEach(p => {
+          const card = document.createElement('div');
+          card.className = "p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200/50 flex items-center justify-between gap-3 opacity-60";
+
+          card.innerHTML = `
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center text-lg font-bold shrink-0">
+                ${p.iconText}
+              </div>
+              <div>
+                <h4 class="font-bold text-xs text-slate-500">${p.title}</h4>
+                <p class="text-[10px] text-slate-400 font-th mt-0.5">${p.subtitle}</p>
+              </div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+    }
+
+    function selectPromo(promoId) {
+      state.selectedPromoId = promoId;
+      renderPromoPage();
+      showToast('ปรับใช้โปรโมชันเรียบร้อยแล้ว', '🏷️');
+      setTimeout(() => navSwitch('cart-page'), 300);
+    }
+
+    function applyPromoCodeManual() {
+      const val = document.getElementById('promo-code-input').value.trim();
+      if (!val) {
+        showToast('กรุณากรอกรหัสโปรโมชัน', '⚠️');
+        return;
+      }
+      showToast(`ปรับใช้โค้ด [${val}] เรียบร้อยแล้ว`, '✨');
+      navSwitch('cart-page');
+    }
+
+    function renderAddressPage() {
+      const container = document.getElementById('address-list-container');
+      if (!container) return;
+
+      container.innerHTML = '';
+      state.addresses.forEach(addr => {
+        const isSelected = addr.id === state.selectedAddressId;
+        const card = document.createElement('div');
+        card.className = `p-3.5 rounded-2xl border transition cursor-pointer flex items-center justify-between ${
+          isSelected ? 'bg-white border-apple-blue shadow-sm' : 'bg-white border-slate-200/80'
+        }`;
+        card.onclick = () => selectAddress(addr.id);
+
+        card.innerHTML = `
+          <div class="space-y-0.5">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-xs text-apple-dark">${addr.name}</span>
+              <span class="text-[11px] text-slate-500 font-num">${addr.phone}</span>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-snug">${addr.detail}</p>
           </div>
-          <div class="flex items-center gap-2 bg-slate-100 p-1 rounded-xl border border-slate-200">
-            <button onclick="updateCartQuantity('${item.product.id}', -1)" class="w-6 h-6 bg-white rounded-lg text-xs font-bold text-apple-dark shadow-sm flex items-center justify-center active:scale-95">-</button>
-            <span class="text-xs font-bold font-num px-1.5 text-apple-dark">${item.quantity}</span>
-            <button onclick="updateCartQuantity('${item.product.id}', 1)" class="w-6 h-6 bg-white rounded-lg text-xs font-bold text-apple-dark shadow-sm flex items-center justify-center active:scale-95">+</button>
+
+          <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ml-3 ${
+            isSelected ? 'border-apple-blue bg-apple-blue' : 'border-slate-300'
+          }">
+            ${isSelected ? '<span class="text-white text-[10px] font-bold">✓</span>' : ''}
           </div>
         `;
-        container.appendChild(row);
+        container.appendChild(card);
       });
     }
 
-    function proceedToPayment() {
-      const name = document.getElementById('cust-name').value.trim();
-      const phone = document.getElementById('cust-phone').value.trim();
-      const address = document.getElementById('cust-address').value.trim();
+    function selectAddress(id) {
+      state.selectedAddressId = id;
+      renderAddressPage();
+      renderCartPageItems();
+      showToast('เปลี่ยนที่อยู่จัดส่งแล้ว', '📍');
+      setTimeout(() => navSwitch('cart-page'), 300);
+    }
 
+    function saveNewAddress() {
+      const name = document.getElementById('new-addr-name').value.trim();
+      const phone = document.getElementById('new-addr-phone').value.trim();
+      const detail = document.getElementById('new-addr-detail').value.trim();
+
+      if (!name || !phone || !detail) {
+        showToast('กรุณากรอกข้อมูลที่อยู่ให้ครบถ้วน', '⚠️');
+        return;
+      }
+
+      const newId = 'addr-' + Date.now();
+      state.addresses.push({ id: newId, name, phone, detail });
+      state.selectedAddressId = newId;
+
+      document.getElementById('new-addr-name').value = '';
+      document.getElementById('new-addr-phone').value = '';
+      document.getElementById('new-addr-detail').value = '';
+
+      renderAddressPage();
+      renderCartPageItems();
+      showToast('เพิ่มที่อยู่ใหม่เรียบร้อยแล้ว', '✅');
+      navSwitch('cart-page');
+    }
+
+    function proceedToPayment() {
       if (state.cart.length === 0) {
         showToast('กรุณาเลือกสินค้าก่อนดำเนินการ', '⚠️');
         return;
       }
 
-      if (!name || !phone || !address) {
-        showToast('กรุณากรอกข้อมูลจัดส่งให้ครบถ้วน', '⚠️');
-        return;
+      const selectedAddr = state.addresses.find(a => a.id === state.selectedAddressId) || state.addresses[0];
+      const totalQty = state.cart.reduce((sum, item) => sum + item.quantity, 0);
+      const subtotal = state.cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+      
+      const activePromo = PROMO_DATA.find(p => p.id === state.selectedPromoId);
+      let couponDiscount = 0;
+      if (activePromo && activePromo.eligible) {
+        if (activePromo.type === 'percent') {
+          couponDiscount = Math.min(subtotal * activePromo.value, activePromo.maxDiscount || 9999);
+        } else if (activePromo.type === 'fixed') {
+          couponDiscount = activePromo.value;
+        }
       }
 
-      const totalQty = state.cart.reduce((sum, item) => sum + item.quantity, 0);
-      const totalPrice = state.cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+      const netTotal = Math.max(0, subtotal + 40 - 15 - couponDiscount);
 
       state.pendingOrder = {
-        name, phone, address, totalQty, totalPrice,
+        name: selectedAddr.name,
+        phone: selectedAddr.phone,
+        address: selectedAddr.detail,
+        totalQty,
+        totalPrice: netTotal,
         items: [...state.cart]
       };
 
-      document.getElementById('payment-page-total').innerText = `฿${totalPrice.toLocaleString()}`;
+      document.getElementById('payment-page-total').innerText = `฿${netTotal.toLocaleString()}`;
       
       const paymentBarPrice = document.getElementById('payment-bar-price');
-      if (paymentBarPrice) paymentBarPrice.innerText = `฿${totalPrice.toLocaleString()}`;
+      if (paymentBarPrice) paymentBarPrice.innerText = `฿${netTotal.toLocaleString()}`;
 
       startPaymentTimer(180);
       navSwitch('payment-page');
@@ -990,7 +1374,7 @@
                 isCurrent 
                   ? 'bg-apple-blue text-white ring-4 ring-blue-100 shadow-sm' 
                   : isDone 
-                  ? 'bg-slate-900 text-white' 
+                  ? 'bg-[#1d1d1f] text-white' 
                   : 'bg-slate-100 text-slate-400 border border-slate-200'
               }">
                 ${s.num}
@@ -1012,7 +1396,7 @@
               <span class="font-num font-bold text-apple-dark">${order.id}</span>
               <span class="text-[10px] text-apple-muted block font-num">${order.date}</span>
             </div>
-            <span class="bg-amber-50 text-amber-800 border border-amber-200 font-semibold font-th text-[11px] px-2.5 py-0.5 rounded-full flex items-center gap-1">
+            <span class="bg-amber-50 text-amber-900 border border-amber-200/60 font-semibold font-th text-[11px] px-2.5 py-0.5 rounded-full flex items-center gap-1">
               ✨ รับแต้ม +${order.earnedPoints} คะแนน
             </span>
           </div>
@@ -1036,6 +1420,8 @@
     function navSwitch(viewName) {
       document.getElementById('view-shop').classList.add('hidden');
       document.getElementById('view-cart-page').classList.add('hidden');
+      document.getElementById('view-promo-page').classList.add('hidden');
+      document.getElementById('view-address-page').classList.add('hidden');
       document.getElementById('view-payment-page').classList.add('hidden');
       document.getElementById('view-orders').classList.add('hidden');
       document.getElementById('view-profile').classList.add('hidden');
@@ -1048,6 +1434,12 @@
       if (viewName === 'cart-page') {
         renderCartPageItems();
         document.getElementById('view-cart-page').classList.remove('hidden');
+      } else if (viewName === 'promo-page') {
+        renderPromoPage();
+        document.getElementById('view-promo-page').classList.remove('hidden');
+      } else if (viewName === 'address-page') {
+        renderAddressPage();
+        document.getElementById('view-address-page').classList.remove('hidden');
       } else if (viewName === 'payment-page') {
         document.getElementById('view-payment-page').classList.remove('hidden');
       } else if (viewName === 'orders') {
@@ -1073,7 +1465,7 @@
         }
       }
 
-      // Toggle floating bottom action bars overlaying the nav menu
+      // Toggle floating bottom action bars
       const floatingCart = document.getElementById('floating-cart');
       const floatingCartPageBar = document.getElementById('floating-cart-page-bar');
       const floatingPaymentBar = document.getElementById('floating-payment-bar');
@@ -1101,7 +1493,7 @@
 
       const container = document.getElementById('detail-content');
       container.innerHTML = `
-        <div class="w-full h-40 bg-slate-100 rounded-2xl flex items-center justify-center border border-slate-200 mb-4">
+        <div class="w-full h-40 bg-[#f5f5f7] rounded-2xl flex items-center justify-center border border-slate-200/60 mb-4 overflow-visible">
           ${generatePerfumeSVG(p.liquidColor, p.bottleBg)}
         </div>
 
@@ -1111,14 +1503,14 @@
           <p class="text-xs text-apple-muted font-th mt-1 leading-relaxed">${p.desc}</p>
         </div>
 
-        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-1.5 text-xs font-th">
+        <div class="bg-[#f5f5f7] p-3.5 rounded-2xl border border-slate-200/80 space-y-1.5 text-xs font-th">
           <p class="font-semibold text-apple-dark">Fragrance Pyramid</p>
           <p><span class="text-apple-muted">Top Notes:</span> <span class="font-medium text-apple-dark">${p.topNotes}</span></p>
           <p><span class="text-apple-muted">Heart Notes:</span> <span class="font-medium text-apple-dark">${p.heartNotes}</span></p>
           <p><span class="text-apple-muted">Base Notes:</span> <span class="font-medium text-apple-dark">${p.baseNotes}</span></p>
         </div>
 
-        <button onclick="addToCart('${p.id}'); closeDetailModal();" class="w-full py-3.5 bg-apple-blue hover:bg-apple-blueHover text-white font-semibold rounded-pill font-th text-xs transition shadow-md active:scale-98">
+        <button onclick="addToCart('${p.id}'); closeDetailModal();" class="w-full py-3.5 bg-apple-blue hover:bg-apple-blueHover text-white font-semibold rounded-pill font-th text-xs transition shadow-sm active:scale-98">
           เพิ่มลงตะกร้า • ฿${p.price.toLocaleString()}
         </button>
       `;
