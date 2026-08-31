@@ -153,10 +153,10 @@
               <select id="cat-select" onchange="onCategorySelectChange(this.value)" 
                 class="w-full appearance-none bg-white text-apple-dark font-th font-semibold text-xs py-2.5 pl-4 pr-9 rounded-full border border-slate-200/80 shadow-sm focus:outline-none focus:border-apple-blue transition cursor-pointer">
                 <option value="all">ทุกหมวดหมู่ (16)</option>
-                <option value="him">👔 น้ำหอมผู้ชาย (4)</option>
-                <option value="her">👗 น้ำหอมผู้หญิง (4)</option>
-                <option value="unisex">🌿 Unisex (4)</option>
-                <option value="signature">👑 Signature (4)</option>
+                <option value="him">น้ำหอมผู้ชาย (4)</option>
+                <option value="her">น้ำหอมผู้หญิง (4)</option>
+                <option value="unisex">Unisex (4)</option>
+                <option value="signature">Signature (4)</option>
               </select>
               <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400 text-[10px]">
                 ▼
@@ -207,11 +207,11 @@
           <h2 class="font-bold text-apple-dark text-base tracking-tight text-center flex-1 pr-8">สรุปรายการสั่งซื้อ</h2>
         </div>
 
-        <!-- FULL SCREEN UNFRAMED SECTIONS -->
-        <div class="divide-y divide-slate-100">
+        <!-- FULL SCREEN UNFRAMED SECTIONS WITH ELEGANT APPLE SPACING -->
+        <div class="divide-y divide-slate-100 pb-8">
           
           <!-- SECTION 1: ข้อมูลจัดส่ง (Shipping Information) -->
-          <div class="p-4 space-y-2 bg-white">
+          <div class="p-5 space-y-2.5 bg-white">
             <div class="flex items-center justify-between">
               <h3 class="font-bold text-sm text-apple-dark">ข้อมูลจัดส่ง</h3>
               <button onclick="navSwitch('address-page')" class="text-xs font-semibold text-apple-blue hover:underline active:opacity-70 font-th">
@@ -224,8 +224,8 @@
             </div>
           </div>
 
-          <!-- SECTION 2: รายการสินค้า (Order Items List - Matched Image 1 S__65396777_0_2.jpg) -->
-          <div class="p-4 space-y-3 bg-white">
+          <!-- SECTION 2: รายการสินค้า (Order Items List with Interactive Quantity Controller) -->
+          <div class="p-5 space-y-3.5 bg-white">
             <div class="flex items-center justify-between mb-1">
               <h3 class="font-bold text-sm text-apple-dark">รายการสินค้า</h3>
               <span id="summary-items-count" class="text-xs text-apple-muted font-num">0 รายการ</span>
@@ -244,8 +244,8 @@
             </div>
           </div>
 
-          <!-- SECTION 3: ส่วนลด / โปรโมชัน (Promotions - Matched Image 2 S__65396775_0.jpg entry point) -->
-          <div class="p-4 bg-white">
+          <!-- SECTION 3: ส่วนลด / โปรโมชัน (Promotions) -->
+          <div class="p-5 bg-white">
             <div onclick="navSwitch('promo-page')" class="flex items-center justify-between cursor-pointer py-1 group">
               <div class="flex items-center gap-2.5">
                 <span class="text-base text-amber-500">🏷️</span>
@@ -261,8 +261,8 @@
             </div>
           </div>
 
-          <!-- SECTION 4: แสดงสรุปยอด (Financial Breakdown - Matched Image 1 S__65396777_0_2.jpg) -->
-          <div class="p-4 space-y-2.5 bg-white text-xs">
+          <!-- SECTION 4: แสดงสรุปยอด (Financial Breakdown) -->
+          <div class="p-5 space-y-3 bg-white text-xs">
             <div class="flex justify-between items-center text-slate-700">
               <span>รวมค่าสินค้า</span>
               <span id="summary-subtotal" class="font-num font-semibold text-apple-dark">฿0</span>
@@ -281,59 +281,45 @@
               <!-- Dynamically inserted discount lines -->
             </div>
 
-            <div class="border-t border-slate-100 pt-3 mt-2 flex justify-between items-center">
+            <div class="border-t border-slate-100 pt-3.5 mt-2 flex justify-between items-center">
               <span class="font-bold text-sm text-apple-dark">รวมทั้งหมด</span>
               <div class="flex items-center gap-2">
-                <span class="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md font-medium border border-emerald-200/50">💵 โอนชำระ</span>
                 <span id="summary-total" class="font-bold text-base font-num text-apple-dark">฿0</span>
               </div>
-            </div>
-          </div>
-
-          <!-- SECTION 5: โปรไฟล์ & หมายเหตุ -->
-          <div class="p-4 bg-slate-50/50 space-y-3">
-            <div class="flex items-center justify-between text-xs">
-              <span class="font-semibold text-apple-dark">โปรไฟล์ผู้สั่งซื้อ</span>
-              <span class="text-slate-500 font-medium flex items-center gap-1">
-                👤 สมาชิกทั่วไป
-              </span>
-            </div>
-
-            <div class="bg-white p-3 rounded-xl border border-slate-200/60 text-[11px] text-slate-500 flex items-center gap-2">
-              <span class="text-emerald-600 font-bold text-sm">🚚</span>
-              <span> ENJOYHERE รับประกันความหอมสดชื่น จัดส่งด่วน 1-2 วันทำการ</span>
             </div>
           </div>
 
         </div>
       </section>
 
-      <section id="view-promo-page" class="hidden min-h-full bg-white text-apple-dark font-th">
+      <section id="view-promo-page" class="hidden absolute inset-0 z-50 bg-white text-apple-dark font-th flex flex-col overflow-y-auto no-scrollbar">
         
-        <!-- Header -->
-        <div class="sticky top-0 z-20 vision-glass px-4 py-3 flex items-center justify-between border-b border-slate-100">
+        <!-- VisionOS Glass Header -->
+        <div class="sticky top-0 z-20 vision-glass px-4 py-3.5 flex items-center justify-between border-b border-slate-100 shrink-0">
           <button onclick="navSwitch('cart-page')" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 text-apple-dark font-bold text-lg flex items-center justify-center transition" aria-label="Back">
-            ←
+            ‹
           </button>
           <h2 class="font-bold text-apple-dark text-base tracking-tight text-center flex-1 pr-8">โปรโมชัน</h2>
         </div>
 
-        <div class="p-4 space-y-4">
-          <!-- Search / Promo Code Input Box -->
-          <div class="relative flex items-center">
-            <input type="text" id="promo-code-input" placeholder="กรอกรหัสโปรโมชัน หรือรหัสบัตรกำนัล" 
-                   class="w-full pl-9 pr-16 py-2.5 bg-slate-100 rounded-xl text-xs font-th border-none focus:outline-none focus:ring-2 focus:ring-apple-blue/20">
-            <svg class="w-4 h-4 text-slate-400 absolute left-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-            <button onclick="applyPromoCodeManual()" class="absolute right-2 px-3 py-1 bg-apple-blue text-white text-xs font-semibold rounded-lg active:scale-95 transition">
-              ใช้
-            </button>
+        <div class="flex-1">
+          <!-- Promo Code Input Box -->
+          <div class="p-4 bg-slate-50/50 border-b border-slate-100">
+            <div class="relative flex items-center">
+              <input type="text" id="promo-code-input" placeholder="กรอกรหัสโปรโมชัน หรือรหัสบัตรกำนัล" 
+                     class="w-full pl-9 pr-16 py-2.5 bg-white rounded-xl text-xs font-th border border-slate-200/80 focus:outline-none focus:border-apple-blue focus:ring-2 focus:ring-apple-blue/20 transition shadow-sm">
+              <svg class="w-4 h-4 text-slate-400 absolute left-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+              <button onclick="applyPromoCodeManual()" class="absolute right-2 px-3 py-1 bg-apple-blue hover:bg-apple-blueHover text-white text-xs font-semibold rounded-lg active:scale-95 transition">
+                ใช้
+              </button>
+            </div>
           </div>
 
-          <!-- PROMO LIST CONTAINER -->
-          <div id="promo-vouchers-container" class="space-y-4">
-            <!-- Dynamically Rendered by JS matching S__65396775_0.jpg -->
+          <!-- PROMO LIST CONTAINER (Full Width, Continuous Hairline Dividers, No Outlines) -->
+          <div id="promo-vouchers-container" class="divide-y divide-slate-100 bg-white">
+            <!-- Dynamically Rendered by JS -->
           </div>
         </div>
       </section>
@@ -780,6 +766,54 @@
       }
     }
 
+    function toggleSearchMode(showSearch) {
+      const defaultBar = document.getElementById('filter-bar-default');
+      const searchBar = document.getElementById('filter-bar-search');
+      const searchInput = document.getElementById('search-input');
+
+      if (showSearch) {
+        if (defaultBar) defaultBar.classList.add('hidden');
+        if (searchBar) searchBar.classList.remove('hidden');
+        if (searchInput) searchInput.focus();
+      } else {
+        if (searchBar) searchBar.classList.add('hidden');
+        if (defaultBar) defaultBar.classList.remove('hidden');
+        clearSearchInput();
+      }
+    }
+
+    function onCategorySelectChange(value) {
+      state.activeCategory = value;
+      renderProducts();
+    }
+
+    function filterPerfumes() {
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        state.searchQuery = searchInput.value;
+        renderProducts();
+      }
+    }
+
+    function clearSearchInput() {
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        searchInput.value = '';
+      }
+      state.searchQuery = '';
+      renderProducts();
+    }
+
+    function redeemReward(rewardName, pointsCost) {
+      if (state.userPoints < pointsCost) {
+        showToast(`แต้มสะสมไม่เพียงพอ (ต้องการ ${pointsCost} แต้ม)`, '⚠️');
+        return;
+      }
+      state.userPoints -= pointsCost;
+      updateProfileDisplay();
+      showToast(`แลกรับ "${rewardName}" สำเร็จ!`, '🎉');
+    }
+
     function generatePerfumeSVG(liquidColor, capBg) {
       return `
         <svg viewBox="0 0 100 120" class="w-16 h-18 product-render-shadow transition-transform hover:scale-105">
@@ -948,13 +982,23 @@
             </div>
             
             <div class="flex-1 min-w-0">
-              <h4 class="font-medium text-xs text-apple-dark truncate leading-snug">${item.product.name}</h4>
+              <h4 class="font-semibold text-xs text-apple-dark truncate leading-snug">${item.product.name}</h4>
               <p class="text-[11px] text-apple-muted font-num mt-0.5">฿${item.product.price.toLocaleString()}</p>
             </div>
 
-            <div class="text-right shrink-0">
-              <span class="font-num font-semibold text-xs text-apple-dark block">฿${(item.product.price * item.quantity).toLocaleString()}</span>
-              <span class="text-[11px] text-slate-400 font-num">${item.quantity}x</span>
+            <!-- Quantity Adjustment Control (Minimalist Pill Style) -->
+            <div class="flex items-center gap-1 bg-slate-100/90 rounded-full px-2 py-1 border border-slate-200/70 shrink-0">
+              <button onclick="updateCartQuantity('${item.product.id}', -1)" 
+                class="w-5 h-5 rounded-full bg-white hover:bg-slate-200 active:scale-90 text-apple-dark font-bold text-xs flex items-center justify-center shadow-xs transition"
+                aria-label="ลดจำนวน">
+                -
+              </button>
+              <span class="font-num font-semibold text-xs text-apple-dark px-1.5 min-w-[18px] text-center">${item.quantity}</span>
+              <button onclick="updateCartQuantity('${item.product.id}', 1)" 
+                class="w-5 h-5 rounded-full bg-white hover:bg-slate-200 active:scale-90 text-apple-dark font-bold text-xs flex items-center justify-center shadow-xs transition"
+                aria-label="เพิ่มจำนวน">
+                +
+              </button>
             </div>
           `;
           container.appendChild(row);
@@ -1054,70 +1098,48 @@
 
       container.innerHTML = '';
 
-      // Section 1: Available Vouchers
-      const availableVouchers = PROMO_DATA.filter(p => p.eligible);
-      if (availableVouchers.length > 0) {
-        const sectionTitle = document.createElement('h3');
-        sectionTitle.className = "text-xs font-bold text-apple-dark mb-2";
-        sectionTitle.innerText = "คูปองที่ใช้ได้";
-        container.appendChild(sectionTitle);
+      // Unified continuous list without separate section headers
+      PROMO_DATA.forEach(p => {
+        const isSelected = state.selectedPromoId === p.id;
+        const isEligible = p.eligible;
+        
+        const row = document.createElement('div');
+        row.className = `w-full px-4 py-3.5 flex items-center justify-between gap-3 transition border-b border-slate-100 ${
+          isEligible 
+            ? 'cursor-pointer hover:bg-slate-50/80 active:bg-slate-100/60' 
+            : 'cursor-not-allowed opacity-50 bg-slate-50/40'
+        }`;
+        
+        if (isEligible) {
+          row.onclick = () => selectPromo(p.id);
+        }
 
-        availableVouchers.forEach(p => {
-          const isSelected = state.selectedPromoId === p.id;
-          const card = document.createElement('div');
-          card.className = "p-3.5 bg-white rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between gap-3 cursor-pointer hover:border-apple-blue transition";
-          card.onclick = () => selectPromo(p.id);
-
-          card.innerHTML = `
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg text-white font-bold shrink-0" style="background-color: ${p.iconBg}">
-                ${p.iconText}
-              </div>
-              <div>
-                <h4 class="font-bold text-xs text-apple-dark">${p.title}</h4>
-                <p class="text-[11px] text-apple-muted font-th mt-0.5 flex items-center gap-1">
-                  <span>${p.subtitle}</span>
-                  <span class="text-slate-300">›</span>
-                </p>
-              </div>
+        row.innerHTML = `
+          <div class="flex items-center gap-3.5 min-w-0 flex-1">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg text-white font-bold shrink-0 shadow-sm" style="background-color: ${isEligible ? p.iconBg : '#94a3b8'}">
+              ${p.iconText}
             </div>
-
-            <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
-              isSelected ? 'border-apple-blue bg-apple-blue' : 'border-slate-300'
-            }">
-              ${isSelected ? '<span class="text-white text-[10px] font-bold">✓</span>' : ''}
-            </div>
-          `;
-          container.appendChild(card);
-        });
-      }
-
-      // Section 2: Unavailable Vouchers (Greyed out)
-      const unavailableVouchers = PROMO_DATA.filter(p => !p.eligible);
-      if (unavailableVouchers.length > 0) {
-        const sectionTitle = document.createElement('h3');
-        sectionTitle.className = "text-xs font-bold text-slate-400 mt-6 mb-2";
-        sectionTitle.innerText = "คูปองที่ไม่สามารถใช้ได้ในขณะนี้";
-        container.appendChild(sectionTitle);
-
-        unavailableVouchers.forEach(p => {
-          const card = document.createElement('div');
-          card.className = "p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200/50 flex items-center justify-between gap-3 opacity-60";
-
-          card.innerHTML = `
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center text-lg font-bold shrink-0">
-                ${p.iconText}
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <h4 class="font-bold text-xs text-apple-dark font-th leading-snug">${p.title}</h4>
+                ${!isEligible ? '<span class="text-[9px] font-semibold text-slate-500 bg-slate-200/80 px-1.5 py-0.5 rounded font-th">ไม่ตรงเงื่อนไข</span>' : ''}
               </div>
-              <div>
-                <h4 class="font-bold text-xs text-slate-500">${p.title}</h4>
-                <p class="text-[10px] text-slate-400 font-th mt-0.5">${p.subtitle}</p>
-              </div>
+              <p class="text-[11px] text-apple-muted font-th mt-0.5 leading-tight flex items-center gap-1">
+                <span>${p.subtitle}</span>
+              </p>
             </div>
-          `;
-          container.appendChild(card);
-        });
-      }
+          </div>
+
+          <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ml-2 ${
+            isSelected && isEligible
+              ? 'border-apple-blue bg-apple-blue' 
+              : 'border-slate-300'
+          }">
+            ${isSelected && isEligible ? '<span class="text-white text-[10px] font-bold">✓</span>' : ''}
+          </div>
+        `;
+        container.appendChild(row);
+      });
     }
 
     function selectPromo(promoId) {
